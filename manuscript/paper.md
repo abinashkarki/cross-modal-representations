@@ -10,7 +10,7 @@ date: "March 2026"
 
 The Platonic Representation Hypothesis proposes that sufficiently capable models trained on
 different modalities converge toward a shared representational geometry. We test that claim using
-a fully local 22-model experiment on Apple Silicon (M1, 16GB RAM): 8 language models, 10
+self-contained local evaluation of 22 models: 8 language models, 10
 self-supervised vision models, and 4 vision-language models. The final evaluation uses 28
 concepts (20 base + 8 compounds), 30 images per concept, image-level caching, image-bootstrap
 confidence intervals, Mantel permutation tests with Benjamini-Hochberg FDR correction, source
@@ -540,7 +540,7 @@ Pre-Training. *ICCV 2023*.
 - Mantel permutations per pair: 3,000
 - Bootstrap draws: 300
 - Bootstrap image sample size: 10
-- Hardware target: Apple Silicon M1, 16GB RAM
+- Execution context: local commodity hardware
 
 ## Appendix B: Reproducibility Notes
 
