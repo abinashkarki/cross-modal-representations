@@ -1,0 +1,70 @@
+{
+  "timestamp": "2026-03-05T12:38:57.660353",
+  "settings": {
+    "models_file": "/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/docs/run_all_models.sh",
+    "cache_dir": "/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/baseline/cache",
+    "local_files_only": false,
+    "require_network": true,
+    "require_mlx": true,
+    "require_model_cache": false,
+    "parsed_model_count": 22,
+    "parsed_models": [
+      "Qwen3-0.6B-MLX-8bit",
+      "Qwen3-1.7B-MLX-8bit",
+      "Qwen3-4B-MLX-8bit",
+      "LFM2-2.6B-Exp-8bit",
+      "SmolLM3-3B-8bit",
+      "Qwen2.5-1.5B-Instruct-8bit",
+      "Falcon3-1B-Instruct-8bit",
+      "Granite-3.3-2B-Instruct-8bit",
+      "DINOv2-small",
+      "DINOv2-base",
+      "ViT-MAE-base",
+      "BEiT-base",
+      "data2vec-vision",
+      "Hiera-base",
+      "ConvNeXt-v2",
+      "ViT-MSN-base",
+      "DINOv3-ConvNeXt-tiny",
+      "I-JEPA",
+      "CLIP-ViT-B32",
+      "MetaCLIP-B32-400m",
+      "SigLIP",
+      "SigLIP2"
+    ]
+  },
+  "probes": [
+    {
+      "name": "python_torch",
+      "required": true,
+      "ok": true,
+      "details": {
+        "python_version": "3.11.5",
+        "return_code": 0,
+        "torch_version": "2.10.0",
+        "device": "mps",
+        "torch_sanity_value": 5.0
+      }
+    },
+    {
+      "name": "network",
+      "required": true,
+      "ok": true,
+      "details": {
+        "dns_huggingface_co": "18.67.93.58",
+        "http_status": 200
+      }
+    },
+    {
+      "name": "mlx",
+      "required": true,
+      "ok": true,
+      "details": {
+        "return_code": 0,
+        "sum_check": 3.0,
+        "version": "0.31.0"
+      }
+    }
+  ],
+  "all_required_ok": true
+}

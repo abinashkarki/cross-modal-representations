@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Representational Geometry Across Language, Vision, and Vision-Language Models Under Robust Local Evaluation</title>
+  <style>
+    :root {
+      --ink: #14242d;
+      --muted: #4d5f69;
+      --paper: #ffffff;
+      --bg: #eef2ef;
+      --line: #ced8de;
+      --accent: #124a67;
+      --accent-soft: #e0eef5;
+      --ok: #115c3f;
+      --warn: #8a5200;
+      --bad: #8d2626;
+    }
+    @page {
+      size: A4;
+      margin: 14mm;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 10% 0%, #e2edf1 0, transparent 35%),
+        radial-gradient(circle at 100% 0%, #f2eee3 0, transparent 30%),
+        var(--bg);
+      color: var(--ink);
+      font-family: "Charter", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      line-height: 1.52;
+    }
+    .page {
+      width: min(980px, calc(100vw - 28px));
+      margin: 16px auto 26px;
+      background: var(--paper);
+      border: 1px solid #d9e2e6;
+      box-shadow: 0 14px 30px rgba(18, 40, 54, 0.12);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .content {
+      padding: 26px 34px 32px;
+    }
+    .header {
+      background: linear-gradient(120deg, #0f3951 0%, #1c5d7f 70%, #3a7da0 100%);
+      color: #fff;
+      padding: 28px 34px;
+    }
+    .header h1 {
+      margin: 0 0 10px;
+      font-size: 34px;
+      line-height: 1.12;
+      letter-spacing: 0.1px;
+      font-weight: 700;
+    }
+    .subtitle {
+      margin: 0;
+      font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      opacity: 0.96;
+      font-size: 15px;
+    }
+    .meta {
+      margin-top: 14px;
+      font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-size: 12px;
+      opacity: 0.92;
+    }
+    h2 {
+      margin: 28px 0 8px;
+      font-size: 25px;
+      color: #17374a;
+      border-bottom: 2px solid #e3eaee;
+      padding-bottom: 4px;
+    }
+    h3 {
+      margin: 16px 0 6px;
+      font-size: 19px;
+      color: #20475d;
+    }
+    p {
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    .abstract {
+      background: #f8fbfc;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-top: 16px;
+    }
+    .keywords {
+      margin-top: 8px;
+      font-size: 14px;
+      color: var(--muted);
+      font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    }
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .kpi {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      background: #fcfefe;
+    }
+    .kpi .label {
+      color: var(--muted);
+      font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+    }
+    .kpi .value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #15445d;
+      margin-top: 4px;
+      font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    }
+    ul, ol {
+      margin: 8px 0 10px 20px;
+      padding: 0;
+    }
+    li {
+      margin: 4px 0;
+      font-size: 15px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 14px;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 7px 8px;
+      vertical-align: top;
+    }
+    th {
+      background: #edf3f7;
+      font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      color: #193f54;
+      text-align: left;
+    }
+    .figure {
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      margin: 14px 0;
+      background: #fafcfd;
+      padding: 8px;
+      page-break-inside: avoid;
+    }
+    .figure img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 5px;
+    }
+    .caption {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 8px 2px 2px;
+      font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    }
+    .callout {
+      border-left: 4px solid var(--accent);
+      background: var(--accent-soft);
+      padding: 10px 12px;
+      border-radius: 5px;
+      margin: 10px 0;
+      font-size: 15px;
+    }
+    .badge {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      border: 1px solid transparent;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    .ok { background: #e0f2e8; color: var(--ok); border-color: #bde2cd; }
+    .warn { background: #fcedd7; color: var(--warn); border-color: #f0d1a0; }
+    .bad { background: #f8dfdf; color: var(--bad); border-color: #ebbbbb; }
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .mono {
+      font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+      font-size: 12px;
+      color: #2f4552;
+      background: #f4f7f8;
+      border: 1px solid #dde5e9;
+      border-radius: 6px;
+      padding: 10px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .footnote {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+    .refs li {
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+    .small {
+      font-size: 13px;
+      color: var(--muted);
+      font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    }
+    @media (max-width: 900px) {
+      .content, .header {
+        padding: 18px;
+      }
+      .kpis {
+        grid-template-columns: 1fr 1fr;
+      }
+      .grid2 {
+        grid-template-columns: 1fr;
+      }
+      .header h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="header">
+      <h1>Representational Geometry Across Language, Vision, and Vision-Language Models</h1>
+      <p class="subtitle">Single-run 22-model study with image-bootstrap uncertainty, source holdout, prompt controls, and aligned-layer analysis under local compute constraints.</p>
+      <div class="meta">
+        Author: Abinash Karki (Independent Research) &nbsp;|&nbsp; Date: 2026-03-05 &nbsp;|&nbsp; Platform: Apple Silicon (M1, 16GB RAM)
+      </div>
+    </header>
+
+    <section class="content">
+      <section class="abstract">
+        <h3 style="margin-top:0;">Abstract</h3>
+        <p>
+          This paper reports a complete 22-model experiment on a fixed local-hardware budget (Apple M1/16GB) to test what shapes representational geometry across modalities. The final run includes 8 language models, 10 self-supervised vision models, and 4 vision-language models evaluated on 28 concepts (20 base + 8 compounds) with 30 images per concept. We use image-level bootstrap confidence intervals, Mantel permutation tests with BH-FDR, source holdout analysis, prompt-sensitivity controls, and an aligned-layer profile. Across 231 model pairs, median RSA is high within vision (<em>&rho;</em>=0.682) and language (<em>&rho;</em>=0.661), but low for language-vision pairs (<em>&rho;</em>=0.259). Vision-language models are much closer to vision (median <em>&rho;</em>=0.702) than to language (median <em>&rho;</em>=0.230; 3.06x ratio). Source holdout shows sizable data-conditional movement (LOSO ImageNet mean delta -0.156, max |delta| 0.708), while prompt effects remain non-trivial in language models (mean max-absolute template delta 0.196). In the aligned pass, pairwise mean RSA rises from 0.342 (d00) to 0.464 (d100), yet terminal baseline vs aligned outputs stay nearly unchanged (mean delta +0.0006). We conclude that convergence is modality-asymmetric and dataset-conditional, and that robust controls are required before making strong geometric claims.
+        </p>
+        <p class="keywords"><strong>Keywords:</strong> representational similarity analysis, dataset-conditional geometry, modality asymmetry, source holdout bias, prompt sensitivity, aligned-layer analysis, platonic representation hypothesis.</p>
+      </section>
+
+      <section class="kpis">
+        <article class="kpi"><div class="label">Models</div><div class="value">22</div></article>
+        <article class="kpi"><div class="label">Concepts</div><div class="value">28</div></article>
+        <article class="kpi"><div class="label">Images / Concept</div><div class="value">30</div></article>
+        <article class="kpi"><div class="label">Pairwise Tests</div><div class="value">231</div></article>
+      </section>
+
+      <h2>1. Introduction</h2>
+      <p>
+        The core question of this study is not only whether models converge, but what determines the geometry of that convergence. We evaluate three candidate drivers in one unified run: modality family, architecture depth, and dataset composition in evaluation.
+      </p>
+      <p>
+        This manuscript treats the experiment as a full standalone study, not as an iteration report. Claims are split into findings and controls so that stronger statements (for example, modality asymmetry and source dependence) are separated from bounding diagnostics (for example, prompt sensitivity and CI width).
+      </p>
+
+      <h2>2. Experimental Design</h2>
+
+      <h3>2.1 Model Roster and Data</h3>
+      <ul>
+        <li><strong>Language (8):</strong> Qwen3-0.6B/1.7B/4B (MLX q8), Qwen2.5-1.5B, Falcon3-1B, Granite-3.3-2B, LFM2-2.6B, SmolLM3-3B.</li>
+        <li><strong>Vision SSL (10):</strong> DINOv2-small/base, ViT-MAE-base, BEiT-base, data2vec-vision, Hiera-base, ConvNeXt-v2, ViT-MSN-base, DINOv3-ConvNeXt-tiny, I-JEPA.</li>
+        <li><strong>Vision-language (4):</strong> CLIP-ViT-B32, MetaCLIP-B32-400m, SigLIP, SigLIP2.</li>
+        <li><strong>Concept set:</strong> 20 base + 8 compounds; all concepts have exactly 30 images.</li>
+        <li><strong>Source metadata:</strong> concept-level source tags + image source mapping support; final source distribution: ImageNet (10), OpenImages (6), Unsplash (12).</li>
+      </ul>
+
+      <h3>2.2 Robustness Protocol Components</h3>
+      <table>
+        <thead>
+          <tr><th>Component</th><th>Status</th><th>Implementation</th><th>Role</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>30 images/concept</td><td><span class="badge ok">Done</span></td><td>Manifest + strict preflight gate</td><td>Main finding support</td></tr>
+          <tr><td>Per-image embedding cache</td><td><span class="badge ok">Done</span></td><td>Profile-scoped cache + manifest validation</td><td>Reproducibility/efficiency</td></tr>
+          <tr><td>Image-bootstrap RSA CIs</td><td><span class="badge ok">Done</span></td><td>300 draws, sample size 10, replacement=true</td><td>Uncertainty quantification</td></tr>
+          <tr><td>Source holdout</td><td><span class="badge ok">Done</span></td><td>LOSO + source-only with min-concept threshold</td><td>Bias robustness</td></tr>
+          <tr><td>Prompt sensitivity</td><td><span class="badge ok">Done</span></td><td>3 templates (baseline3), t0 canonical</td><td>Language control</td></tr>
+          <tr><td>Aligned-layer protocol</td><td><span class="badge ok">Done</span></td><td>Dedicated aligned5 full-sweep profile</td><td>Depth analysis</td></tr>
+        </tbody>
+      </table>
+
+      <h3>2.3 Statistical Protocol</h3>
+      <ul>
+        <li>Primary representational similarity: Spearman RSA over pairwise concept-similarity vectors.</li>
+        <li>Significance: two-sided Mantel permutation tests (3,000 permutations) with BH-FDR correction.</li>
+        <li>Uncertainty: image-level bootstrap percentile intervals from cached per-image embeddings.</li>
+        <li>Determinism checks: seed-42 rerun identity (except metadata timestamps/output path); seed-change divergence confirmed.</li>
+      </ul>
+
+      <div class="callout">
+        <strong>Interpretation guardrail:</strong> this design supports dataset-conditional and modality-conditional claims; it does not identify training-data causality because models are not retrained under controlled corpora.
+      </div>
+
+      <h2>3. Results</h2>
+
+      <h3>3.1 Global Geometry Structure (Baseline, 22 Models)</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Pair Type</th>
+            <th>Count</th>
+            <th>Median &rho;</th>
+            <th>Mean &rho;</th>
+            <th>Range</th>
+            <th>q&lt;0.05</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Language-Language</td><td>28</td><td>0.661</td><td>0.670</td><td>0.523 to 0.835</td><td>28 / 28</td></tr>
+          <tr><td>Vision-Vision</td><td>45</td><td>0.682</td><td>0.630</td><td>0.215 to 0.929</td><td>43 / 45</td></tr>
+          <tr><td>Language-Vision</td><td>80</td><td>0.259</td><td>0.246</td><td>-0.054 to 0.500</td><td>35 / 80</td></tr>
+          <tr><td>Vision-VLM</td><td>40</td><td>0.702</td><td>0.681</td><td>0.401 to 0.824</td><td>40 / 40</td></tr>
+          <tr><td>Language-VLM</td><td>32</td><td>0.230</td><td>0.232</td><td>0.055 to 0.435</td><td>5 / 32</td></tr>
+          <tr><td>VLM-VLM</td><td>6</td><td>0.939</td><td>0.927</td><td>0.878 to 0.955</td><td>6 / 6</td></tr>
+        </tbody>
+      </table>
+      <p>
+        The central pattern is modality asymmetry: strong within-modality convergence, weak language-vision alignment, and vision-language models that are substantially closer to vision than to language.
+      </p>
+      <p>
+        Median(Vision-VLM) / Median(Language-VLM) = <strong>3.06x</strong>, which is consistent with vision-dominant geometry for object-centric concepts in this setup.
+      </p>
+
+      <div class="figure">
+        <img src="baseline/heatmaps/rsa_matrix.png" alt="Baseline RSA matrix" />
+        <div class="caption"><strong>Figure 1.</strong> Baseline RSA matrix for the full 22-model run.</div>
+      </div>
+
+      <h3>3.2 Image-Bootstrap Confidence Intervals and Significance</h3>
+      <ul>
+        <li>Total tested pairs: <strong>231</strong>.</li>
+        <li>Image-involved pairs: <strong>203</strong>, mean CI width <strong>0.203</strong> (median 0.198; max 0.370).</li>
+        <li>Language-language pairs under image-resampling protocol: <strong>28</strong> deterministic pairs, zero-width CI by design.</li>
+        <li>Significant pairs after BH-FDR: <strong>157 / 231</strong>.</li>
+      </ul>
+
+      <div class="figure">
+        <img src="v2_change_assets/ci_width_hist.png" alt="Image-bootstrap CI width histogram" />
+        <div class="caption"><strong>Figure 2.</strong> Distribution of CI widths for image-involved model pairs.</div>
+      </div>
+
+      <h3>3.3 Source Holdout: Dataset-Bias Sensitivity</h3>
+      <p>
+        Leave-one-source-out (LOSO) analysis reveals meaningful dependence on source composition, indicating dataset-conditional geometry under fixed models:
+      </p>
+      <table>
+        <thead>
+          <tr><th>Protocol</th><th>Source</th><th>Mean Delta vs Full</th><th>Mean |Delta|</th><th>Max |Delta|</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>LOSO</td><td>ImageNet</td><td>-0.1564</td><td>0.2358</td><td>0.7080</td><td><span class="badge ok">Analyzed</span></td></tr>
+          <tr><td>LOSO</td><td>OpenImages</td><td>-0.0792</td><td>0.0865</td><td>0.2654</td><td><span class="badge ok">Analyzed</span></td></tr>
+          <tr><td>LOSO</td><td>Unsplash</td><td>+0.0900</td><td>0.1295</td><td>0.4170</td><td><span class="badge ok">Analyzed</span></td></tr>
+          <tr><td>Source-only</td><td>ImageNet</td><td>-0.0194</td><td>0.1912</td><td>0.5931</td><td><span class="badge ok">Analyzed</span></td></tr>
+          <tr><td>Source-only</td><td>OpenImages</td><td>n/a</td><td>n/a</td><td>n/a</td><td><span class="badge warn">Skipped (&lt;8 concepts)</span></td></tr>
+          <tr><td>Source-only</td><td>Unsplash</td><td>n/a</td><td>n/a</td><td>n/a</td><td><span class="badge warn">Skipped (&lt;8 concepts)</span></td></tr>
+        </tbody>
+      </table>
+
+      <div class="figure">
+        <img src="v2_change_assets/source_holdout_loso.png" alt="Source holdout comparison" />
+        <div class="caption"><strong>Figure 3.</strong> LOSO source-holdout deltas, baseline vs aligned profile.</div>
+      </div>
+
+      <h3>3.4 Prompt Sensitivity (Language Controls)</h3>
+      <p>
+        Prompt-template choice produces non-trivial shifts for language models:
+      </p>
+      <ul>
+        <li>Template set: t0 = "The concept of {{concept}}", t1 = "An example of {{concept}}", t2 = "The meaning of {{concept}}".</li>
+        <li>Mean max-absolute delta vs baseline template (t0): <strong>0.1960</strong>.</li>
+        <li>Range across models: <strong>0.1446 to 0.2785</strong>.</li>
+        <li>Most sensitive model: <strong>Qwen3-0.6B-MLX-8bit</strong> (0.2785).</li>
+      </ul>
+
+      <div class="figure">
+        <img src="v2_change_assets/prompt_sensitivity.png" alt="Prompt sensitivity by model" />
+        <div class="caption"><strong>Figure 4.</strong> Prompt sensitivity across language models (baseline vs aligned profiles).</div>
+      </div>
+
+      <h3>3.5 Aligned-Layer Protocol</h3>
+      <p>
+        The aligned5 pass exposes strong depth dependence in convergence:
+      </p>
+      <table>
+        <thead>
+          <tr><th>Depth Bin</th><th>Mean Pairwise RSA (Aligned Run)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>d00</td><td>0.3424</td></tr>
+          <tr><td>d25</td><td>0.4149</td></tr>
+          <tr><td>d50</td><td>0.4345</td></tr>
+          <tr><td>d75</td><td>0.4403</td></tr>
+          <tr><td>d100</td><td>0.4639</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Depth progression is monotonic in this profile (+0.1215 from d00 to d100), indicating that deeper aligned representations are substantially more convergent.
+      </p>
+
+      <div class="figure">
+        <img src="v2_change_assets/depth_trend.png" alt="Depth trend in aligned fractions" />
+        <div class="caption"><strong>Figure 5.</strong> Mean pairwise RSA as a function of aligned depth fraction.</div>
+      </div>
+
+      <h3>3.6 Baseline vs Aligned Final Outputs</h3>
+      <p>
+        While internal depth behavior is informative, terminal outputs are highly stable between baseline and aligned profiles:
+      </p>
+      <ul>
+        <li>Mean pairwise delta (aligned - baseline): <strong>+0.0006</strong>.</li>
+        <li>Mean absolute pairwise delta: <strong>0.0007</strong>.</li>
+        <li>Significant-pair count unchanged: <strong>157</strong> in both profiles.</li>
+      </ul>
+
+      <div class="figure">
+        <img src="v2_change_assets/pairwise_delta_hist.png" alt="Pairwise delta histogram" />
+        <div class="caption"><strong>Figure 6.</strong> Distribution of baseline-vs-aligned pairwise deltas.</div>
+      </div>
+
+      <h3>3.7 Runtime and Restartability</h3>
+      <p>
+        Runtime remains practical on local hardware, and cache-enabled reruns are materially faster:
+      </p>
+      <ul>
+        <li>Baseline extraction-stage total: <strong>916s</strong> (22-model profile).</li>
+        <li>Aligned extraction-stage total: <strong>926s</strong> (+1.1% vs baseline).</li>
+        <li>Cached rerun example: DINOv2-small rerun <strong>~5.0s</strong> vs fresh extraction <strong>25s</strong> (~5x faster).</li>
+      </ul>
+
+      <div class="figure">
+        <img src="v2_change_assets/runtime_ratio.png" alt="Runtime ratio chart" />
+        <div class="caption"><strong>Figure 7.</strong> Runtime and cache-speed context for local extraction.</div>
+      </div>
+
+      <h2>4. Findings vs Ablations</h2>
+
+      <h3>4.1 Primary Findings (Main Claims)</h3>
+      <ol>
+        <li><strong>Modality asymmetry is strong:</strong> Vision-VLM similarity (median 0.702) is much higher than Language-VLM similarity (median 0.230).</li>
+        <li><strong>Geometry is dataset-conditional:</strong> LOSO shifts are large for some sources (ImageNet mean delta -0.156; max |delta| 0.708).</li>
+        <li><strong>Depth shapes convergence:</strong> aligned-layer means increase from d00=0.3424 to d100=0.4639.</li>
+        <li><strong>Terminal stability holds:</strong> baseline vs aligned final outputs differ minimally (mean delta +0.0006; mean |delta| 0.0007).</li>
+      </ol>
+
+      <h3>4.2 Ablations / Controls (Interpretation Bounds)</h3>
+      <ol>
+        <li><strong>Image-bootstrap uncertainty:</strong> image-involved pairs show broad CI widths (mean 0.203), so point estimates alone are insufficient.</li>
+        <li><strong>Prompt sensitivity:</strong> language measurements vary by template (mean max-absolute delta 0.196), so single-template claims are fragile.</li>
+        <li><strong>Source-only coverage limits:</strong> openimages/unsplash source-only analyses are skipped by the minimum-concept threshold (&lt;8).</li>
+        <li><strong>Quantization robustness:</strong> q4 sweep is intentionally out of thesis scope and is not used for sign-off claims.</li>
+      </ol>
+
+      <h2>5. Discussion</h2>
+      <p>
+        The results support a constrained interpretation of representational convergence: convergence is strongest within modality and in vision-vision-language coupling, but weak and heterogeneous in language-vision comparisons. This pattern is consistent with partial Platonic convergence and inconsistent with a universal convergence claim at this scale.
+      </p>
+      <p>
+        The strongest implication is methodological: without image-level resampling and source controls, geometric claims can be overstated. These data support a dataset-conditional interpretation of measured geometry, not a direct causal statement that training data alone dominates architecture.
+      </p>
+
+      <h2>6. Limitations</h2>
+      <ul>
+        <li>Source-only evaluation is incomplete for low-concept sources due thresholding (min 8 concepts).</li>
+        <li>MLX language backends expose final hidden state only; aligned-depth for these models collapses to last-layer fallback.</li>
+        <li>Results are bounded to local compute constraints and <=4B core language models.</li>
+        <li>No controlled retraining is performed; architecture-vs-data causality is therefore not identified.</li>
+        <li>Quantization robustness (q4) is intentionally out-of-scope for this thesis version.</li>
+      </ul>
+
+      <h2>7. Reproducibility and Artifact Paths</h2>
+      <p class="small">All final artifacts are local and machine-readable.</p>
+      <div class="grid2">
+        <div class="mono">Baseline compiled:
+/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/baseline/replication_results.json
+
+Baseline robustness:
+/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/baseline/robustness/robustness_stats.json
+
+Aligned compiled:
+/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/aligned5/replication_results.json
+
+Aligned robustness:
+/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/aligned5/robustness/robustness_stats.json</div>
+        <div class="mono">Supporting reports:
+/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/V2_FINAL_SIGNOFF.md
+/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/V2_BASELINE_VS_ALIGNED_DELTA_BRIEF.md
+/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/V2_CHANGE_IMPACT_REPORT.html
+
+Generated assets for this manuscript:
+/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/v2_change_assets/</div>
+      </div>
+      <p class="small">Commands are recorded in run logs (`pipeline_baseline_20260305_123853.log`, `pipeline_aligned5_20260305_130935.log`).</p>
+
+      <h2>8. Conclusion</h2>
+      <p>
+        This study provides a complete, reproducible local-compute evaluation of representational geometry across 22 models and 28 concepts. The main scientific conclusions are: convergence is modality-asymmetric, measured geometry is strongly dataset-conditional, and depth effects are real but do not destabilize terminal outputs. These findings are strong enough for thesis-level claims, with clear bounds from prompt and source-coverage controls.
+      </p>
+
+      <h2>References</h2>
+      <ol class="refs">
+        <li>Kriegeskorte, N., Mur, M., &amp; Bandettini, P. (2008). Representational similarity analysis: Connecting the branches of systems neuroscience. <em>Frontiers in Systems Neuroscience</em>.</li>
+        <li>Mikolov, T., Sutskever, I., Chen, K., Corrado, G., &amp; Dean, J. (2013). Distributed representations of words and phrases and their compositionality. <em>NeurIPS</em>.</li>
+        <li>Huh, M., Cheung, B., Wang, T., et al. (2024). The Platonic Representation Hypothesis. <em>arXiv preprint</em>.</li>
+        <li>Andreas, J. (2019). Measuring compositionality in representation learning. <em>ICLR Workshop</em>.</li>
+      </ol>
+
+      <p class="footnote">Submission note: q4 quantization robustness is intentionally excluded from primary claims.</p>
+    </section>
+  </main>
+</body>
+</html>

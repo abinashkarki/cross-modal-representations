@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Where Representations Diverge: Robust Evidence on Modality, Dataset, and Depth in Cross-Modal Geometry</title>
+  <style>
+    :root {
+      --ink: #111827;
+      --muted: #4b5563;
+      --line: #d1d5db;
+      --paper: #ffffff;
+      --accent: #1f4b73;
+      --soft: #f5f7fa;
+    }
+
+    @page {
+      size: A4;
+      margin: 16mm 15mm 18mm;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: #eef2f6;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Georgia", "Times New Roman", serif;
+      line-height: 1.55;
+      background: #eef2f6;
+    }
+
+    .paper {
+      width: min(980px, calc(100vw - 32px));
+      margin: 20px auto 28px;
+      background: var(--paper);
+      border: 1px solid #dde3ea;
+      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.10);
+    }
+
+    .content {
+      padding: 34px 40px 42px;
+    }
+
+    h1, h2, h3 {
+      color: #0f2740;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 31px;
+      line-height: 1.18;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-size: 21px;
+      margin-top: 28px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 5px;
+    }
+
+    h3 {
+      font-size: 17px;
+      margin-top: 18px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin: 10px 0;
+      font-size: 15.5px;
+    }
+
+    .meta {
+      text-align: center;
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .abstract {
+      border: 1px solid var(--line);
+      background: var(--soft);
+      padding: 14px 16px;
+      margin: 18px 0 16px;
+    }
+
+    .abstract h2 {
+      border: 0;
+      margin-top: 0;
+      padding-bottom: 0;
+      font-size: 18px;
+    }
+
+    .keywords {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .lead {
+      font-size: 16px;
+    }
+
+    ul, ol {
+      margin: 10px 0 12px 22px;
+      padding: 0;
+      font-size: 15px;
+    }
+
+    li {
+      margin: 4px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 16px;
+      font-size: 14px;
+    }
+
+    caption {
+      caption-side: top;
+      text-align: left;
+      font-weight: 700;
+      color: #0f2740;
+      margin-bottom: 6px;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 8px 9px;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f3f6f9;
+      font-weight: 700;
+      text-align: left;
+    }
+
+    figure {
+      margin: 16px 0 20px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    figure img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid #dbe1e7;
+      background: #fff;
+    }
+
+    figcaption {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin-top: 7px;
+    }
+
+    .twocol {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: start;
+      margin: 10px 0;
+    }
+
+    .callout {
+      border-left: 3px solid var(--accent);
+      padding: 8px 12px;
+      background: #f7fafc;
+      font-size: 14.5px;
+      margin: 12px 0;
+    }
+
+    .small {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .refs li {
+      margin-bottom: 6px;
+    }
+
+    .appendix {
+      margin-top: 24px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+    }
+
+    @media print {
+      html, body {
+        background: #fff;
+      }
+
+      .paper {
+        width: auto;
+        margin: 0;
+        box-shadow: none;
+        border: 0;
+      }
+
+      .content {
+        padding: 0;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .paper {
+        width: calc(100vw - 20px);
+        margin: 10px auto 18px;
+      }
+
+      .content {
+        padding: 20px 18px 28px;
+      }
+
+      .twocol {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="paper">
+    <article class="content">
+      <header>
+        <h1>Where Representations Diverge: Robust Evidence on Modality, Dataset, and Depth in Cross-Modal Geometry</h1>
+        <div class="meta">
+          Abinash Karki (Independent Research)<br />
+          March 2026
+        </div>
+      </header>
+
+      <section class="abstract">
+        <h2>Abstract</h2>
+        <p>
+          The Platonic Representation Hypothesis proposes that sufficiently capable models trained on
+          different modalities converge toward a shared representational geometry. We test that claim
+          using a fully local 22-model experiment on Apple Silicon (M1, 16GB RAM): 8 language models,
+          10 self-supervised vision models, and 4 vision-language models. The final evaluation uses 28
+          concepts (20 base + 8 compounds), 30 images per concept, image-level caching, image-bootstrap
+          confidence intervals, Mantel permutation tests with Benjamini-Hochberg FDR correction, source
+          holdout analysis, prompt-sensitivity controls, and an aligned-layer protocol. Across 231 model
+          pairs, within-family agreement is strong for vision-language pairs (median Spearman RSA
+          <em>&rho;</em> = 0.702), vision-vision pairs (<em>&rho;</em> = 0.682), and language-language pairs
+          (<em>&rho;</em> = 0.661), but much weaker for language-vision pairs (<em>&rho;</em> = 0.259) and
+          language-vision-language pairs (<em>&rho;</em> = 0.230). Only 35/80 language-vision pairs and
+          5/32 language-vision-language pairs survive FDR correction, versus 43/45 vision-vision pairs
+          and 40/40 vision-vision-language pairs. Robustness controls materially affect interpretation:
+          leave-one-source-out removal of ImageNet shifts pairwise RSA by a mean of -0.1564
+          (max |&Delta;| = 0.7080), language prompt choice changes cross-modal RSA by a mean maximum
+          absolute delta of 0.1960, and aligned-layer analysis shows monotonic growth in mean pairwise
+          RSA from 0.3424 at early depth to 0.4639 at terminal depth. Yet terminal aligned and baseline
+          results are nearly identical (mean delta +0.0006), indicating that the depth effect is about
+          when convergence appears, not whether the final layer changes the conclusion. The strongest
+          supported claim is therefore not universal convergence, but modality-asymmetric and
+          dataset-conditional geometry.
+        </p>
+        <p class="keywords">
+          <strong>Keywords:</strong> Platonic Representation Hypothesis, representational similarity analysis,
+          cross-modal convergence, multimodal models, source holdout, prompt sensitivity, layer alignment
+        </p>
+      </section>
+
+      <section>
+        <h2>1. Introduction</h2>
+        <p class="lead">
+          The Platonic Representation Hypothesis asks whether models trained on different modalities
+          converge toward the same concept geometry because they model the same world. This is a
+          stronger claim than ordinary transfer or alignment: it implies that representational
+          structure is at least partly inevitable.
+        </p>
+        <p>
+          That claim is easy to overstate. Apparent convergence can come from shared internet
+          distributions, language-alignment objectives, prompt choices, or image-sourcing artifacts.
+          A useful test must therefore ask not only whether cross-modal signal exists, but what
+          survives after obvious confounds are stressed.
+        </p>
+      </section>
+
+      <section>
+        <h2>2. Methods</h2>
+        <h3>2.1 Model Families and Data</h3>
+        <p>
+          The final roster contains 22 models: 8 language models, 10 self-supervised vision models,
+          and 4 vision-language image encoders. The evaluation uses 20 base concepts for RSA and 8
+          compound concepts for exploratory compositionality analysis. Each concept is represented by
+          30 images, with final source coverage distributed across ImageNet, OpenImages, and
+          Unsplash.
+        </p>
+
+        <table>
+          <caption>Table 1. Final model roster.</caption>
+          <thead>
+            <tr>
+              <th>Family</th>
+              <th>Models</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Language (8)</td>
+              <td>Falcon3-1B-Instruct-8bit, Granite-3.3-2B-Instruct-8bit, LFM2-2.6B-Exp-8bit, Qwen2.5-1.5B-Instruct-8bit, Qwen3-0.6B-MLX-8bit, Qwen3-1.7B-MLX-8bit, Qwen3-4B-MLX-8bit, SmolLM3-3B-8bit</td>
+            </tr>
+            <tr>
+              <td>Vision SSL (10)</td>
+              <td>BEiT-base, ConvNeXt-v2, DINOv2-base, DINOv2-small, DINOv3-ConvNeXt-tiny, Hiera-base, I-JEPA, ViT-MAE-base, ViT-MSN-base, data2vec-vision</td>
+            </tr>
+            <tr>
+              <td>Vision-Language (4)</td>
+              <td>CLIP-ViT-B32, MetaCLIP-B32-400m, SigLIP, SigLIP2</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>2.2 Evaluation Protocol</h3>
+        <p>
+          RSA is computed over the 20 base concepts by constructing per-model cosine-similarity
+          matrices, flattening the upper triangle (190 concept pairs), and computing Spearman rank
+          correlation between model-pair vectors. Statistical and robustness controls in the final
+          package are:
+        </p>
+        <ul>
+          <li>Mantel permutation tests (3,000 permutations per model pair) with BH-FDR correction</li>
+          <li>Image bootstrap confidence intervals (300 draws; sample size 10; replacement)</li>
+          <li>Leave-one-source-out and source-only image-source analysis</li>
+          <li>Prompt sensitivity over three short language prompts</li>
+          <li>Aligned-layer depth profiling at d00, d25, d50, d75, and d100</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>3. Results</h2>
+        <h3>3.1 Global Geometry Is Family-Structured</h3>
+        <p>
+          The strongest and most stable result is modality asymmetry. Within-family agreement is high
+          for language-language, vision-vision, and vision-language pairings, while cross-modal
+          agreement remains markedly weaker.
+        </p>
+
+        <table>
+          <caption>Table 2. Pairwise RSA summary by family.</caption>
+          <thead>
+            <tr>
+              <th>Pair type</th>
+              <th>Pairs</th>
+              <th>Median &rho;</th>
+              <th>Mean &rho;</th>
+              <th>Significant after FDR</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Language-Language</td><td>28</td><td>0.661</td><td>0.670</td><td>28 / 28</td></tr>
+            <tr><td>Vision-Vision</td><td>45</td><td>0.682</td><td>0.630</td><td>43 / 45</td></tr>
+            <tr><td>Vision-Vision-Language</td><td>40</td><td>0.702</td><td>0.681</td><td>40 / 40</td></tr>
+            <tr><td>Language-Vision</td><td>80</td><td>0.259</td><td>0.246</td><td>35 / 80</td></tr>
+            <tr><td>Language-Vision-Language</td><td>32</td><td>0.230</td><td>0.232</td><td>5 / 32</td></tr>
+            <tr><td>Vision-Language-Vision-Language</td><td>6</td><td>0.939</td><td>0.927</td><td>6 / 6</td></tr>
+          </tbody>
+        </table>
+
+        <figure>
+          <img src="results/baseline/heatmaps/rsa_matrix.png" alt="Baseline RSA matrix" />
+          <figcaption>
+            <strong>Figure 1.</strong> Baseline 22-model RSA heatmap. The major block structure is the main result:
+            vision-language encoders cluster with vision encoders, while language-family geometry remains
+            visibly separated.
+          </figcaption>
+        </figure>
+
+        <div class="callout">
+          The key empirical claim is not “no cross-modal signal.” It is that cross-modal signal is
+          substantially weaker than within-family agreement and does not overturn family structure.
+        </div>
+
+        <h3>3.2 Vision-Language Encoders Remain Structurally Vision-Like</h3>
+        <p>
+          Vision-language encoders are far closer to vision than to language. Median RSA is 0.702 for
+          vision-to-vision-language pairs but only 0.230 for language-to-vision-language pairs. This
+          pattern is better explained as engineered interface alignment on top of a fundamentally visual
+          encoder than as spontaneous convergence toward a modality-neutral geometry.
+        </p>
+
+        <h3>3.3 Dataset Composition Changes the Geometry</h3>
+        <p>
+          Source holdout is one of the most consequential additions in the final package. Excluding
+          ImageNet changes pairwise RSA by -0.1564 on average, with some model pairs moving by more than
+          0.70. The measured geometry is therefore conditional on how concepts are instantiated in
+          images, not only on model weights.
+        </p>
+
+        <table>
+          <caption>Table 3. Source holdout effects relative to the full baseline run.</caption>
+          <thead>
+            <tr>
+              <th>Holdout condition</th>
+              <th>Concepts retained</th>
+              <th>Mean &Delta;&rho;</th>
+              <th>Mean |&Delta;&rho;|</th>
+              <th>Max |&Delta;&rho;|</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Leave out ImageNet</td><td>10</td><td>-0.1564</td><td>0.2358</td><td>0.7080</td></tr>
+            <tr><td>Leave out OpenImages</td><td>14</td><td>-0.0792</td><td>0.0865</td><td>0.2654</td></tr>
+            <tr><td>Leave out Unsplash</td><td>16</td><td>+0.0900</td><td>0.1295</td><td>0.4170</td></tr>
+            <tr><td>ImageNet only</td><td>10</td><td>-0.0194</td><td>0.1912</td><td>0.5931</td></tr>
+          </tbody>
+        </table>
+
+        <div class="twocol">
+          <figure>
+            <img src="results/v2_change_assets/source_holdout_loso.png" alt="Source holdout leave-one-source-out summary" />
+            <figcaption>
+              <strong>Figure 2.</strong> Leave-one-source-out source sensitivity. ImageNet removal is the
+              largest systematic perturbation in the final study.
+            </figcaption>
+          </figure>
+          <figure>
+            <img src="results/v2_change_assets/ci_width_hist.png" alt="Confidence interval width histogram" />
+            <figcaption>
+              <strong>Figure 3.</strong> Distribution of image-bootstrap CI widths across model pairs.
+              Mean width is 0.1787, which is large enough to matter for close pairwise comparisons.
+            </figcaption>
+          </figure>
+        </div>
+
+        <h3>3.4 Prompt Choice and Layer Depth Both Matter</h3>
+        <p>
+          Prompt sensitivity is not negligible: across the 8 language models, the mean maximum
+          absolute cross-modal RSA shift under alternative templates is 0.1960. At the same time,
+          aligned-layer analysis shows a monotonic increase in mean pairwise RSA from 0.3424 at d00
+          to 0.4639 at d100. Deeper layers converge more, but the terminal aligned and baseline runs
+          remain nearly identical overall (mean delta +0.0006), so depth changes when convergence
+          appears rather than the final qualitative conclusion.
+        </p>
+
+        <div class="twocol">
+          <figure>
+            <img src="results/v2_change_assets/prompt_sensitivity.png" alt="Prompt sensitivity across language models" />
+            <figcaption>
+              <strong>Figure 4.</strong> Prompt sensitivity across language models. Template choice changes
+              cross-modal geometry enough that it must be treated as a control variable, not a cosmetic one.
+            </figcaption>
+          </figure>
+          <figure>
+            <img src="results/v2_change_assets/depth_trend.png" alt="Aligned-layer depth trend" />
+            <figcaption>
+              <strong>Figure 5.</strong> Mean RSA by aligned-layer depth fraction. Convergence strengthens
+              monotonically toward deeper layers.
+            </figcaption>
+          </figure>
+        </div>
+
+        <h3>3.5 Compositionality Is Exploratory in the Final Package</h3>
+        <p>
+          The early project narrative treated compositionality as a headline claim. The final 22-model
+          package does not justify that emphasis. The current metrics produce broad overlap across
+          modalities, and the result is sensitive to metric design. It remains useful as exploratory
+          evidence, but it is not one of the main pillars of the paper.
+        </p>
+
+        <figure>
+          <img src="results/baseline/compositionality/all_models_compositionality.png" alt="All-model compositionality comparison" />
+          <figcaption>
+            <strong>Figure 6.</strong> All-model compositionality comparison from the baseline run. The final
+            paper treats this as supporting analysis rather than a primary claim because the modality
+            separation is much weaker than in the earlier prototype story.
+          </figcaption>
+        </figure>
+      </section>
+
+      <section>
+        <h2>4. Discussion</h2>
+        <p>
+          The final replication supports a weak but useful claim: models converge strongly within
+          family, and vision-language encoders converge strongly with vision encoders. It does not
+          support a strong version of universal cross-modal convergence at the tested scale.
+        </p>
+        <p>
+          The reason the final interpretation is more conservative than the early one is not merely
+          added model count. It is methodological pressure. Source holdout, prompt sensitivity, and
+          aligned-layer analysis all show that measured geometry depends on choices that can no longer
+          be treated as peripheral.
+        </p>
+        <p>
+          The strongest remaining open question is whether the current results reflect a low-scale
+          regime below true cross-modal convergence, or whether modality-specific structure remains the
+          dominant organizing force even as models grow. The present study narrows that question by
+          establishing where convergence is already robust and where it remains fragile.
+        </p>
+      </section>
+
+      <section>
+        <h2>5. Conclusion</h2>
+        <p>
+          The strongest supported statement in the final evidence is not that all capable models
+          discover one shared geometry. It is that representational geometry is simultaneously shaped
+          by world structure and by modality-specific training pressure. Within-family convergence is
+          strong. Cross-modal convergence is partial. Vision-language encoders remain structurally
+          vision-like. And the final interpretation depends materially on source, prompt, and depth
+          controls.
+        </p>
+      </section>
+
+      <section>
+        <h2>References</h2>
+        <ol class="refs">
+          <li>Andreas, J. (2019). Measuring Compositionality in Representation Learning. <em>ICLR 2019</em>.</li>
+          <li>Bao, H., Dong, L., Piao, S., and Wei, F. (2022). BEiT: BERT Pre-Training of Image Transformers. <em>ICLR 2022</em>.</li>
+          <li>He, K., Chen, X., Xie, S., Li, Y., Dollar, P., and Girshick, R. (2022). Masked Autoencoders Are Scalable Vision Learners. <em>CVPR 2022</em>.</li>
+          <li>Huh, M., Cheung, B., Wang, T., and Isola, P. (2024). The Platonic Representation Hypothesis. <em>arXiv:2405.07987</em>.</li>
+          <li>Kriegeskorte, N., Mur, M., and Bandettini, P. A. (2008). Representational similarity analysis: connecting the branches of systems neuroscience. <em>Frontiers in Systems Neuroscience</em>, 2, 4.</li>
+          <li>Mikolov, T., Sutskever, I., Chen, K., Corrado, G. S., and Dean, J. (2013). Distributed representations of words and phrases and their compositionality. <em>NeurIPS 2013</em>.</li>
+          <li>Oquab, M., Darcet, T., Moutakanni, T., Vo, H., Szafraniec, M., Khalidov, V., and Bojanowski, P. (2023). DINOv2: Learning Robust Visual Features without Supervision. <em>arXiv:2304.07193</em>.</li>
+          <li>Radford, A., Kim, J. W., Hallacy, C., Ramesh, A., Goh, G., Agarwal, S., Sastry, G., Askell, A., Mishkin, P., Clark, J., Krueger, G., and Sutskever, I. (2021). Learning Transferable Visual Models From Natural Language Supervision. <em>ICML 2021</em>.</li>
+          <li>Zhai, X., Mustafa, B., Kolesnikov, A., and Beyer, L. (2023). Sigmoid Loss for Language Image Pre-Training. <em>ICCV 2023</em>.</li>
+        </ol>
+      </section>
+    </article>
+  </main>
+</body>
+</html>
