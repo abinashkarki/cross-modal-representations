@@ -1,8 +1,8 @@
 {
   "timestamp": "2026-03-05T13:09:37.528961",
   "settings": {
-    "models_file": "/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/docs/run_all_models.sh",
-    "cache_dir": "/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/aligned5/cache",
+    "models_file": "docs/run_all_models.sh",
+    "cache_dir": "results/aligned5/cache",
     "local_files_only": false,
     "require_network": true,
     "require_mlx": true,

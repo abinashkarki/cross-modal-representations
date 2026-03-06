@@ -9,8 +9,8 @@ Attempted strict V2 finalization gate for `01_embeddings_convergence_basics`:
 
 ## Environment Work
 1. Created fresh environment:
-- `experiments/01_embeddings_convergence_basics/src/venv_v2`
-- Installed repo requirements from `/Users/hi/projects/platonic_representation/requirements.txt`
+- `venv_v2`
+- Installed repo requirements from `requirements.txt`
 
 2. Verified MLX in `venv_v2`:
 - `python -c "import mlx.core as mx; print(float(mx.sum(mx.array([1.0,2.0])).item()))"`

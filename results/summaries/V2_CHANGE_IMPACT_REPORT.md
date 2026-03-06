@@ -3,12 +3,12 @@
 Generated: 2026-03-05
 
 ## Comparison Scope
-- V1 reference (original experiment): `/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence/results/replication/replication_results.json` (18 models).
-- V2 final baseline: `/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/baseline/replication_results.json` (22 models).
-- V2 final aligned pass: `/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/aligned5/replication_results.json` (22 models).
+- V1 reference (original experiment): `legacy V1 artifact (not included in this standalone repo)` (18 models).
+- V2 final baseline: `results/baseline/replication_results.json.gz` (22 models).
+- V2 final aligned pass: `results/aligned5/replication_results.json.gz` (22 models).
 - Robustness artifacts used:
-  - baseline: `/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/baseline/robustness/robustness_stats.json`
-  - aligned5: `/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/aligned5/robustness/robustness_stats.json`
+  - baseline: `results/baseline/robustness/robustness_stats.json`
+  - aligned5: `results/aligned5/robustness/robustness_stats.json`
 
 ## Executive Call
 - Most impactful scientifically: `30 images/concept`, `source holdout`, `aligned-layer protocol`.

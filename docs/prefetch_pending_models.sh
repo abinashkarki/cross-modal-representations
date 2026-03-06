@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-EXP_ROOT="/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+EXP_ROOT="$REPO_ROOT"
 RAW_DIR="$EXP_ROOT/results/replication/baseline/raw_data"
 CACHE_ROOT="$HOME/.cache/huggingface/hub"
-
-source "$EXP_ROOT/src/venv_v2/bin/activate"
 export HF_HUB_ENABLE_HF_TRANSFER=0
 export HF_HUB_DOWNLOAD_TIMEOUT=180
+
+if [[ -f "$EXP_ROOT/venv/bin/activate" ]]; then
+  source "$EXP_ROOT/venv/bin/activate"
+fi
 
 # Stop if extraction pipeline is running.
 if pgrep -f "main_replication.py --model" >/dev/null; then
@@ -68,12 +72,13 @@ declare -A ID=(
 # local overrides already present in your repo (skip HF download for these)
 has_local_override() {
   local model="$1"
+  local models_root="${LOCAL_MODELS_ROOT:-$HOME/models}"
   case "$model" in
     "Qwen3-1.7B-MLX-8bit")
-      [[ -f "/Users/hi/projects/platonic_representation/models/qwen3-1.7B-mlx-8bit/model.safetensors" ]]
+      [[ -f "$models_root/qwen3-1.7B-mlx-8bit/model.safetensors" ]]
       ;;
     "Qwen3-4B-MLX-8bit")
-      [[ -f "/Users/hi/projects/platonic_representation/models/qwen3-4B-mlx-8bit/model.safetensors" ]]
+      [[ -f "$models_root/qwen3-4B-mlx-8bit/model.safetensors" ]]
       ;;
     *)
       return 1

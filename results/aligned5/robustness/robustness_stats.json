@@ -13,12 +13,12 @@
     "ci_method": "image_bootstrap_percentile",
     "p_value_method": "mantel_permutation_two_sided",
     "multiple_comparison_correction": "benjamini_hochberg_fdr",
-    "cache_dir": "/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/aligned5/cache",
-    "data_file": "/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/aligned5/replication_results.json",
-    "manifest_path": "/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/data/data_manifest_multi.json",
+    "cache_dir": "results/aligned5/cache",
+    "data_file": "results/aligned5/replication_results.json.gz",
+    "manifest_path": "data/data_manifest_multi.json",
     "expected_layer_profile_id": "aligned5",
     "requested_layers_spec": "aligned5",
-    "output_dir": "/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/aligned5/robustness"
+    "output_dir": "results/aligned5/robustness"
   },
   "rsa_bootstrap_image": {
     "pairwise_results": [

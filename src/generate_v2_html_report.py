@@ -1,4 +1,5 @@
 import argparse
+import gzip
 import html
 import json
 import math
@@ -34,7 +35,8 @@ def _pair_key(model_a: str, model_b: str) -> Tuple[str, str]:
 
 
 def _load_json(path: str) -> Dict[str, Any]:
-    with open(path, "r", encoding="utf-8") as f:
+    opener = gzip.open if path.endswith(".gz") else open
+    with opener(path, "rt", encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -980,42 +982,48 @@ def _render_html(
 
 
 def main() -> None:
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    repo_root = os.path.dirname(script_dir)
     parser = argparse.ArgumentParser(description="Generate V2 HTML change-impact report with charts.")
     parser.add_argument(
         "--v1-results",
-        default="/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence/results/replication/replication_results.json",
+        default="",
     )
     parser.add_argument(
         "--v2-baseline-results",
-        default="/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/baseline/replication_results.json",
+        default=os.path.join(repo_root, "results", "baseline", "replication_results.json.gz"),
     )
     parser.add_argument(
         "--v2-aligned-results",
-        default="/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/aligned5/replication_results.json",
+        default=os.path.join(repo_root, "results", "aligned5", "replication_results.json.gz"),
     )
     parser.add_argument(
         "--v2-baseline-robustness",
-        default="/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/baseline/robustness/robustness_stats.json",
+        default=os.path.join(
+            repo_root, "results", "baseline", "robustness", "robustness_stats.json"
+        ),
     )
     parser.add_argument(
         "--v2-aligned-robustness",
-        default="/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/aligned5/robustness/robustness_stats.json",
+        default=os.path.join(
+            repo_root, "results", "aligned5", "robustness", "robustness_stats.json"
+        ),
     )
     parser.add_argument(
         "--v1-logs-dir",
-        default="/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence/results/replication/logs",
+        default="",
     )
     parser.add_argument(
         "--v2-baseline-pipeline-log",
-        default="/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/baseline/logs/pipeline_baseline_20260305_123853.log",
+        default="",
     )
     parser.add_argument(
         "--output-html",
-        default="/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/V2_CHANGE_IMPACT_REPORT.html",
+        default=os.path.join(repo_root, "results", "summaries", "V2_CHANGE_IMPACT_REPORT.html"),
     )
     parser.add_argument(
         "--assets-dir",
-        default="/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/v2_change_assets",
+        default=os.path.join(repo_root, "results", "v2_change_assets"),
     )
     args = parser.parse_args()
 

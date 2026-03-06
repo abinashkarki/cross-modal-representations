@@ -49,6 +49,6 @@ Decreases:
 - `d100`: baseline `0.4633`, aligned `0.4639`, delta `+0.0006` (n=231)
 
 ## Files
-- Brief: `/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/V2_BASELINE_VS_ALIGNED_DELTA_BRIEF.md`
-- Baseline robustness: `/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/baseline/robustness/robustness_stats.json`
-- Aligned robustness: `/Users/hi/projects/platonic_representation/experiments/01_embeddings_convergence_basics/results/replication/aligned5/robustness/robustness_stats.json`
+- Brief: `results/summaries/V2_BASELINE_VS_ALIGNED_DELTA_BRIEF.md`
+- Baseline robustness: `results/baseline/robustness/robustness_stats.json`
+- Aligned robustness: `results/aligned5/robustness/robustness_stats.json`
