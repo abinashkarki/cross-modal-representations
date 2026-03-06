@@ -73,34 +73,34 @@ Dataset, and Depth in Cross-Modal Geometry}
 
 The Platonic Representation Hypothesis proposes that sufficiently
 capable models trained on different modalities converge toward a shared
-representational geometry. We test that claim using a fully local
-22-model experiment on Apple Silicon (M1, 16GB RAM): 8 language models,
-10 self-supervised vision models, and 4 vision-language models. The
-final evaluation uses 28 concepts (20 base + 8 compounds), 30 images per
-concept, image-level caching, image-bootstrap confidence intervals,
-Mantel permutation tests with Benjamini-Hochberg FDR correction, source
-holdout analysis, prompt-sensitivity controls, and an aligned-layer
-protocol. Across 231 model pairs, within-family agreement is strong for
-vision-language pairs (median Spearman RSA \(\rho = 0.702\)),
-vision-vision pairs (\(\rho = 0.682\)), and language-language pairs
-(\(\rho = 0.661\)), but much weaker for language-vision pairs
-(\(\rho = 0.259\)) and language-vision-language pairs
-(\(\rho = 0.230\)). Only 35/80 language-vision pairs and 5/32
-language-vision-language pairs survive FDR correction, versus 43/45
-vision-vision pairs and 40/40 vision-vision-language pairs. Robustness
-controls materially affect interpretation: leave-one-source-out removal
-of ImageNet shifts pairwise RSA by a mean of -0.1564 (max
-\(|\Delta| = 0.7080\)), language prompt choice changes cross-modal RSA
-by a mean maximum absolute delta of 0.1960, and aligned-layer analysis
-shows monotonic growth in mean pairwise RSA from 0.3424 at early depth
-to 0.4639 at terminal depth. Yet terminal aligned and baseline results
-are nearly identical (mean delta +0.0006), indicating that the depth
-effect is about when convergence appears, not whether the final layer
-changes the conclusion. The strongest supported claim is therefore not
-universal convergence, but modality-asymmetric and dataset-conditional
-geometry: vision-language encoders remain structurally closer to vision
-than to language, and cross-modal geometry is sensitive to image source,
-prompt framing, and representational depth.
+representational geometry. We test that claim using self-contained local
+evaluation of 22 models: 8 language models, 10 self-supervised vision
+models, and 4 vision-language models. The final evaluation uses 28
+concepts (20 base + 8 compounds), 30 images per concept, image-level
+caching, image-bootstrap confidence intervals, Mantel permutation tests
+with Benjamini-Hochberg FDR correction, source holdout analysis,
+prompt-sensitivity controls, and an aligned-layer protocol. Across 231
+model pairs, within-family agreement is strong for vision-language pairs
+(median Spearman RSA \(\rho = 0.702\)), vision-vision pairs
+(\(\rho = 0.682\)), and language-language pairs (\(\rho = 0.661\)), but
+much weaker for language-vision pairs (\(\rho = 0.259\)) and
+language-vision-language pairs (\(\rho = 0.230\)). Only 35/80
+language-vision pairs and 5/32 language-vision-language pairs survive
+FDR correction, versus 43/45 vision-vision pairs and 40/40
+vision-vision-language pairs. Robustness controls materially affect
+interpretation: leave-one-source-out removal of ImageNet shifts pairwise
+RSA by a mean of -0.1564 (max \(|\Delta| = 0.7080\)), language prompt
+choice changes cross-modal RSA by a mean maximum absolute delta of
+0.1960, and aligned-layer analysis shows monotonic growth in mean
+pairwise RSA from 0.3424 at early depth to 0.4639 at terminal depth. Yet
+terminal aligned and baseline results are nearly identical (mean delta
++0.0006), indicating that the depth effect is about when convergence
+appears, not whether the final layer changes the conclusion. The
+strongest supported claim is therefore not universal convergence, but
+modality-asymmetric and dataset-conditional geometry: vision-language
+encoders remain structurally closer to vision than to language, and
+cross-modal geometry is sensitive to image source, prompt framing, and
+representational depth.
 
 \textbf{Keywords}: Platonic Representation Hypothesis, representational
 similarity analysis, cross-modal convergence, multimodal models, source
@@ -862,6 +862,20 @@ passed before stronger claims become credible.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
+\subsection{Code and Data
+Availability}\label{code-and-data-availability}
+
+Code, curated data manifests, final result artifacts, and the
+print-ready manuscript are available at
+\url{https://github.com/abinashkarki/cross-modal-representations}.
+
+The canonical public artifacts for this release are the manuscript in
+\texttt{manuscript/}, the curated dataset in \texttt{data/}, and the
+signed-off baseline and aligned outputs in \texttt{results/baseline/}
+and \texttt{results/aligned5/}.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
 \subsection{References}\label{references}
 
 Andreas, J. (2019). Measuring Compositionality in Representation
@@ -922,7 +936,7 @@ Summary}\label{appendix-a-statistical-summary}
 \item
   Bootstrap image sample size: 10
 \item
-  Hardware target: Apple Silicon M1, 16GB RAM
+  Execution context: local commodity hardware
 \end{itemize}
 
 \subsection{Appendix B: Reproducibility

@@ -497,6 +497,17 @@ must be passed before stronger claims become credible.
 
 ---
 
+## Code and Data Availability
+
+Code, curated data manifests, final result artifacts, and the print-ready manuscript are available
+at [https://github.com/abinashkarki/cross-modal-representations](https://github.com/abinashkarki/cross-modal-representations).
+
+The canonical public artifacts for this release are the manuscript in `manuscript/`, the curated
+dataset in `data/`, and the signed-off baseline and aligned outputs in `results/baseline/` and
+`results/aligned5/`.
+
+---
+
 ## References
 
 Andreas, J. (2019). Measuring Compositionality in Representation Learning. *ICLR 2019*.
