@@ -11,6 +11,7 @@ lives under `manuscript/`.
 - Scope: final paper, final figures, reproducible analysis scripts, curated concept dataset, and
   signed-off baseline/aligned findings
 - Remote: [abinashkarki/cross-modal-representations](https://github.com/abinashkarki/cross-modal-representations)
+- License: [MIT](./LICENSE)
 
 ## Main Findings
 
@@ -102,6 +103,10 @@ Core dependencies:
 - `seaborn`
 - `mlx`
 - `mlx-lm`
+
+## Citation
+
+Citation metadata is provided in [`CITATION.cff`](./CITATION.cff).
 
 ## Notes
 
