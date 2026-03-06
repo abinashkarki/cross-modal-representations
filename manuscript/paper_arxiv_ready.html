@@ -268,8 +268,11 @@
           RSA from 0.3424 at early depth to 0.4639 at terminal depth. Yet terminal aligned and baseline
           results are nearly identical (mean delta +0.0006), indicating that the depth effect is about
           when convergence appears, not whether the final layer changes the conclusion. The strongest
-          supported claim is therefore not universal convergence, but modality-asymmetric and
-          dataset-conditional geometry.
+          supported claim is therefore not universal convergence. Rather, this local-scale stress test
+          of strong PRH finds modality-asymmetric and strongly source-conditional geometry in this
+          setup: vision-language encoders remain structurally closer to vision than to language, and
+          cross-modal geometry is sensitive to image source, prompt framing, and representational
+          depth.
         </p>
         <p class="keywords">
           <strong>Keywords:</strong> Platonic Representation Hypothesis, representational similarity analysis,
@@ -289,7 +292,8 @@
           That claim is easy to overstate. Apparent convergence can come from shared internet
           distributions, language-alignment objectives, prompt choices, or image-sourcing artifacts.
           A useful test must therefore ask not only whether cross-modal signal exists, but what
-          survives after obvious confounds are stressed.
+          survives after obvious confounds are stressed. This paper is explicitly a stress test of
+          the strong form of PRH, not a full adjudication of every weaker Platonic view.
         </p>
       </section>
 
@@ -392,16 +396,26 @@
         <p>
           Vision-language encoders are far closer to vision than to language. Median RSA is 0.702 for
           vision-to-vision-language pairs but only 0.230 for language-to-vision-language pairs. This
-          pattern is better explained as engineered interface alignment on top of a fundamentally visual
-          encoder than as spontaneous convergence toward a modality-neutral geometry.
+          pattern is best interpreted, in this setup, as contrastive interface alignment layered on top
+          of an image encoder that remains predominantly vision-like, rather than as direct evidence of
+          a shared modality-neutral geometry.
         </p>
 
-        <h3>3.3 Dataset Composition Changes the Geometry</h3>
+        <h3>3.3 Measured Geometry Is Strongly Source-Conditional</h3>
         <p>
           Source holdout is one of the most consequential additions in the final package. Excluding
           ImageNet changes pairwise RSA by -0.1564 on average, with some model pairs moving by more than
-          0.70. The measured geometry is therefore conditional on how concepts are instantiated in
-          images, not only on model weights.
+          0.70. The asymmetry is family-structured: mean &Delta;&rho; is +0.0382 for vision-vision pairs
+          and +0.0323 for vision-vision-language pairs, but -0.3526 for language-vision pairs and
+          -0.4518 for language-vision-language pairs. The 20 largest absolute shifts are all
+          cross-family.
+        </p>
+        <p>
+          These results are consistent with dataset-conditional geometry in this setup, but they do not
+          isolate dataset source as a unique causal factor. Leaving out ImageNet also changes retained
+          concepts, image style, and likely object typicality. The safer claim is therefore that measured
+          geometry is strongly source-conditional in this benchmark, not that dataset identity alone has
+          been uniquely isolated as the cause.
         </p>
 
         <table>
@@ -423,22 +437,23 @@
           </tbody>
         </table>
 
-        <div class="twocol">
-          <figure>
-            <img src="../results/v2_change_assets/source_holdout_loso.png" alt="Source holdout leave-one-source-out summary" />
-            <figcaption>
-              <strong>Figure 2.</strong> Leave-one-source-out source sensitivity. ImageNet removal is the
-              largest systematic perturbation in the final study.
-            </figcaption>
-          </figure>
-          <figure>
-            <img src="../results/v2_change_assets/ci_width_hist.png" alt="Confidence interval width histogram" />
-            <figcaption>
-              <strong>Figure 3.</strong> Distribution of image-bootstrap CI widths across model pairs.
-              Mean width is 0.1787, which is large enough to matter for close pairwise comparisons.
-            </figcaption>
-          </figure>
-        </div>
+        <figure>
+          <img src="../results/v2_change_assets/imagenet_holdout_impact.png" alt="ImageNet holdout impact by family pair and top pairwise shifts" />
+          <figcaption>
+            <strong>Figure 2.</strong> ImageNet holdout impact by family pair and largest absolute
+            pairwise shifts. Removing ImageNet leaves vision-side pairs comparatively stable but drives
+            large negative shifts in language-vision and language-vision-language pairs; the top 20
+            absolute shifts are all cross-family.
+          </figcaption>
+        </figure>
+
+        <figure>
+          <img src="../results/v2_change_assets/ci_width_hist.png" alt="Confidence interval width histogram" />
+          <figcaption>
+            <strong>Figure 3.</strong> Distribution of image-bootstrap CI widths across model pairs.
+            Mean width is 0.1787, which is large enough to matter for close pairwise comparisons.
+          </figcaption>
+        </figure>
 
         <h3>3.4 Prompt Choice and Layer Depth Both Matter</h3>
         <p>
@@ -513,8 +528,8 @@
           discover one shared geometry. It is that representational geometry is simultaneously shaped
           by world structure and by modality-specific training pressure. Within-family convergence is
           strong. Cross-modal convergence is partial. Vision-language encoders remain structurally
-          vision-like. And the final interpretation depends materially on source, prompt, and depth
-          controls.
+          vision-like in this setup. And the final interpretation depends materially on source, prompt,
+          and depth controls.
         </p>
       </section>
 

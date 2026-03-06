@@ -27,9 +27,10 @@ absolute delta of 0.1960, and aligned-layer analysis shows monotonic growth in m
 from 0.3424 at early depth to 0.4639 at terminal depth. Yet terminal aligned and baseline results
 are nearly identical (mean delta +0.0006), indicating that the depth effect is about when
 convergence appears, not whether the final layer changes the conclusion. The strongest supported
-claim is therefore not universal convergence, but modality-asymmetric and dataset-conditional
-geometry: vision-language encoders remain structurally closer to vision than to language, and
-cross-modal geometry is sensitive to image source, prompt framing, and representational depth.
+claim is therefore not universal convergence. Rather, this local-scale stress test of strong PRH
+finds modality-asymmetric and strongly source-conditional geometry in this setup: vision-language
+encoders remain structurally closer to vision than to language, and cross-modal geometry is
+sensitive to image source, prompt framing, and representational depth.
 
 **Keywords**: Platonic Representation Hypothesis, representational similarity analysis,
 cross-modal convergence, multimodal models, source holdout, prompt sensitivity, layer alignment
@@ -70,6 +71,9 @@ shared internet distributions, architectural bias, language-alignment objectives
 or evaluation artifacts. A useful experiment therefore does not only ask whether convergence
 exists. It asks what survives after the obvious confounds are stressed.
 
+This paper is explicitly a stress test of the strong form of PRH, not a full adjudication of
+every weaker Platonic view.
+
 This paper is organized around that stricter standard. We retain the original V1 question, but we
 answer it using the final 22-model replication package rather than the earlier prototype runs. The
 goal is not to extract the most optimistic reading of the data. It is to identify the most
@@ -97,8 +101,9 @@ Our research questions are:
   depth?
 - **RQ4**: Does compound-concept behavior add independent evidence for universal convergence?
 
-Our central claim is narrow: the final replication supports robust within-family convergence and
-strong vision-to-vision-language coupling, but it does not support a strong version of universal
+Our central claim is narrow: this study stress-tests the strong form of PRH under local-scale
+evaluation. The final replication supports robust within-family convergence and strong
+vision-to-vision-language coupling, but it does not support a strong version of universal
 cross-modal convergence at the scales tested here.
 
 ---
@@ -279,7 +284,8 @@ matters more than the existence of a few positive pairs.
 ### 4.2 Vision-Language Models Behave Like Vision Models
 
 The bridge-model question is central because multimodal models are often used as intuitive support
-for Platonic convergence. The final replication does not support that interpretation.
+for Platonic convergence. The final replication does not support treating multimodal success alone
+as evidence for a shared modality-neutral geometry.
 
 All 40 vision-to-vision-language pairs are significant after FDR correction, with a median
 $\rho = 0.702$. By contrast, only 5 of 32 language-to-vision-language pairs survive correction,
@@ -292,12 +298,12 @@ Representative high-similarity bridge pairs include:
 - CLIP-ViT-B32 with Hiera-base: $\rho = 0.776$
 - SigLIP2 with ViT-MAE-base: $\rho = 0.774$
 
-This pattern is better explained as engineered alignment layered on top of a fundamentally visual
-encoder than as spontaneous convergence of language and vision onto one geometry. Put differently:
-contrastive training creates a useful cross-modal interface, but it does not make the image
-encoder structurally language-like.
+In this setup, the best-supported interpretation is that contrastive training creates a useful
+cross-modal interface while leaving the image encoder predominantly vision-like. That is a more
+defensible reading than claiming that language and vision have converged onto one shared geometry
+internally.
 
-### 4.3 Dataset Composition Changes the Geometry
+### 4.3 Measured Geometry Is Strongly Source-Conditional
 
 The final V2 package added explicit source holdout analysis. This was scientifically important,
 because source dependence turned out to be large enough to alter interpretation.
@@ -312,13 +318,18 @@ because source dependence turned out to be large enough to alter interpretation.
 | ImageNet only | 10 | -0.0194 | 0.1912 | 0.5931 |
 
 The ImageNet result is the most consequential. Excluding ImageNet reduces pairwise RSA by
--0.1564 on average, with some model pairs shifting by more than 0.70. This is too large to treat
-as nuisance noise. It means the measured geometry is conditional on how the concept set is
-instantiated in images.
+-0.1564 on average, with some model pairs shifting by more than 0.70. The asymmetry is also
+family-structured: mean $\Delta \rho$ is +0.0382 for vision-vision pairs and +0.0323 for
+vision-vision-language pairs, but -0.3526 for language-vision pairs and -0.4518 for
+language-vision-language pairs. The 20 largest absolute shifts are all cross-family.
 
-This does not invalidate the experiment. It clarifies its scope. The observed geometry is not
-only a property of model weights; it is a property of model weights interacting with a concrete
-sampling of the world.
+These results are consistent with dataset-conditional geometry in this setup, but they do not
+isolate dataset source as a unique causal factor. Leaving out ImageNet also changes retained
+concepts, image style, and likely object typicality. The safer claim is therefore that measured
+geometry is strongly source-conditional in this benchmark, not that dataset identity alone has
+been uniquely isolated as the cause.
+
+![Figure 2. ImageNet holdout impact by family pair and largest absolute pairwise shifts. Removing ImageNet leaves vision-side pairs comparatively stable but drives large negative shifts in language-vision and language-vision-language pairs; the top 20 absolute shifts are all cross-family.](../results/v2_change_assets/imagenet_holdout_impact.png)
 
 ### 4.4 Prompt Choice and Uncertainty Are Not Negligible
 
@@ -471,16 +482,17 @@ The final evidence supports four conclusions:
 
 1. **Within-family convergence is robust.** Language models agree strongly with language models,
    and vision models agree strongly with vision models.
-2. **Vision-language encoders are structurally vision-like.** Their geometry is much closer to
-   vision than to language.
+2. **Vision-language encoders are structurally vision-like in this setup.** Their geometry is much
+   closer to vision than to language.
 3. **Cross-modal geometry is real but partial.** It is substantially weaker than within-family
    agreement and often disappears under stricter significance thresholds.
 4. **Interpretation depends on controls.** Image source, prompt template, and layer depth all
    matter enough to change the story.
 
-The strong Platonic claim is therefore not supported at this scale. The more defensible statement
-is weaker: representational geometry is shaped by both world structure and modality-specific
-training pressures, and the balance between those forces remains an open empirical question.
+The strong Platonic claim is therefore not supported in this local-scale stress test. The more
+defensible statement is weaker: representational geometry is shaped by both world structure and
+modality-specific training pressures, and the balance between those forces remains an open
+empirical question.
 
 ### What We Still Do Not Know
 
@@ -555,7 +567,7 @@ Pre-Training. *ICCV 2023*.
 
 ## Appendix B: Reproducibility Notes
 
-The final paper is based on the completed baseline and aligned replication artifacts in the
-repository's `experiments/01_embeddings_convergence_basics/results/replication/` outputs. The
-final claims in this draft are aligned with the signed-off baseline, aligned5, and robustness
-artifacts rather than with the earlier prototype summaries.
+The final paper is based on the completed standalone release artifacts in `results/baseline/`,
+`results/aligned5/`, and the corresponding robustness outputs. The final claims in this draft are
+aligned with the signed-off baseline, aligned5, and robustness artifacts rather than with the
+earlier prototype summaries.

@@ -37,6 +37,7 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{longtable,booktabs,array}
+\usepackage{graphicx}
 \newcounter{none} % for unnumbered tables
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
@@ -96,11 +97,12 @@ pairwise RSA from 0.3424 at early depth to 0.4639 at terminal depth. Yet
 terminal aligned and baseline results are nearly identical (mean delta
 +0.0006), indicating that the depth effect is about when convergence
 appears, not whether the final layer changes the conclusion. The
-strongest supported claim is therefore not universal convergence, but
-modality-asymmetric and dataset-conditional geometry: vision-language
-encoders remain structurally closer to vision than to language, and
-cross-modal geometry is sensitive to image source, prompt framing, and
-representational depth.
+strongest supported claim is therefore not universal convergence.
+Rather, this local-scale stress test of strong PRH finds
+modality-asymmetric and strongly source-conditional geometry in this
+setup: vision-language encoders remain structurally closer to vision
+than to language, and cross-modal geometry is sensitive to image
+source, prompt framing, and representational depth.
 
 \textbf{Keywords}: Platonic Representation Hypothesis, representational
 similarity analysis, cross-modal convergence, multimodal models, source
@@ -154,6 +156,9 @@ artifacts. A useful experiment therefore does not only ask whether
 convergence exists. It asks what survives after the obvious confounds
 are stressed.
 
+This paper is explicitly a stress test of the strong form of PRH, not a
+full adjudication of every weaker Platonic view.
+
 This paper is organized around that stricter standard. We retain the
 original V1 question, but we answer it using the final 22-model
 replication package rather than the earlier prototype runs. The goal is
@@ -199,10 +204,11 @@ Our research questions are:
   for universal convergence?
 \end{itemize}
 
-Our central claim is narrow: the final replication supports robust
-within-family convergence and strong vision-to-vision-language coupling,
-but it does not support a strong version of universal cross-modal
-convergence at the scales tested here.
+Our central claim is narrow: this study stress-tests the strong form of
+PRH under local-scale evaluation. The final replication supports robust
+within-family convergence and strong vision-to-vision-language
+coupling, but it does not support a strong version of universal
+cross-modal convergence at the scales tested here.
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -505,7 +511,8 @@ Models}\label{vision-language-models-behave-like-vision-models}
 
 The bridge-model question is central because multimodal models are often
 used as intuitive support for Platonic convergence. The final
-replication does not support that interpretation.
+replication does not support treating multimodal success alone as
+evidence for a shared modality-neutral geometry.
 
 All 40 vision-to-vision-language pairs are significant after FDR
 correction, with a median \(\rho = 0.702\). By contrast, only 5 of 32
@@ -526,14 +533,14 @@ Representative high-similarity bridge pairs include:
   SigLIP2 with ViT-MAE-base: \(\rho = 0.774\)
 \end{itemize}
 
-This pattern is better explained as engineered alignment layered on top
-of a fundamentally visual encoder than as spontaneous convergence of
-language and vision onto one geometry. Put differently: contrastive
-training creates a useful cross-modal interface, but it does not make
-the image encoder structurally language-like.
+In this setup, the best-supported interpretation is that contrastive
+training creates a useful cross-modal interface while leaving the image
+encoder predominantly vision-like. That is a more defensible reading
+than claiming that language and vision have converged onto one shared
+geometry internally.
 
-\subsubsection{4.3 Dataset Composition Changes the
-Geometry}\label{dataset-composition-changes-the-geometry}
+\subsubsection{4.3 Measured Geometry Is Strongly Source-Conditional}
+\label{measured-geometry-is-strongly-source-conditional}
 
 The final V2 package added explicit source holdout analysis. This was
 scientifically important, because source dependence turned out to be
@@ -574,14 +581,24 @@ ImageNet only & 10 & -0.0194 & 0.1912 & 0.5931 \\
 
 The ImageNet result is the most consequential. Excluding ImageNet
 reduces pairwise RSA by -0.1564 on average, with some model pairs
-shifting by more than 0.70. This is too large to treat as nuisance
-noise. It means the measured geometry is conditional on how the concept
-set is instantiated in images.
+shifting by more than 0.70. The asymmetry is also family-structured:
+mean \(\Delta \rho\) is +0.0382 for vision-vision pairs and +0.0323 for
+vision-vision-language pairs, but -0.3526 for language-vision pairs and
+-0.4518 for language-vision-language pairs. The 20 largest absolute
+shifts are all cross-family.
 
-This does not invalidate the experiment. It clarifies its scope. The
-observed geometry is not only a property of model weights; it is a
-property of model weights interacting with a concrete sampling of the
-world.
+These results are consistent with dataset-conditional geometry in this
+setup, but they do not isolate dataset source as a unique causal
+factor. Leaving out ImageNet also changes retained concepts, image
+style, and likely object typicality. The safer claim is therefore that
+measured geometry is strongly source-conditional in this benchmark, not
+that dataset identity alone has been uniquely isolated as the cause.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{../results/v2_change_assets/imagenet_holdout_impact.png}
+\caption{\textbf{Figure 2.} ImageNet holdout impact by family pair and largest absolute pairwise shifts. Removing ImageNet leaves vision-side pairs comparatively stable but drives large negative shifts in language-vision and language-vision-language pairs; the top 20 absolute shifts are all cross-family.}
+\end{figure}
 
 \subsubsection{4.4 Prompt Choice and Uncertainty Are Not
 Negligible}\label{prompt-choice-and-uncertainty-are-not-negligible}
@@ -822,8 +839,8 @@ The final evidence supports four conclusions:
   strongly with language models, and vision models agree strongly with
   vision models.
 \item
-  \textbf{Vision-language encoders are structurally vision-like.} Their
-  geometry is much closer to vision than to language.
+  \textbf{Vision-language encoders are structurally vision-like in this
+  setup.} Their geometry is much closer to vision than to language.
 \item
   \textbf{Cross-modal geometry is real but partial.} It is substantially
   weaker than within-family agreement and often disappears under
@@ -833,10 +850,11 @@ The final evidence supports four conclusions:
   template, and layer depth all matter enough to change the story.
 \end{enumerate}
 
-The strong Platonic claim is therefore not supported at this scale. The
-more defensible statement is weaker: representational geometry is shaped
-by both world structure and modality-specific training pressures, and
-the balance between those forces remains an open empirical question.
+The strong Platonic claim is therefore not supported in this local-scale
+stress test. The more defensible statement is weaker:
+representational geometry is shaped by both world structure and
+modality-specific training pressures, and the balance between those
+forces remains an open empirical question.
 
 \subsubsection{What We Still Do Not
 Know}\label{what-we-still-do-not-know}
@@ -942,11 +960,10 @@ Summary}\label{appendix-a-statistical-summary}
 \subsection{Appendix B: Reproducibility
 Notes}\label{appendix-b-reproducibility-notes}
 
-The final paper is based on the completed baseline and aligned
-replication artifacts in the repository's
-\texttt{experiments/01\_embeddings\_convergence\_basics/results/replication/}
-outputs. The final claims in this draft are aligned with the signed-off
-baseline, aligned5, and robustness artifacts rather than with the
-earlier prototype summaries.
+The final paper is based on the completed standalone release artifacts
+in \texttt{results/baseline/}, \texttt{results/aligned5/}, and the
+corresponding robustness outputs. The final claims in this draft are
+aligned with the signed-off baseline, aligned5, and robustness
+artifacts rather than with the earlier prototype summaries.
 
 \end{document}
