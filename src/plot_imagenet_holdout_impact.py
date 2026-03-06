@@ -114,8 +114,8 @@ def _build_figure(
     fig, axes = plt.subplots(
         1,
         2,
-        figsize=(13.5, 6.8),
-        gridspec_kw={"width_ratios": [1.1, 1.3]},
+        figsize=(12.4, 4.9),
+        gridspec_kw={"width_ratios": [1.0, 1.15]},
     )
 
     order = [family for family in FAMILY_ORDER if family in grouped]
@@ -153,7 +153,7 @@ def _build_figure(
         mean_delta = float(np.mean(values))
         mean_abs = float(np.mean(np.abs(values)))
         axes[0].text(
-            0.425,
+            0.34,
             idx,
             f"mean {mean_delta:+.3f} | |Δ| {mean_abs:.3f}",
             va="center",
@@ -166,7 +166,7 @@ def _build_figure(
     axes[0].set_yticks(positions)
     axes[0].set_yticklabels(order)
     axes[0].invert_yaxis()
-    axes[0].set_xlim(-0.78, 0.45)
+    axes[0].set_xlim(-0.75, 0.34)
     axes[0].set_xlabel("Δρ after removing ImageNet")
     axes[0].set_title("Family-level shift distribution")
     axes[0].grid(axis="x", alpha=0.18)
@@ -182,7 +182,7 @@ def _build_figure(
     axes[1].axvline(0.0, color="#222222", linewidth=1.0)
     axes[1].set_yticks(y)
     axes[1].set_yticklabels(labels)
-    axes[1].set_xlim(-0.78, 0.12)
+    axes[1].set_xlim(-0.75, 0.03)
     axes[1].set_xlabel("Δρ after removing ImageNet")
     axes[1].set_title("Largest absolute pairwise shifts")
     axes[1].grid(axis="x", alpha=0.18)
@@ -195,7 +195,7 @@ def _build_figure(
         handles=legend_handles,
         loc="upper right",
         frameon=False,
-        fontsize=8,
+        fontsize=7.5,
     )
 
     summary_text = (
@@ -215,22 +215,9 @@ def _build_figure(
         bbox={"facecolor": "#F7F2E8", "edgecolor": "#BDAE9A", "boxstyle": "round,pad=0.35"},
     )
 
-    fig.suptitle(
-        "ImageNet holdout disproportionately disrupts language-aligned geometry",
-        fontsize=15,
-        y=0.98,
-    )
-    fig.text(
-        0.5,
-        0.935,
-        "Vision-side pairs remain comparatively stable, while the largest tails are entirely cross-family.",
-        ha="center",
-        fontsize=10.5,
-        color="#444444",
-    )
-    fig.tight_layout(rect=[0, 0, 1, 0.92])
+    fig.tight_layout(pad=0.7, w_pad=0.9)
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(output_path, dpi=180)
+    fig.savefig(output_path, dpi=200, bbox_inches="tight", pad_inches=0.05)
     plt.close(fig)
 
 
