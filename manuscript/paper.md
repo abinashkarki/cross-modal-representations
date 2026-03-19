@@ -775,7 +775,6 @@ Pre-Training. *ICCV 2023*.
 - `artifacts/release_manifest.json`
 - `artifacts/SHA256SUMS.txt`
 - `src/analyze_arvlm_extension.py`
-- `results/baseline/replication_results.json.gz`
 - `results/baseline/robustness/robustness_stats.json`
 - `src/generate_scale250_paper_figures.py`
 - `manuscript/figures/scale250/`

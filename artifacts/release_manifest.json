@@ -84,6 +84,18 @@
       "file_count": 3849,
       "size_bytes": 91350491,
       "reason": "Fresh Scale250 image payloads kept only in local working state."
+    },
+    {
+      "path": ".local_artifacts/results_legacy_release_excluded/baseline/replication_results.json.gz",
+      "file_count": 1,
+      "size_bytes": 12724168,
+      "reason": "Legacy baseline compressed compile removed from the public repo during final release trimming."
+    },
+    {
+      "path": ".local_artifacts/results_legacy_release_excluded/aligned5/replication_results.json.gz",
+      "file_count": 1,
+      "size_bytes": 18968036,
+      "reason": "Legacy aligned5 compressed compile removed from the public repo during final release trimming."
     }
   ]
 }

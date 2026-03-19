@@ -471,7 +471,7 @@ def render_markdown_report(
         "This report uses the released baseline artifacts to estimate budget-sensitive drift before a 250-concept expansion.",
         "",
         "Scope:",
-        f"- Baseline compiled artifact: `results/baseline/replication_results.json.gz`",
+        "- Baseline compiled artifact: legacy compressed bundle externalized from the public repo",
         f"- Baseline robustness artifact: `results/baseline/robustness/robustness_stats.json`",
         f"- Base RSA concepts: {summary['base_concept_count']}",
         f"- Models: {summary['model_count']}",
