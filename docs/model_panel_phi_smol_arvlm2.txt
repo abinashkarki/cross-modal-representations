@@ -1,0 +1,2 @@
+Phi-3.5-vision-instruct-MLX-8bit
+SmolVLM2-2.2B-Instruct-MLX-Quantized

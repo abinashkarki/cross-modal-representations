@@ -1,0 +1,6 @@
+# Optional extras for data sourcing / curation utilities.
+boto3
+botocore
+datasets
+fiftyone
+nltk

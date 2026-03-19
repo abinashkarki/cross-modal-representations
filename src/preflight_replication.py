@@ -6,7 +6,7 @@ from typing import Any, Dict, List
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 EXPERIMENT_DIR = os.path.dirname(SCRIPT_DIR)
-DEFAULT_MANIFEST_PATH = os.path.join(EXPERIMENT_DIR, "data", "data_manifest_multi.json")
+DEFAULT_MANIFEST_PATH = os.path.join(EXPERIMENT_DIR, "data", "data_manifest_250.json")
 DEFAULT_RAW_DIR = os.path.join(EXPERIMENT_DIR, "results", "replication", "raw_data")
 DEFAULT_MODELS_FILE = os.path.join(EXPERIMENT_DIR, "docs", "run_all_models.sh")
 DEFAULT_CACHE_DIR = os.path.join(EXPERIMENT_DIR, "results", "replication", "cache")
@@ -133,6 +133,76 @@ def check_source_metadata(
         print(f"WARNING: {msg}")
     if invalid_image_source_map:
         fail("Invalid image_sources mappings:\n" + "\n".join(invalid_image_source_map))
+
+
+def check_source_balance_policy(
+    manifest: Dict[str, Any],
+    concept_to_images: Dict[str, List[str]],
+    concept_metadata: Dict[str, Any],
+) -> None:
+    policy = manifest.get("source_balance_policy")
+    if not policy:
+        return
+    if policy.get("mode") != "within_concept_balanced":
+        return
+
+    target_per_source = policy.get("target_per_source", {})
+    minimum_per_source = policy.get("minimum_per_source", target_per_source)
+    required_sources = policy.get("required_sources") or sorted(
+        set(target_per_source) | set(minimum_per_source)
+    )
+    if not required_sources:
+        fail("source_balance_policy is present but required_sources is empty.")
+
+    errors = []
+    for concept, images in concept_to_images.items():
+        md = concept_metadata.get(concept, {})
+        image_sources = md.get("image_sources")
+        if not isinstance(image_sources, dict):
+            errors.append(f"{concept}: image_sources missing or not a dict")
+            continue
+
+        image_names = [os.path.basename(path) for path in images]
+        missing_keys = [name for name in image_names if name not in image_sources]
+        if missing_keys:
+            errors.append(f"{concept}: missing image_sources for {missing_keys[:5]}")
+            continue
+
+        counts = {source: 0 for source in required_sources}
+        unknown_sources = []
+        for image_name in image_names:
+            source = image_sources.get(image_name)
+            if source not in counts:
+                unknown_sources.append(f"{image_name}={source}")
+            else:
+                counts[source] += 1
+        if unknown_sources:
+            errors.append(f"{concept}: unknown sources {unknown_sources[:5]}")
+            continue
+
+        for source, min_count in minimum_per_source.items():
+            if counts.get(source, 0) < int(min_count):
+                errors.append(
+                    f"{concept}: source '{source}' count {counts.get(source, 0)} < minimum {min_count}"
+                )
+
+        for source, target_count in target_per_source.items():
+            if counts.get(source, 0) != int(target_count):
+                errors.append(
+                    f"{concept}: source '{source}' count {counts.get(source, 0)} != target {target_count}"
+                )
+
+        actual = md.get("source_mix_actual")
+        if isinstance(actual, dict):
+            for source in required_sources:
+                if int(actual.get(source, 0)) != counts.get(source, 0):
+                    errors.append(
+                        f"{concept}: source_mix_actual['{source}']={actual.get(source, 0)} "
+                        f"but computed count is {counts.get(source, 0)}"
+                    )
+
+    if errors:
+        fail("Source balance policy violations:\n" + "\n".join(errors[:50]))
 
 
 def read_raw_jsons(raw_dir: str) -> Dict[str, Any]:
@@ -318,6 +388,11 @@ def main() -> None:
         concept_to_images,
         concept_metadata,
         require_image_source_metadata=require_source_metadata,
+    )
+    check_source_balance_policy(
+        manifest,
+        concept_to_images,
+        concept_metadata,
     )
     print(
         f"Manifest checks passed: concepts={len(expected_concepts)}, "

@@ -1,5 +1,5 @@
 ---
-title: "Where Representations Diverge: Robust Evidence on Modality, Dataset, and Depth in Cross-Modal Geometry"
+title: "Small Benchmarks Overstate Cross-Modal Convergence: Evidence from a 250-Concept Confirmatory Benchmark"
 author: "Abinash Karki (Independent Research)"
 date: "March 2026"
 ---
@@ -8,32 +8,37 @@ date: "March 2026"
 
 ## Abstract
 
-The Platonic Representation Hypothesis proposes that sufficiently capable models trained on
-different modalities converge toward a shared representational geometry. We test that claim using
-self-contained local evaluation of 22 models: 8 language models, 10
-self-supervised vision models, and 4 vision-language models. The final evaluation uses 28
-concepts (20 base + 8 compounds), 30 images per concept, image-level caching, image-bootstrap
-confidence intervals, Mantel permutation tests with Benjamini-Hochberg FDR correction, source
-holdout analysis, prompt-sensitivity controls, and an aligned-layer protocol. Across 231 model
-pairs, within-family agreement is strong for vision-language pairs (median Spearman RSA
-$\rho = 0.702$), vision-vision pairs ($\rho = 0.682$), and language-language pairs
-($\rho = 0.661$), but much weaker for language-vision pairs ($\rho = 0.259$) and
-language-vision-language pairs ($\rho = 0.230$). Only 35/80 language-vision pairs and 5/32
-language-vision-language pairs survive FDR correction, versus 43/45 vision-vision pairs and
-40/40 vision-vision-language pairs. Robustness controls materially affect interpretation:
-leave-one-source-out removal of ImageNet shifts pairwise RSA by a mean of -0.1564
-(max $|\Delta| = 0.7080$), language prompt choice changes cross-modal RSA by a mean maximum
-absolute delta of 0.1960, and aligned-layer analysis shows monotonic growth in mean pairwise RSA
-from 0.3424 at early depth to 0.4639 at terminal depth. Yet terminal aligned and baseline results
-are nearly identical (mean delta +0.0006), indicating that the depth effect is about when
-convergence appears, not whether the final layer changes the conclusion. The strongest supported
-claim is therefore not universal convergence. Rather, this local-scale stress test of strong PRH
-finds modality-asymmetric and strongly source-conditional geometry in this setup: vision-language
-encoders remain structurally closer to vision than to language, and cross-modal geometry is
-sensitive to image source, prompt framing, and representational depth.
+The Platonic Representation Hypothesis (PRH) proposes that sufficiently capable models trained on
+different modalities converge toward a shared representational geometry. Earlier local evidence from
+this project suggested moderate language-image agreement, but that estimate rested on a small
+prototype benchmark. This paper replaces that prototype with a confirmatory 250-concept benchmark
+while holding the 22-model panel fixed: 8 language models, 10 self-supervised vision models, and 4
+contrastive vision-language encoders evaluated through their image towers. Each concept contains 15
+images with strict within-concept source balance (5 ImageNet, 5 Open Images, 5 Unsplash). The
+analysis combines a selected-layer baseline, an aligned five-layer confirmatory pass, image bootstrap
+confidence intervals, Mantel permutation tests with Benjamini-Hochberg FDR correction, prompt
+sensitivity analysis, and metric triangulation with linear Centered Kernel Alignment (CKA). To answer
+the strongest architecture-scope critique, the paper also adds a secondary 25-model extension with
+three autoregressive VLMs: `Qwen3.5-2B`, `Qwen3.5-4B`, and `Phi-3.5-vision`. The benchmark scale-up
+changes the answer materially. In the previous local release, language-image RSA averaged 0.2418; in
+the new benchmark it drops to 0.0199, while language-language agreement remains strong (mean 0.6143)
+and image-side agreement remains substantial (mean 0.4681). CKA preserves the same qualitative
+ordering of family structure and agrees with pairwise RSA at Pearson 0.7229 and Spearman 0.7050.
+The contrastive vision-language encoders cluster strongly with the image side (vision-VLM mean RSA
+0.5003; VLM-VLM mean RSA 0.8938) and only weakly with language models (language-VLM mean RSA
+0.0308). The new autoregressive VLMs show the same pattern even more clearly: mean RSA to vision is
+0.5122 versus 0.0404 to language, with a vision-minus-language gap of 0.4718. Aligned-layer
+analysis shows that mean pairwise RSA peaks in mid-to-late layers (0.3096 at `d75`) rather than the
+terminal selected layer (0.2683), but selected-layer baseline and aligned5 conclusions are nearly
+identical at the headline level. A scaling analysis across 0.6B-4B language models shows no
+monotonic size law for cross-modal alignment (Spearman size vs. mean vision RSA = -0.0952). The main
+contribution of the paper is therefore a benchmark correction: on this local panel, small benchmarks
+materially overstate cross-modal geometric convergence. What survives the stronger measurement regime
+is robust within-family structure, vision-anchored bridge models across both contrastive and
+autoregressive VLMs, and a mid-layer depth effect rather than broad language-image convergence.
 
-**Keywords**: Platonic Representation Hypothesis, representational similarity analysis,
-cross-modal convergence, multimodal models, source holdout, prompt sensitivity, layer alignment
+**Keywords**: Platonic Representation Hypothesis, representational similarity analysis, centered
+kernel alignment, cross-modal convergence, benchmark design, layer alignment
 
 ---
 
@@ -41,104 +46,154 @@ cross-modal convergence, multimodal models, source holdout, prompt sensitivity, 
 
 ### 1.1 The Question Behind the Hypothesis
 
-When distributional embeddings were found to encode relational regularities such as "king - man +
-woman = queen" (Mikolov et al., 2013), they suggested that representation may discover geometry
-rather than merely store labels. The Platonic Representation Hypothesis (Huh et al., 2024) pushes
-that intuition further: if different model families are all trained on rich evidence about the
-same world, then their internal spaces should converge toward the same underlying structure.
+The Platonic Representation Hypothesis (PRH) asks whether models trained on different modalities
+converge toward a shared internal geometry because they are all modeling the same world. In its
+strong form, the hypothesis predicts that modality should matter less and less as capability grows: a
+language model and a vision model, trained on different data with different objectives, should still
+come to organize concepts similarly.
 
-That is a strong claim. It says representational geometry is not primarily a byproduct of
-modality, architecture, or objective design, but a consequence of modeling reality itself. Under
-that view, a pure language model and a pure vision model should increasingly agree on how concepts
-relate, even if they were never trained together.
+That is a stronger claim than task transfer or interface compatibility. It is a claim about
+inevitability in representation itself. The relevant question is therefore not whether some
+cross-modal signal can be detected on a favorable benchmark, but whether that signal survives a
+harder and more balanced measurement regime.
 
-### 1.2 Why This Matters Beyond AI
+### 1.2 Why the Previous Paper Was Not Enough
 
-The question matters because it reframes convergence as evidence about inevitability. If very
-different systems repeatedly discover similar structures, then some representational solutions may
-be mathematically favored rather than historically accidental. That matters not only for AI, but
-for broader questions about perception, abstraction, and biological constraint.
+The previous paper, *Where Representations Diverge*, got the argument into approximately the right
+place but on an insufficiently strong benchmark. It showed stronger within-family convergence than
+cross-modal convergence, and it suggested that multimodal bridge models looked more vision-like than
+modality-neutral. But the underlying benchmark was small: 20 base concepts for RSA plus 8 compounds,
+with looser source construction and less separation between confirmatory and exploratory analysis.
 
-A useful analogy is convergent evolution. Foveae, sparse coding, and selective attention recur in
-biological systems because they solve recurring problems under recurring constraints. The Platonic
-hypothesis asks whether an analogous statement holds for neural representation: do distinct model
-families discover the same geometry because the world itself imposes it?
+This paper is therefore not a cosmetic update. It is a benchmark replacement. The model panel stays
+fixed at 22 models in the core confirmatory benchmark so that the experimental work is done by
+measurement design rather than by a new roster. The primary concept benchmark expands from 20 base
+concepts to 250 base concepts, compounds are removed from the confirmatory set, images are balanced
+within concept across three sources, and layer-wise and robustness analyses are predeclared rather
+than added after the fact.
 
-### 1.3 From Positive Results to Boundary Conditions
+### 1.3 Benchmark Correction as the Core Contribution
 
-The hypothesis is easy to overstate. Apparent convergence can arise from multiple weaker causes:
-shared internet distributions, architectural bias, language-alignment objectives, prompt choices,
-or evaluation artifacts. A useful experiment therefore does not only ask whether convergence
-exists. It asks what survives after the obvious confounds are stressed.
+The most important claim of this paper is narrower than the strongest reading of PRH. It is not "we
+have disproved Platonic convergence in general." It is: *when the same local 22-model panel is
+measured on a much broader and more balanced benchmark, the apparent strength of cross-modal
+convergence drops sharply*.
 
-This paper is explicitly a stress test of the strong form of PRH, not a full adjudication of
-every weaker Platonic view.
+That framing matters. A small benchmark can produce a qualitatively correct intuition but still
+materially overestimate its effect size. The purpose of the new experiment is to identify what
+survives once the most obvious measurement weaknesses are removed.
 
-This paper is organized around that stricter standard. We retain the original V1 question, but we
-answer it using the final 22-model replication package rather than the earlier prototype runs. The
-goal is not to extract the most optimistic reading of the data. It is to identify the most
-defensible one.
+### 1.4 What This Paper Does Differently
 
-### 1.4 This Paper
+Relative to the previous release, the new experiment makes six concrete upgrades:
 
-We evaluate 22 models across three families:
+1. It replaces the prototype benchmark with a stratified a priori 250-concept primary set.
+2. It enforces strict within-concept source balance: every concept has exactly 5 ImageNet, 5 Open
+   Images, and 5 Unsplash images.
+3. It removes compounds from the confirmatory benchmark rather than mixing exploratory
+   compositionality with the main claim.
+4. It runs both a selected-layer baseline and a five-point aligned-layer confirmatory pass.
+5. It reports robustness through image bootstrap confidence intervals, Mantel permutation tests, and
+   prompt-sensitivity analysis.
+6. It triangulates the main RSA result with an additional representational metric, linear CKA.
+7. It adds a secondary architecture extension with three autoregressive VLMs to test whether the
+   bridge-model result is specific to contrastive dual encoders.
 
-- 8 language models
-- 10 self-supervised vision models
-- 4 vision-language image encoders
+The result is more conservative than the earlier paper, but also more credible.
 
-The final dataset contains 20 base concepts, 8 compound concepts, and 30 curated images per
-concept. We measure cross-model agreement with Representational Similarity Analysis (RSA) over the
-20 base concepts and supplement it with image-bootstrap confidence intervals, Mantel permutation
-tests, source holdout analysis, prompt sensitivity, and an aligned-layer depth profile.
+### 1.5 Research Questions
 
-Our research questions are:
+The paper is organized around five questions:
 
-- **RQ1**: How much representational geometry is shared within and across modality families?
-- **RQ2**: Do vision-language encoders bridge language and vision, or do they remain
-  predominantly vision-like?
-- **RQ3**: How stable are the conclusions under changes in image source, text prompt, and layer
-  depth?
-- **RQ4**: Does compound-concept behavior add independent evidence for universal convergence?
-
-Our central claim is narrow: this study stress-tests the strong form of PRH under local-scale
-evaluation. The final replication supports robust within-family convergence and strong
-vision-to-vision-language coupling, but it does not support a strong version of universal
-cross-modal convergence at the scales tested here.
+- **RQ1**: How much did the earlier small benchmark overstate cross-modal convergence?
+- **RQ2**: On the 250-concept benchmark, how much geometry is shared within and across modality
+  families?
+- **RQ3**: Do the main conclusions survive an alternate representational similarity metric?
+- **RQ4**: Does aligned-layer analysis reveal stronger convergence than selected-layer evaluation?
+- **RQ5**: Does language-model size predict stronger vision alignment in this panel?
+- **RQ6**: Do autoregressive VLMs change the bridge-model interpretation or preserve the
+  vision-anchored pattern?
 
 ---
 
 ## 2. Related Work
 
-Huh et al. (2024) introduced the Platonic Representation Hypothesis and argued that stronger
-models show increasing representational agreement across language and vision. Their framing is
-useful because it turns a philosophical intuition into a measurable claim about geometry.
+The closest conceptual antecedent is the Platonic Representation Hypothesis of Huh et al. (2024),
+which argues that sufficiently capable language and vision models exhibit increasing geometric
+agreement across modalities. That work is valuable because it turns a philosophical intuition into an
+empirical one: convergence becomes a measurement problem rather than a slogan. The present paper
+addresses a narrower question. Instead of asking whether convergence can be shown on large curated
+setups, it asks how much of the effect survives when a small local benchmark is replaced by a much
+broader confirmatory one.
 
-Representational Similarity Analysis (RSA) provides the relevant tool (Kriegeskorte et al., 2008).
-RSA compares the geometry of pairwise relationships inside two representational spaces rather than
-the coordinates of the embeddings themselves, making it appropriate for comparing models with
-different dimensionalities and architectures.
+Our measurement frame sits inside the broader literature on representational similarity. RSA
+(Kriegeskorte et al., 2008) compares the relational geometry of concept representations rather than
+their raw coordinates, which makes it especially useful when embedding dimensions differ across model
+families. But RSA is not the only lens. Canonical-correlation approaches such as SVCCA (Raghu et al.,
+2017) and PWCCA-style analyses (Morcos et al., 2018) ask whether two representations span similar
+subspaces even when their coordinates are not directly aligned. CKA (Kornblith et al., 2019) adds a
+kernel-based alternative that is widely used because it is invariant to isotropic scaling and robust
+to differences in representation width. Reviewers are right to be skeptical of metric monoculture. A
+claim that rests only on Spearman RSA over cosine-similarity matrices is a weaker claim than one
+that survives more than one representational comparison family.
 
-The present work differs from frontier-scale Platonic evaluations in three ways. First, it is
-deliberately constrained to a local compute regime, forcing the question toward minimum viable
-scale rather than massive capacity. Second, it emphasizes robustness controls that can materially
-change interpretation: image bootstrap, source holdout, prompt sensitivity, and aligned-layer
-analysis. Third, it uses a broad family comparison rather than a single bridge-model success case.
+This paper therefore treats metric triangulation as part of the contribution rather than an optional
+appendix. RSA remains the main inferential target because the research question is about shared
+concept geometry, but linear CKA is used as a second lens over the same concept-by-feature matrices.
+The point is not to claim that the metrics are interchangeable. They are not. RSA compares
+rank-ordered similarity structure in representational dissimilarity matrices; CKA compares centered
+alignment between feature spaces. Agreement between them therefore strengthens trust in the direction
+of the result, not in any single numeric magnitude.
 
-This produces a more conservative but more interpretable result: not simply whether some
-cross-modal signal exists, but how that signal compares to within-family agreement and how stable
-it remains once the obvious nuisance variables are perturbed.
+The bridge-model question also sits in a specific multimodal literature. Contrastive image-language
+models such as CLIP (Radford et al., 2021) and SigLIP (Zhai et al., 2023) are designed to make
+language and image embeddings interoperable. But interoperable interfaces do not automatically imply
+modality-neutral internals. A dual-encoder can align tasks while still preserving strong
+vision-anchored structure in its image tower. This distinction is central to the present paper
+because the four vision-language models in the current panel are all contrastive image-language
+encoders evaluated through their image-side representations.
+
+Finally, this paper contributes to a quieter but important tradition of benchmark correction.
+Negative or weaker-than-expected results matter when they arise from a stronger measurement regime
+rather than from degraded engineering. Here the point is not that cross-modal structure disappears.
+It is that benchmark expansion materially changes its estimated strength. That is scientifically
+useful even if it is less glamorous than a broad positive claim.
 
 ---
 
 ## 3. Methods
 
-### 3.1 Model Selection
+### 3.1 Confirmatory Design Overview
 
-The final core roster contains 22 models chosen to remain within the lab's hardware constraint
-while spanning distinct modality families and training objectives.
+The full experiment is built around a simple contract: keep the model panel fixed, scale the concept
+benchmark aggressively, and separate confirmatory from exploratory analysis.
 
-**Table 1: Final model roster.**
+**Table 1: Confirmatory design contract.**
+
+| Component | Current experiment |
+|-----------|--------------------|
+| Core model panel | 22 models |
+| Model families | 8 language, 10 vision SSL, 4 vision-language |
+| Secondary architecture extension | +3 autoregressive VLMs (25 models complete overall) |
+| Primary concept set | 250 base concepts |
+| Concept design | stratified a priori, 10 strata x 25 concepts |
+| Compound concepts in primary set | none |
+| Images per concept | 15 |
+| Per-concept source balance | 5 ImageNet, 5 Open Images, 5 Unsplash |
+| Text templates extracted | `baseline3` (`t0`, `t1`, `t2`) |
+| Main layer protocols | selected-layer baseline and `aligned5` |
+| Bootstrap | 300 draws, 10 images per concept, with replacement |
+| Significance test | 3,000-permutation Mantel, BH FDR |
+| Secondary metric | linear CKA on concept-by-feature matrices |
+
+![Figure 1. Scale250 confirmatory design. Left: the benchmark expands from the previous 20-base-concept prototype with compound probes to a 250-base-concept primary set. Center: every concept is balanced within concept across ImageNet, Open Images, and Unsplash at 5/5/5 images. Right: the model panel remains fixed at 8 language, 10 vision SSL, and 4 vision-language encoders.](figures/scale250/design_overview.png)
+
+### 3.2 Model Panel and Architecture Extension
+
+The 22-model roster is unchanged from the final local panel used in the previous release. This is
+deliberate. Keeping the panel fixed lets the benchmark design do the experimental work.
+
+**Table 2: Model roster.**
 
 | Family | Models |
 |-------|--------|
@@ -146,377 +201,521 @@ while spanning distinct modality families and training objectives.
 | Vision SSL (10) | BEiT-base, ConvNeXt-v2, DINOv2-base, DINOv2-small, DINOv3-ConvNeXt-tiny, Hiera-base, I-JEPA, ViT-MAE-base, ViT-MSN-base, data2vec-vision |
 | Vision-Language (4) | CLIP-ViT-B32, MetaCLIP-B32-400m, SigLIP, SigLIP2 |
 
-The language models cover roughly 0.6B to 4B parameters and include both MLX and Transformer
-backends. The vision group spans multiple self-supervised paradigms, including masked prediction,
-self-distillation, joint-embedding prediction, and ConvNeXt-based encoders. The vision-language
-group provides the key bridge condition: models trained with explicit image-language alignment but
-evaluated here using their image encoders alone.
+The language models span roughly 0.6B-4B parameters. The vision side deliberately spans multiple
+self-supervised paradigms. The vision-language models require a specific caveat: the current panel
+contains **contrastive dual-encoder models**, and the analysis uses their **image towers**. Any
+claim about bridge-model behavior in the core 22-model analysis is therefore scoped to contrastive
+image-encoder-side representations, not to autoregressive interleaved VLMs in general.
 
-### 3.2 Concept Set and Image Construction
+To answer that scope critique directly, the paper adds a secondary architecture extension on the same
+250-concept benchmark with three completed autoregressive VLMs: `Qwen3.5-2B-Base`,
+`Qwen3.5-4B-Base`, and `Phi-3.5-vision-instruct`. These models are not folded into the aligned5
+analysis; they are used as a selected-layer architecture stress test against the existing bridge-model
+story. The comparison therefore asks a narrow question: when we add native autoregressive multimodal
+models, do they sit closer to language, closer to vision, or in between?
 
-The evaluation uses 28 concepts:
+### 3.3 Benchmark Construction
 
-- 20 base concepts for RSA
-- 8 compound concepts for exploratory compositionality analysis
+The new benchmark is not a larger random sample. It is a structured benchmark. The manifest in
+`data/data_manifest_250.json` specifies:
 
-The 20 base concepts are:
+- a **stratified a priori** primary set (`base250`)
+- **10 semantic strata** with **25 concepts each**
+- **5 reserve concepts per stratum**
+- **no compounds in the primary confirmatory set**
+- **drop-concept-if-unbalanced** enforcement
 
-- cat, dog, bird, fish, elephant
-- car, bridge, airplane, mountain, building
-- fire, water, forest, ocean, road
-- city, space, sun, moon, storm
+The 10 target strata are:
 
-The 8 compound concepts are:
+- animals
+- plants and fungi
+- food and drink
+- clothing and accessories
+- tools and household objects
+- furniture, appliances, and containers
+- vehicles and machines
+- buildings and infrastructure
+- natural landforms and waterscapes
+- musical instruments
 
-- forest fire, space city, water city, city forest
-- mountain road, ocean bridge, city bridge, mountain forest
+Each concept has exactly 15 accepted images. The source policy is within-concept balanced:
+5 ImageNet, 5 Open Images, and 5 Unsplash images per concept, with no substitution allowed. That is
+a major improvement over the earlier project state because source diversity is now built into the
+benchmark rather than treated mainly as a post hoc nuisance variable.
 
-Each concept has exactly 30 images. The final manifest contains full CLIP-score coverage for all
-28 concepts and allocates source coverage at the concept level across ImageNet (10 concepts),
-OpenImages (6 concepts), and Unsplash (12 concepts). This source diversity matters empirically,
-because later holdout analysis shows that image source is not a cosmetic detail but a major driver
-of measured geometry.
+### 3.4 Embedding Extraction
 
-### 3.3 Embedding Extraction and Layer Protocol
+Language-side concept embeddings are extracted from short definitional prompts using the three
+`baseline3` templates:
 
-For language models, concept embeddings are extracted from a short textual prompt. The canonical
-template is:
-
-`The concept of {concept}`
-
-Prompt sensitivity is evaluated using two alternatives:
-
+- `The concept of {concept}`
 - `An example of {concept}`
 - `The meaning of {concept}`
 
-For image models, per-image embeddings are extracted and then aggregated to concept-level
-representations. Image-level embeddings are cached so that bootstrap resampling and source
-holdouts can be run without recomputing forward passes.
+The selected-layer baseline uses the model's default terminal representation. The aligned-layer pass
+uses five standardized depth fractions:
 
-Two layer protocols are used:
+- `d00`
+- `d25`
+- `d50`
+- `d75`
+- `d100`
 
-- **Baseline**: the selected terminal representation (`-1` / final-layer equivalent)
-- **Aligned5**: five depth fractions (`d00`, `d25`, `d50`, `d75`, `d100`)
+For image-side models, per-image embeddings are extracted first and aggregated to concept-level
+representations. Image-level embeddings are cached, which allows image bootstrap and layer analysis
+without rerunning the forward passes.
 
-The aligned protocol is important because it distinguishes final-output agreement from depth-wise
-emergence. A convergence pattern that only appears at terminal depth means something different
-from one that accumulates monotonically across the network.
+For the autoregressive VLM extension, image-conditioned representations are extracted through the
+MLX-VLM `get_input_embeddings(...)` path after multimodal processor preparation. The representation
+used for analysis is the final inserted image-token embedding aggregated over the image tokens for a
+single image, then averaged to the concept level in the same way as the other image-side models. This
+path provides one comparable selected-layer representation per image but does not yet expose a stable
+cross-family internal layer stack. The autoregressive VLM extension is therefore selected-layer only.
 
-### 3.4 Representational Similarity Analysis
-
-RSA is computed over the 20 base concepts only.
+### 3.5 RSA and Statistical Inference
 
 For each model:
 
-1. Construct a 20 x 20 cosine-similarity matrix over concept embeddings.
-2. Extract the upper triangle (190 unique concept pairs).
-3. Compute Spearman rank correlation between model-pair vectors.
+1. construct a concept-by-concept cosine similarity matrix,
+2. extract the upper triangle,
+3. compare model pairs with Spearman RSA.
 
-Spearman correlation is used because the relevant question is rank agreement in concept geometry,
-not absolute similarity scale, which differs substantially across model families.
+The primary inferential package has two parts:
 
-### 3.5 Statistical Inference and Robustness
+- **image bootstrap**: 300 draws, 10 images per concept, sampling with replacement
+- **Mantel significance**: 3,000 permutations per model pair, two-sided p-values, BH FDR over 231
+  pairs
 
-The final replication supplements raw RSA with four robustness procedures.
+We also compute prompt sensitivity from the three extracted templates and run the same robustness
+package on the aligned5 pass.
 
-**Mantel significance.**
+### 3.6 CKA Triangulation
 
-- 3,000 permutations per model pair
-- Two-sided p-values
-- Benjamini-Hochberg FDR correction across all 231 model pairs
+RSA is the main analysis because the paper is about shared concept geometry, but we add a second
+metric to test whether the qualitative ordering survives outside the RSA family. For the selected
+layer baseline, we build one concept-by-feature matrix per model using the same 250 concept
+representations used in the RSA analysis. Each matrix is row-normalized across concepts before
+comparison, and we compute pairwise **linear CKA** between all model pairs.
 
-**Image bootstrap.**
+This CKA analysis is intentionally used as triangulation rather than as a second significance layer.
+The inferential package remains tied to RSA, bootstrap, and Mantel tests. The CKA question is
+qualitative: does the same family structure appear when we compare centered feature spaces rather
+than ranked similarity matrices?
 
-- 300 bootstrap draws
-- sample size = 10 images per concept
-- sampling with replacement
+### 3.7 Comparison to the Previous Benchmark
 
-**Source holdout.**
+To make the scale-up interpretable, the new paper compares the current benchmark against the signed
+previous local release. That earlier release used the same 22-model panel but only 20 base concepts
+for RSA plus 8 compounds for exploratory analysis. The old and new runs therefore differ mainly in
+benchmark design, not in model roster.
 
-- leave-one-source-out (LOSO)
-- source-only analysis when enough concepts remain
-
-**Prompt sensitivity.**
-
-- three text templates for all language models
-
-These controls are not afterthoughts. They materially shift conclusions. The paper's main claims
-are based on what remains stable after these checks.
+That comparison is central to this paper. It lets us ask whether the earlier cross-modal story was
+discovering durable geometry or overfitting a small benchmark.
 
 ---
 
 ## 4. Results
 
-### 4.1 Global Geometry Is Family-Structured, Not Universally Shared
+### 4.1 The 250-Concept Benchmark Is More Conservative Than the Previous Paper
 
-The most stable finding in the final replication is modality asymmetry.
+The first important result is comparative: the new benchmark makes the apparent cross-modal
+convergence substantially weaker than it looked in the previous paper.
 
-**Table 2: Pairwise RSA summary by family.**
+**Table 3: Broad family comparison, previous benchmark vs. Scale250.**
 
-| Pair type | Pairs | Median $\rho$ | Mean $\rho$ | Significant after FDR |
-|----------|------:|--------------:|------------:|----------------------:|
-| Language-Language | 28 | 0.661 | 0.670 | 28 / 28 |
-| Vision-Vision | 45 | 0.682 | 0.630 | 43 / 45 |
-| Vision-Vision-Language | 40 | 0.702 | 0.681 | 40 / 40 |
-| Language-Vision | 80 | 0.259 | 0.246 | 35 / 80 |
-| Language-Vision-Language | 32 | 0.230 | 0.232 | 5 / 32 |
-| Vision-Language-Vision-Language | 6 | 0.939 | 0.927 | 6 / 6 |
+| Benchmark | Language-Language mean $\rho$ | Image-Image mean $\rho$ | Language-Image mean $\rho$ | Significant pairs |
+|-----------|------------------------------:|------------------------:|---------------------------:|------------------:|
+| Previous local release | 0.6703 | 0.6721 | 0.2418 | 157 / 231 |
+| Scale250 baseline | 0.6143 | 0.4681 | 0.0199 | 138 / 231 |
 
-Three features stand out.
+![Figure 2. Benchmark scale changes the cross-modal story. Left: mean RSA by broad family pairing. Right: FDR-significant fraction by family pairing. The large reduction is specifically in language-image agreement, while language-language agreement remains strong and image-image agreement remains substantial.](figures/scale250/old_vs_new_family_summary.png)
 
-First, within-family agreement is strong in both language and vision. Language models agree with
-each other at roughly the same level as vision models agree with each other. This supports a weak
-form of convergence: once modality and objective family are held roughly fixed, representational
-geometry becomes reproducible.
+The scale-up does not merely shrink everything uniformly. The strongest change is in cross-modal
+agreement. Language-image mean RSA drops from 0.2418 in the earlier benchmark to 0.0199 in the new
+one, and the significant fraction falls from 40/112 to 21/112. That is the clearest indication in
+the whole project that the earlier small benchmark overstated cross-modal convergence.
 
-Second, the vision-language encoders are much closer to vision than to language. The median
-vision-to-vision-language RSA (0.702) is more than three times the median
-language-to-vision-language RSA (0.230). That is the opposite of what one would expect if
-vision-language encoders served as genuinely intermediate representations between the two
-modalities.
+At the same time, the scale-up does **not** erase all structure. Language-language agreement stays
+high, and image-image agreement stays well above zero. So the new benchmark does not produce a null
+result. It produces a narrower result: convergence is robust within broad families, but weak across
+language and image on a large balanced benchmark.
 
-Third, cross-modal signal exists but remains partial. Language-vision pairs are not centered at
-zero; many are significant. But they are far below within-family agreement. The strongest
-language-vision pair is I-JEPA with SmolLM3-3B-8bit ($\rho = 0.500$), while the strongest
-vision-vision pair is ConvNeXt-v2 with Hiera-base ($\rho = 0.929$). The scale of the difference
-matters more than the existence of a few positive pairs.
+### 4.2 Family Structure in the 250-Concept Baseline
 
-### 4.2 Vision-Language Models Behave Like Vision Models
+The baseline run in `results/scale250_full/baseline/replication_results.json` and
+`results/scale250_full/baseline/robustness_opt_full/robustness_stats.json` shows clear family
+structure.
 
-The bridge-model question is central because multimodal models are often used as intuitive support
-for Platonic convergence. The final replication does not support treating multimodal success alone
-as evidence for a shared modality-neutral geometry.
+**Table 4: Fine-grained pairwise RSA summary for the Scale250 baseline.**
 
-All 40 vision-to-vision-language pairs are significant after FDR correction, with a median
-$\rho = 0.702$. By contrast, only 5 of 32 language-to-vision-language pairs survive correction,
-with a median $\rho = 0.230$.
+| Pair type | Pairs | Mean $\rho$ | Median $\rho$ | Significant after FDR |
+|----------|------:|------------:|--------------:|----------------------:|
+| Language-Language | 28 | 0.6143 | 0.5994 | 28 / 28 |
+| Vision-Vision | 45 | 0.3827 | 0.4248 | 43 / 45 |
+| VLM-VLM | 6 | 0.8938 | 0.8921 | 6 / 6 |
+| Vision-VLM | 40 | 0.5003 | 0.5584 | 40 / 40 |
+| Language-Vision | 80 | 0.0155 | 0.0149 | 15 / 80 |
+| Language-VLM | 32 | 0.0308 | 0.0372 | 6 / 32 |
 
-Representative high-similarity bridge pairs include:
+![Figure 3. Baseline RSA heatmap for the 250-concept benchmark. The family block structure is visible directly: language models cluster together, CLIP-family encoders cluster tightly, and the strongest bridge-model affinities are on the image side rather than between language and image.](figures/scale250/baseline_rsa_heatmap.png)
 
-- CLIP-ViT-B32 with I-JEPA: $\rho = 0.823$
-- I-JEPA with SigLIP2: $\rho = 0.815$
-- CLIP-ViT-B32 with Hiera-base: $\rho = 0.776$
-- SigLIP2 with ViT-MAE-base: $\rho = 0.774$
+Three conclusions follow immediately.
 
-In this setup, the best-supported interpretation is that contrastive training creates a useful
-cross-modal interface while leaving the image encoder predominantly vision-like. That is a more
-defensible reading than claiming that language and vision have converged onto one shared geometry
-internally.
+First, language models agree strongly with one another. The mean language-language RSA is 0.6143 and
+all 28 pairs survive FDR correction.
 
-### 4.3 Measured Geometry Is Strongly Source-Conditional
+Second, the contrastive vision-language encoders do not behave like modality-neutral bridges. Their
+image towers agree extremely strongly with one another (mean 0.8938) and strongly with the pure
+vision models (mean 0.5003), but only weakly with language models (mean 0.0308). On the current
+evidence, these bridge models are better interpreted as **vision-anchored interfaces** than as proof
+of a shared cross-modal geometry.
 
-The final V2 package added explicit source holdout analysis. This was scientifically important,
-because source dependence turned out to be large enough to alter interpretation.
+Third, strict language-vision agreement is weak. The mean is 0.0155, the median is 0.0149, and only
+15 of 80 pairs survive FDR correction. The strongest positive pairs in the entire panel are all on
+the image side:
 
-**Table 3: Source holdout effects relative to the full baseline run.**
+- `SigLIP` vs `SigLIP2`: 0.9397
+- `CLIP-ViT-B32` vs `MetaCLIP-B32-400m`: 0.9306
+- `MetaCLIP-B32-400m` vs `SigLIP2`: 0.9100
 
-| Holdout condition | Concepts retained | Mean $\Delta \rho$ | Mean $|\Delta \rho|$ | Max $|\Delta \rho|$ |
-|------------------|------------------:|-------------------:|---------------------:|--------------------:|
-| Leave out ImageNet | 10 | -0.1564 | 0.2358 | 0.7080 |
-| Leave out OpenImages | 14 | -0.0792 | 0.0865 | 0.2654 |
-| Leave out Unsplash | 16 | +0.0900 | 0.1295 | 0.4170 |
-| ImageNet only | 10 | -0.0194 | 0.1912 | 0.5931 |
+The most negative pairs are all cross-modal and modest in magnitude:
 
-The ImageNet result is the most consequential. Excluding ImageNet reduces pairwise RSA by
--0.1564 on average, with some model pairs shifting by more than 0.70. The asymmetry is also
-family-structured: mean $\Delta \rho$ is +0.0382 for vision-vision pairs and +0.0323 for
-vision-vision-language pairs, but -0.3526 for language-vision pairs and -0.4518 for
-language-vision-language pairs. The 20 largest absolute shifts are all cross-family.
+- `DINOv2-base` vs `Granite-3.3-2B-Instruct-8bit`: -0.1271
+- `Granite-3.3-2B-Instruct-8bit` vs `SigLIP2`: -0.0941
+- `DINOv2-base` vs `LFM2-2.6B-Exp-8bit`: -0.0927
 
-These results are consistent with dataset-conditional geometry in this setup, but they do not
-isolate dataset source as a unique causal factor. Leaving out ImageNet also changes retained
-concepts, image style, and likely object typicality. The safer claim is therefore that measured
-geometry is strongly source-conditional in this benchmark, not that dataset identity alone has
-been uniquely isolated as the cause.
+### 4.3 Autoregressive VLMs Preserve the Same Bridge-Model Story
 
-![Figure 2. ImageNet holdout impact by family pair and largest absolute pairwise shifts. Removing ImageNet leaves vision-side pairs comparatively stable but drives large negative shifts in language-vision and language-vision-language pairs; the top 20 absolute shifts are all cross-family.](../results/v2_change_assets/imagenet_holdout_impact.png)
+The most important post-review extension is architectural rather than statistical. A fair reviewer
+can object that the original bridge-model interpretation only covered contrastive dual encoders such
+as CLIP and SigLIP. To test that, the paper adds three autoregressive VLMs on the same 250-concept
+benchmark and merges them with the 22-model baseline into a 25-model selected-layer panel.
 
-### 4.4 Prompt Choice and Uncertainty Are Not Negligible
+**Table 5: Bridge-model family summary after adding three autoregressive VLMs.**
 
-Language-side prompt choice also matters more than a casual evaluation might suggest.
+| Bridge family | Mean to language | Mean to vision | Mean within family | Mean to contrastive VLM | Vision minus language |
+|--------------|-----------------:|---------------:|-------------------:|------------------------:|----------------------:|
+| Contrastive VLM (4) | 0.0308 | 0.5003 | 0.8938 | - | 0.4695 |
+| Autoregressive VLM (3) | 0.0404 | 0.5122 | 0.9011 | 0.7202 | 0.4718 |
 
-Across the 8 language models, the mean maximum absolute shift in cross-modal RSA under the two
-alternative templates is 0.1960, with a range from 0.1446 to 0.2785. The most prompt-sensitive
-model in the final run is Qwen3-0.6B-MLX-8bit; the least sensitive is
-Granite-3.3-2B-Instruct-8bit.
+![Figure 4. Bridge-model comparison after adding three autoregressive VLMs. Every bridge model is much closer to the vision family than to the language family. The new autoregressive VLMs do not collapse toward the language block; they preserve the same vision-anchored pattern as the contrastive encoders.](figures/scale250/arvlm_bridge_language_vs_vision.png)
 
-Bootstrap uncertainty confirms that the image side contributes substantial variance. Across the
-231 model pairs, image-bootstrap confidence intervals have:
+![Figure 5. Family-block mean RSA in the 25-model extension. The strongest off-diagonal structure remains on the image side: contrastive VLMs and autoregressive VLMs are both much closer to vision than to language, and the two bridge families are strongly aligned with one another.](figures/scale250/arvlm_family_block_mean_rsa.png)
 
-- mean width: 0.1787
-- median width: 0.1900
-- maximum width: 0.3703
+This extension does not rescue a modality-neutral bridge interpretation. It strengthens the opposite
+one. The three autoregressive VLMs have mean RSA 0.5122 to the vision family and only 0.0404 to the
+language family, which is effectively the same vision-language gap seen in the contrastive VLMs
+(0.4718 versus 0.4695). The per-model pattern is also consistent:
 
-The implication is methodological. Small cross-modal differences should not be overinterpreted
-without uncertainty estimates, because both prompt framing and image resampling can move the
-results by amounts comparable to many headline pairwise gaps.
+- `Qwen3.5-2B-Base-MLX-8bit`: 0.5357 to vision, 0.0399 to language
+- `Qwen3.5-4B-Base-MLX-8bit`: 0.5272 to vision, 0.0410 to language
+- `Phi-3.5-vision-instruct-MLX-8bit`: 0.4737 to vision, 0.0403 to language
 
-### 4.5 Deeper Layers Converge More, but the Final Answer Stays the Same
+The bridge-model result is therefore no longer limited to contrastive image towers. On this benchmark
+and under a selected-layer extraction regime, both contrastive VLMs and autoregressive VLMs look far
+more vision-like than language-like. The architecture extension does not answer every multimodal
+question, but it closes the most obvious criticism of the earlier bridge-model claim.
 
-The aligned-layer analysis shows a clear depth trend:
+### 4.4 Metric Triangulation With CKA Preserves the Same Ordering
 
-**Table 4: Mean pairwise RSA by aligned depth fraction.**
+The main review-driven question is whether the RSA story survives outside the RSA family. The answer
+is yes at the qualitative level.
 
-| Depth fraction | Mean pairwise $\rho$ | Median pairwise $\rho$ |
-|---------------|---------------------:|-----------------------:|
-| d00 | 0.3424 | 0.2491 |
-| d25 | 0.4149 | 0.3356 |
-| d50 | 0.4345 | 0.3857 |
-| d75 | 0.4403 | 0.4067 |
-| d100 | 0.4639 | 0.4346 |
+**Table 6: Broad family comparison under linear CKA.**
 
-Convergence strengthens monotonically with depth. This is one of the clearest positive findings in
-the entire project. It suggests that representational agreement is accumulated, not merely read out
-at the end.
+| Pair type | Pairs | Mean CKA | Median CKA |
+|----------|------:|---------:|-----------:|
+| Language-Language | 28 | 0.7429 | 0.7350 |
+| Image-Image | 91 | 0.6338 | 0.6407 |
+| Language-Image | 112 | 0.4657 | 0.4766 |
 
-But the second half of the depth result is equally important: terminal aligned and baseline runs
-are almost identical. The mean aligned-minus-baseline pairwise delta is +0.0006, and the FDR
-significance profile is unchanged. So depth changes when the geometry becomes visible, but it does
-not reverse the final high-level conclusion. Deeper layers amplify the same family structure
-rather than revealing a hidden universal geometry that the baseline missed.
+For this CKA summary, the four contrastive VLM image encoders are grouped with the image side,
+because the extracted representations are image-tower features. Under that definition, the same broad
+ordering survives: language-language is highest, image-image remains next, and language-image is the
+weakest category. Pairwise agreement between RSA and CKA over all 231 model pairs is substantial
+(Pearson 0.7229, Spearman 0.7050), which is exactly what we want from metric triangulation: not
+identical magnitudes, but the same structural ranking.
 
-### 4.6 Compositionality Is Exploratory, Not a Main Claim
+![Figure 6. Baseline CKA heatmap for the same 22-model selected-layer run. The block structure closely matches the RSA view, with the strongest alignments concentrated among image-side and contrastive VLM encoders.](figures/scale250/baseline_cka_heatmap.png)
 
-The earlier small-scale analyses encouraged a strong story about compositionality. The final 22-model
-package does not support such strong wording.
+![Figure 7. Pairwise RSA vs. CKA across all 231 model pairs in the Scale250 baseline. The metrics are not numerically interchangeable, but the positive correlation shows that the family structure is not an artifact of RSA alone.](figures/scale250/rsa_vs_cka_scatter.png)
 
-Using the current V2 metrics:
+The same top families dominate under CKA. The strongest pairs are again `SigLIP` vs `SigLIP2`
+(0.9749), `CLIP-ViT-B32` vs `MetaCLIP-B32-400m` (0.9712), and `MetaCLIP-B32-400m` vs `SigLIP2`
+(0.9605). The weakest CKA pairs still concentrate in cross-modal comparisons involving weaker
+language-image alignment, especially around `ViT-MSN-base`.
 
-- mean additive compositionality is 0.948 for vision-language models
-- mean additive compositionality is 0.873 for vision models
-- mean additive compositionality is 0.831 for language models
+The numeric gap is less stark under CKA than under RSA. That difference is expected rather than
+concerning. RSA is a rank correlation over similarity matrices; CKA is a centered alignment on
+feature matrices and is bounded positive in this implementation. The important result is not that the
+numbers match exactly, but that the qualitative family ordering survives a second metric family.
 
-The balance-style score is even less separating, with family means compressed into the range
-0.907 to 0.965. In other words, compound-concept behavior in the final pipeline does not cleanly
-partition by modality. It overlaps broadly and depends strongly on metric design.
+### 4.5 Depth Helps More Than Final-Layer Choice
 
-This does not make the compositionality analysis useless. It makes it secondary. The final paper
-therefore treats compositionality as exploratory evidence rather than a core pillar of the
-conclusion.
+The aligned5 pass is where the main positive result of the new study appears. The selected-layer
+headline barely changes between baseline and aligned5, but the depth profile is informative.
+
+**Table 7: Mean RSA by aligned depth fraction in the 250-concept run.**
+
+| Depth | Overall | Language-Language | Image-Image | Language-Image |
+|------|--------:|------------------:|------------:|---------------:|
+| d00 | 0.2381 | 0.6143 | 0.3859 | 0.0240 |
+| d25 | 0.3053 | 0.6143 | 0.5317 | 0.0441 |
+| d50 | 0.3094 | 0.6143 | 0.5372 | 0.0481 |
+| d75 | 0.3096 | 0.6143 | 0.5450 | 0.0420 |
+| d100 | 0.2683 | 0.6143 | 0.4679 | 0.0197 |
+
+![Figure 8. Aligned5 depth profile. Language-language agreement is essentially flat across depth, but image-image and language-image agreement rise strongly into the middle and late layers before dropping back at the terminal selected layer.](figures/scale250/aligned5_depth_profile.png)
+
+This depth pattern matters for interpretation. It says that whatever shared geometry exists in this
+panel is strongest in mid-to-late aligned layers, not uniquely in the terminal layer. The
+language-language line stays flat, while image-image and language-image comparisons do the moving.
+
+At the same time, aligned5 does **not** rescue a strong PRH reading. The selected-layer baseline and
+selected-layer aligned5 summaries are nearly identical: both have 138/231 significant model-pair
+results, the mean absolute pairwise shift is only 0.0002, and 210 of 231 pairwise RSA values are
+unchanged exactly. So aligned layers change *where* the convergence signal is most visible, not
+*whether* the final high-level conclusion changes.
+
+### 4.6 Prompt Sensitivity Is Real but Manageable
+
+Prompt sensitivity is materially smaller in the new benchmark than in the previous small one, but it
+is not negligible.
+
+Across the 8 language models in the Scale250 baseline:
+
+- mean maximum absolute shift vs. baseline template: 0.0766
+- median maximum absolute shift: 0.0818
+- maximum shift: 0.1238
+
+By model, the least prompt-sensitive and most prompt-sensitive cases are:
+
+- `Granite-3.3-2B-Instruct-8bit`: 0.0446
+- `Qwen3-1.7B-MLX-8bit`: 0.0460
+- `SmolLM3-3B-8bit`: 0.1238
+
+![Figure 9. Prompt sensitivity across language models. Values are the maximum absolute shift in cross-modal RSA relative to the baseline template over the two alternative templates in the `baseline3` family.](figures/scale250/prompt_sensitivity.png)
+
+The image-bootstrap confidence intervals are also much tighter than in the previous benchmark:
+
+- previous benchmark mean CI width: 0.1787
+- Scale250 mean CI width: 0.0552
+
+That improvement matters. The new benchmark is not only harder; it is also more statistically
+stable. The broader concept set shrinks uncertainty enough that small cross-modal effects can be
+interpreted more cautiously and more credibly.
+
+### 4.7 There Is No Clean Language-Model Scaling Law Here
+
+The previous paper entertained a tentative scale story. The new benchmark does not support it.
+
+Using the baseline scaling analysis in `results/scale250_full/baseline/scaling/scaling_analysis.png`,
+the Spearman correlation between language-model size and mean vision RSA is -0.0952. That is
+effectively no monotonic scaling law.
+
+The per-model pattern is mixed:
+
+- best mean vision alignment: `Qwen3-0.6B-MLX-8bit` at 0.0455
+- worst mean vision alignment: `Granite-3.3-2B-Instruct-8bit` at -0.0333
+- `Qwen3-4B-MLX-8bit` improves over the 2B and 1.5B cases, but not over the 0.6B case
+
+![Figure 10. Baseline scaling analysis. Cross-modal RSA with vision models does not increase monotonically with language-model size across the 0.6B-4B panel.](figures/scale250/baseline_scaling.png)
+
+This does not mean size never matters. It means size is not the dominant variable in this local
+panel once the benchmark is broadened. Architecture family, training data, and objective appear to
+matter more than raw parameter count.
+
+### 4.8 What Actually Improved Over the Previous Paper
+
+The methodological improvements over the previous paper are now clear enough to state explicitly.
+
+**Benchmark improvements**
+
+- The primary concept set grew from 20 base concepts to 250 base concepts.
+- Source diversity moved from a looser benchmark property to a strict within-concept requirement.
+- Compounds were removed from the confirmatory set instead of being mixed into the main argument.
+
+**Inference improvements**
+
+- The main paper compares previous vs. current benchmark outcomes directly.
+- Layer-wise analysis is confirmatory rather than ad hoc.
+- Metric triangulation now tests whether the result survives outside RSA alone.
+- Uncertainty is tighter and more interpretable in the larger benchmark.
+- The reviewer-facing architecture critique is tested directly with a 25-model extension rather than
+  left as future work.
+
+**Interpretive improvement**
+
+- The new paper no longer treats a few positive cross-modal pairs as evidence for general
+  convergence.
+- It separates within-family reproducibility from universal convergence.
+- It treats contrastive bridge-model success as evidence about engineered interfaces, not automatic
+  proof of modality-neutral geometry.
 
 ---
 
 ## 5. Discussion
 
-### 5.1 What Converges, and What Does Not
+### 5.1 What the New Experiment Suggests
 
-The final replication supports two statements and rejects one.
+The strongest interpretation of the new experiment is not that convergence disappears. It is that
+convergence becomes more selective and more conditional when the benchmark is made harder.
 
-Supported:
+The previous small benchmark supported a relatively optimistic reading because language-image
+agreement was moderate and often significant. The 250-concept benchmark changes that. The new data
+suggest that much of the earlier cross-modal signal was benchmark-specific. Once the concept space is
+broadened and balanced, the robust story is family structure, not universal convergence.
 
-- models converge strongly within family
-- vision-language encoders converge strongly with vision encoders
+The architecture extension sharpens that story further. Adding three autoregressive VLMs does not
+pull the bridge-model block toward language. It leaves the geometry on the image side. So the
+benchmark correction result and the bridge-model result now support one another: weak language-image
+agreement is not just a contrastive-dual-encoder quirk.
 
-Not supported:
+That is not a trivial negative result. It clarifies the boundary of the phenomenon:
 
-- all sufficiently capable modalities converge toward one shared geometry
+- language models converge strongly with language models
+- image-side models converge strongly with image-side models
+- contrastive bridge models behave more like image models than like modality-neutral intermediates
+- language-image convergence is weak as a general statement on this benchmark
 
-This is not a null result. It narrows the hypothesis. The data are consistent with modality-shaped
-structure that remains partially coupled across modalities but does not collapse into one shared
-space at the tested scale.
+### 5.2 The Main Contribution Is Benchmark Correction
 
-### 5.2 Why Bridge Models Do Not Rescue the Strong Hypothesis
+The most defensible contribution of the paper is methodological before it is theoretical. The same
+22-model panel yields a substantially weaker cross-modal estimate once the benchmark is broadened,
+balanced, and separated into confirmatory and exploratory parts. That means the benchmark was not a
+minor implementation detail in the previous paper; it was a major driver of the estimated effect
+size.
 
-One tempting reply is that the vision-language models already demonstrate cross-modal convergence.
-But that reading confuses interface alignment with internal geometry.
+Benchmark correction papers can look modest because they often replace a more exciting story with a
+more conservative one. But this is exactly the point. A credible measurement regime should be allowed
+to weaken an earlier claim, especially when the earlier claim came from a smaller and easier test.
 
-The bridge models are trained precisely to connect images and text. If their image encoders still
-end up substantially closer to vision than to language, then multimodal success cannot be taken as
-independent evidence for a strong Platonic claim. It demonstrates engineered compatibility, which
-is useful, but conceptually different.
+### 5.3 Why the Bridge Models Matter Across Architectures
 
-### 5.3 Why Robustness Controls Change the Interpretation
+The bridge-model result remains conceptually important, but it needs to be stated carefully. In the
+core 22-model panel, the bridge models are contrastive dual encoders evaluated through their image
+towers. In the new extension, the bridge models include three native autoregressive VLMs evaluated
+through their image-conditioned selected-layer embeddings. Under both regimes, they cluster strongly
+with vision.
 
-The most important difference between the early prototype and the final replication is not model
-count. It is methodological pressure.
+That does **not** prove that all multimodal models are vision-anchored under every extraction
+choice. It does support a narrower and useful claim: effective multimodal interfaces can be built
+without erasing modality-shaped internal structure, and the present evidence points consistently
+toward vision-anchored bridge geometry rather than modality-neutral convergence.
 
-Three controls matter especially:
+### 5.4 What the Depth Result Adds
 
-- source holdout shows that image provenance materially changes geometry
-- prompt sensitivity shows that language-side framing materially changes geometry
-- aligned-layer analysis shows that convergence is depth-dependent but terminally stable
+The aligned5 result is the most constructive positive finding in the paper. It suggests that shared
+geometry, such as it is, is better understood as a developmental pattern across depth than as a
+property of final-layer readouts alone. Mid-to-late aligned layers carry stronger cross-family
+structure than the terminal selected layer.
 
-This is why the current paper is more conservative than the early narrative. Once those controls
-are in place, the strongest claims are about boundary conditions, not about universal agreement.
+That finding keeps a weaker Platonic story alive. One could argue that convergence begins inside the
+network before being distorted by task-specific final readout behavior. But on the present evidence,
+that weaker story remains a plausible interpretation rather than a confirmed universal law.
 
-### 5.4 Limitations
+### 5.5 What This Experiment Can and Cannot Refute About PRH
 
-The paper still has clear limits.
+This experiment does **not** refute the broadest possible version of PRH. It does not test frontier
+language models, it does not include a broad sweep of autoregressive multimodal architectures, and it
+does not cover a rich abstract-concept regime. Stronger cross-modal effects could still emerge under
+those conditions.
 
-1. **No controlled retraining.** We compare pretrained models; we do not intervene on data or
-   objective while holding architecture fixed.
-2. **Scale is modest.** The language side is capped at 4B parameters by design. A stronger
-   Platonic effect may emerge later.
-3. **Concepts are still concrete-heavy.** The evaluation does not yet include enough abstract
-   concepts to test whether abstraction strengthens or weakens cross-modal agreement.
-4. **Prompting is narrow.** We use short definitional prompts, not long contextual or sensory
-   prompts.
-5. **Quantization sensitivity is incomplete.** A dedicated q4 vs q8 final ablation was identified
-   as still worth doing but is not part of the sign-off package.
+What the experiment *does* support is narrower and more concrete:
 
-### 5.5 Future Directions
+1. On this local panel, small benchmarks materially overstate language-image geometric convergence.
+2. On a broader and source-balanced benchmark, robust agreement is much stronger within families than
+   across language and image.
+3. The bridge-model result survives an architecture extension from contrastive VLMs to three
+   autoregressive VLMs.
+4. Any surviving cross-family structure is more visible in aligned mid-to-late layers than in the
+   final selected layer.
 
-The most informative next experiments are not simply "more models." They are more controlled
-models.
+That is already a meaningful correction to the earlier local story. It changes the claim from "the
+panel appears moderately cross-modally aligned" to "the panel shows weak cross-modal alignment once
+measured on a stronger benchmark."
 
-High-value next steps are:
+### 5.6 Limitations
 
-- same-family scaling to isolate size from architecture
-- intervention on image source composition
-- abstract-concept expansion
-- richer text prompt families
-- controlled language-alignment training to distinguish engineering from emergence
+The new paper is substantially better grounded than the previous one, but it is not complete.
 
-If the Platonic hypothesis is true in a strong sense, it should survive those interventions. If it
-does not, then the field needs a weaker and more precise formulation.
+1. **No primary compositionality claim.** The new confirmatory benchmark intentionally excludes
+   compounds, so compositionality is no longer part of the main evidence package.
+2. **Source-holdout remains incomplete.** The new benchmark improves source balance by design, but
+   the current robustness implementation collapses source holdout to a single `mixed_balanced`
+   regime, so this paper does not claim a strong source-ablation result.
+3. **Scale still tops out at 4B on the language side.** A stronger cross-modal effect could emerge
+   at materially larger scale.
+4. **The concept set is concrete-heavy.** The benchmark is broader than before, but not yet a strong
+   test of abstraction.
+5. **The AR-VLM extension is still narrow and selected-layer only.** The architecture stress test
+   now includes three completed autoregressive VLMs, but it does not yet include a broader family
+   sweep or aligned-layer internal hooks for those models.
+
+### 5.7 Implications for the Next Experiment
+
+The next high-value experiments are now clearer than they were after the previous paper.
+
+- Complete a broader autoregressive VLM panel, including one or two additional non-Qwen families and
+  a lighter-weight completion of the `SmolVLM2` run.
+- Add a dedicated abstract-concept tranche to test whether abstraction increases or decreases
+  cross-modal agreement.
+- Repair the per-image-source holdout path so the balanced benchmark supports a real source-ablation
+  analysis.
+- Implement aligned-layer hooks for at least one autoregressive VLM family so the depth result can be
+  tested beyond the current selected-layer extension.
+- Expand same-family language-model scaling to separate architecture from parameter count.
+- Run aligned-layer analyses on larger language models rather than only the 0.6B-4B regime.
+
+The new paper therefore narrows the open question. It no longer asks, "Do different modalities ever
+agree?" They do, weakly. The real question is now: under what benchmark, architecture, and depth
+conditions does that agreement become strong enough to count as evidence for a shared geometry?
 
 ---
 
 ## 6. Conclusion
 
-We tested the Platonic Representation Hypothesis using the final local 22-model replication rather
-than the earlier prototype reports. The result is not that cross-modal geometry is absent. It is
-that the stable signal is weaker and more conditional than an optimistic reading suggests.
+The new 250-concept experiment changes the interpretation of this project in a decisive way.
 
-The final evidence supports four conclusions:
+It improves on the previous paper by replacing a small benchmark with a structured confirmatory one,
+balancing sources within concept, tightening uncertainty, adding aligned-layer analysis,
+triangulating the main result with CKA, and then stress-testing the bridge-model interpretation with
+a narrow three-model autoregressive VLM extension. That makes the new experiment a better test of
+the hypothesis rather than merely a larger one.
 
-1. **Within-family convergence is robust.** Language models agree strongly with language models,
-   and vision models agree strongly with vision models.
-2. **Vision-language encoders are structurally vision-like in this setup.** Their geometry is much
-   closer to vision than to language.
-3. **Cross-modal geometry is real but partial.** It is substantially weaker than within-family
-   agreement and often disappears under stricter significance thresholds.
-4. **Interpretation depends on controls.** Image source, prompt template, and layer depth all
-   matter enough to change the story.
+The resulting picture is more conservative and more informative:
 
-The strong Platonic claim is therefore not supported in this local-scale stress test. The more
-defensible statement is weaker: representational geometry is shaped by both world structure and
-modality-specific training pressures, and the balance between those forces remains an open
-empirical question.
+1. **Within-modality convergence is robust.**
+2. **Both contrastive and autoregressive bridge models are strongly vision-like, not
+   modality-neutral.**
+3. **Cross-modal language-image geometry is weak on a broad balanced benchmark.**
+4. **Mid-to-late layers are more informative than the final selected layer.**
+5. **Language-model size does not explain cross-modal alignment in this panel.**
+6. **The same qualitative result survives a second metric family, linear CKA.**
 
-### What We Still Do Not Know
-
-Two possibilities remain live.
-
-- **Weak Platonic view**: the present runs are below the scale where cross-modal geometry becomes
-  dominant, but the monotonic depth trend and non-zero cross-modal signal are early evidence.
-- **Family-structured view**: each modality learns a partially overlapping but fundamentally
-  distinct geometry, and explicit alignment is required to bridge them.
-
-The current project resolves neither possibility completely. What it does provide is a cleaner map
-of the boundary: where convergence is already robust, where it is still fragile, and which controls
-must be passed before stronger claims become credible.
+The right high-level takeaway is therefore not that PRH has been disproved in general. It is that a
+stronger benchmark materially weakens the cross-modal claim on this panel. Small benchmarks can
+overstate convergence. What survives the stronger test is a narrower but more credible story about
+within-family structure, contrastive interface alignment, and depth-dependent overlap.
 
 ---
 
 ## Code and Data Availability
 
-Code, curated data manifests, final result artifacts, and the print-ready manuscript are available
-at [https://github.com/abinashkarki/cross-modal-representations](https://github.com/abinashkarki/cross-modal-representations).
+Code, manifests, small paper-facing result artifacts, figure-generation code, and manuscript
+sources are available in this repository and are intended to be published alongside the paper at
+`https://github.com/abinashkarki/cross-modal-representations`. Heavy compiled Scale250 artifacts are
+excluded from git and indexed in `artifacts/release_manifest.json` with checksums in
+`artifacts/SHA256SUMS.txt`. The canonical in-repo artifacts for this paper are:
 
-The canonical public artifacts for this release are the manuscript in `manuscript/`, the curated
-dataset in `data/`, and the signed-off baseline and aligned outputs in `results/baseline/` and
-`results/aligned5/`.
+- `data/data_manifest_250.json`
+- `results/scale250_full/baseline/robustness_opt_full/robustness_stats.json`
+- `results/scale250_full/aligned5/robustness/robustness_stats.json`
+- `results/scale250_full/baseline25_extension/architecture_analysis/architecture_summary.json`
+- `src/generate_scale250_paper_figures.py`
+- `src/analyze_arvlm_extension.py`
+- `artifacts/release_manifest.json`
+- `manuscript/figures/scale250/`
 
 ---
 
@@ -524,50 +723,59 @@ dataset in `data/`, and the signed-off baseline and aligned outputs in `results/
 
 Andreas, J. (2019). Measuring Compositionality in Representation Learning. *ICLR 2019*.
 
-Bao, H., Dong, L., Piao, S., and Wei, F. (2022). BEiT: BERT Pre-Training of Image
-Transformers. *ICLR 2022*.
-
-He, K., Chen, X., Xie, S., Li, Y., Dollar, P., and Girshick, R. (2022). Masked Autoencoders Are
-Scalable Vision Learners. *CVPR 2022*.
-
 Huh, M., Cheung, B., Wang, T., and Isola, P. (2024). The Platonic Representation Hypothesis.
 *arXiv preprint arXiv:2405.07987*.
+
+Kornblith, S., Norouzi, M., Lee, H., and Hinton, G. (2019). Similarity of Neural Network
+Representations Revisited. *ICML 2019*.
 
 Kriegeskorte, N., Mur, M., and Bandettini, P. A. (2008). Representational similarity analysis:
 connecting the branches of systems neuroscience. *Frontiers in Systems Neuroscience*, 2, 4.
 
+Morcos, A. S., Raghu, M., and Bengio, S. (2018). Insights on representational similarity in neural
+networks with canonical correlation. *NeurIPS 2018*.
+
 Mikolov, T., Sutskever, I., Chen, K., Corrado, G. S., and Dean, J. (2013). Distributed
 representations of words and phrases and their compositionality. *NeurIPS 2013*.
 
-Oquab, M., Darcet, T., Moutakanni, T., Vo, H., Szafraniec, M., Khalidov, V., and Bojanowski, P.
-(2023). DINOv2: Learning Robust Visual Features without Supervision. *arXiv preprint
-arXiv:2304.07193*.
+Raghu, M., Gilmer, J., Yosinski, J., and Sohl-Dickstein, J. (2017). SVCCA: Singular Vector
+Canonical Correlation Analysis for Deep Learning Dynamics and Interpretability. *arXiv preprint
+arXiv:1706.05806*.
 
 Radford, A., Kim, J. W., Hallacy, C., Ramesh, A., Goh, G., Agarwal, S., Sastry, G., Askell, A.,
-Mishkin, P., Clark, J., Krueger, G., and Sutskever, I. (2021). Learning Transferable Visual
-Models From Natural Language Supervision. *ICML 2021*.
+Mishkin, P., Clark, J., Krueger, G., and Sutskever, I. (2021). Learning Transferable Visual Models
+From Natural Language Supervision. *ICML 2021*.
 
 Zhai, X., Mustafa, B., Kolesnikov, A., and Beyer, L. (2023). Sigmoid Loss for Language Image
 Pre-Training. *ICCV 2023*.
 
 ---
 
-## Appendix A: Statistical Summary
+## Appendix A: Reproducibility Summary
 
-- Models tested: 22
+- Previous comparison benchmark: 20 base concepts for RSA, 8 compound probes, same 22-model panel
+- Current confirmatory benchmark: 250 base concepts, no compounds in the primary set
+- Secondary architecture extension: 3 completed autoregressive VLMs merged into a 25-model selected-layer panel
+- Images per concept: 15
+- Source policy: 5 ImageNet, 5 Open Images, 5 Unsplash per concept
 - Model pairs tested: 231
-- Base concepts used for RSA: 20
-- Compound concepts used for exploratory analysis: 8
-- Images per concept: 30
-- Total concept images: 840
-- Mantel permutations per pair: 3,000
 - Bootstrap draws: 300
 - Bootstrap image sample size: 10
-- Execution context: local commodity hardware
+- Mantel permutations per pair: 3,000
+- Prompt templates extracted: 3
+- Layer protocols: selected-layer baseline and aligned5
+- Secondary metric: linear CKA on selected-layer concept matrices
 
-## Appendix B: Reproducibility Notes
+## Appendix B: Files Used For This Paper
 
-The final paper is based on the completed standalone release artifacts in `results/baseline/`,
-`results/aligned5/`, and the corresponding robustness outputs. The final claims in this draft are
-aligned with the signed-off baseline, aligned5, and robustness artifacts rather than with the
-earlier prototype summaries.
+- `data/data_manifest_250.json`
+- `results/scale250_full/baseline/robustness_opt_full/robustness_stats.json`
+- `results/scale250_full/aligned5/robustness/robustness_stats.json`
+- `results/scale250_full/baseline25_extension/architecture_analysis/architecture_summary.json`
+- `artifacts/release_manifest.json`
+- `artifacts/SHA256SUMS.txt`
+- `src/analyze_arvlm_extension.py`
+- `results/baseline/replication_results.json.gz`
+- `results/baseline/robustness/robustness_stats.json`
+- `src/generate_scale250_paper_figures.py`
+- `manuscript/figures/scale250/`

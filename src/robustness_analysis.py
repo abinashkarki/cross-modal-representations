@@ -1,21 +1,22 @@
 import argparse
 import json
 import os
+from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass
 from datetime import datetime
+from time import perf_counter
 from typing import Any, Dict, List, Optional, Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-from scipy.stats import spearmanr
-from sklearn.metrics.pairwise import cosine_similarity
+from scipy.stats import rankdata, spearmanr
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 EXPERIMENT_DIR = os.path.dirname(SCRIPT_DIR)
 RESULTS_DIR = os.path.join(EXPERIMENT_DIR, "results", "replication")
 DATA_FILE = os.path.join(RESULTS_DIR, "replication_results.json")
-MANIFEST_PATH = os.path.join(EXPERIMENT_DIR, "data", "data_manifest_multi.json")
+MANIFEST_PATH = os.path.join(EXPERIMENT_DIR, "data", "data_manifest_250.json")
 DEFAULT_CACHE_DIR = os.path.join(RESULTS_DIR, "cache")
 DEFAULT_OUTPUT_DIR = os.path.join(RESULTS_DIR, "robustness")
 CACHE_SCHEMA_VERSION = "1.1.0"
@@ -123,20 +124,85 @@ def resolve_embeddings_for_layer(
     return model_data["embeddings"], layer_meta.get("default_layer_key", "selected")
 
 
+def stack_embeddings(embeddings: Dict[str, Any], concepts: List[str]) -> np.ndarray:
+    rows = [
+        np.asarray(embeddings[concept], dtype=np.float32).reshape(-1)
+        for concept in concepts
+    ]
+    return np.stack(rows, axis=0)
+
+
+def stack_per_concept_arrays(
+    per_concept: Dict[str, np.ndarray],
+    concepts: List[str],
+) -> Optional[np.ndarray]:
+    arrays = [np.asarray(per_concept[concept], dtype=np.float32) for concept in concepts]
+    row_counts = {arr.shape[0] for arr in arrays}
+    if len(row_counts) != 1:
+        return None
+    return np.stack(arrays, axis=0)
+
+
+def _row_normalize(matrix: np.ndarray) -> np.ndarray:
+    arr = np.asarray(matrix, dtype=np.float32)
+    norms = np.linalg.norm(arr, axis=1, keepdims=True)
+    norms = np.where(norms == 0.0, 1.0, norms)
+    return arr / norms
+
+
+def build_similarity_matrix_from_stacked(stacked_embeddings: np.ndarray) -> np.ndarray:
+    normalized = _row_normalize(stacked_embeddings)
+    matrix = normalized @ normalized.T
+    np.clip(matrix, -1.0, 1.0, out=matrix)
+    return matrix.astype(np.float32, copy=False)
+
+
 def build_similarity_matrix(embeddings: Dict[str, Any], concepts: List[str]) -> np.ndarray:
-    n = len(concepts)
-    matrix = np.zeros((n, n), dtype=np.float32)
-    for i, c1 in enumerate(concepts):
-        e1 = np.asarray(embeddings[c1], dtype=np.float32).reshape(1, -1)
-        for j, c2 in enumerate(concepts):
-            e2 = np.asarray(embeddings[c2], dtype=np.float32).reshape(1, -1)
-            matrix[i, j] = cosine_similarity(e1, e2)[0][0]
-    return matrix
+    return build_similarity_matrix_from_stacked(stack_embeddings(embeddings, concepts))
 
 
-def upper_triangle_flat(matrix: np.ndarray) -> np.ndarray:
-    idx = np.triu_indices(matrix.shape[0], k=1)
+def build_similarity_flat_from_stacked(
+    stacked_embeddings: np.ndarray,
+    triu_idx: Tuple[np.ndarray, np.ndarray],
+) -> np.ndarray:
+    matrix = build_similarity_matrix_from_stacked(stacked_embeddings)
+    return matrix[triu_idx]
+
+
+def upper_triangle_flat(
+    matrix: np.ndarray,
+    triu_idx: Optional[Tuple[np.ndarray, np.ndarray]] = None,
+) -> np.ndarray:
+    idx = triu_idx or np.triu_indices(matrix.shape[0], k=1)
     return matrix[idx]
+
+
+def build_model_pairs(model_names: List[str]) -> List[Tuple[str, str]]:
+    return [
+        (model_a, model_b)
+        for i, model_a in enumerate(model_names)
+        for model_b in model_names[i + 1:]
+    ]
+
+
+def spearman_correlation_matrix(rows: np.ndarray) -> np.ndarray:
+    if rows.ndim != 2:
+        raise ValueError(f"Expected rank-2 array for row correlations, got {rows.shape}")
+    ranked = np.empty(rows.shape, dtype=np.float32)
+    for idx, row in enumerate(rows):
+        ranked[idx] = rankdata(row, method="average").astype(np.float32)
+    ranked -= ranked.mean(axis=1, keepdims=True)
+    ranked = _row_normalize(ranked)
+    corr = ranked @ ranked.T
+    np.clip(corr, -1.0, 1.0, out=corr)
+    return corr.astype(np.float32, copy=False)
+
+
+def default_mantel_workers() -> int:
+    cpu_count = os.cpu_count() or 1
+    if cpu_count <= 2:
+        return 1
+    return min(8, cpu_count - 1)
 
 
 def load_compiled_data(path: str) -> Dict[str, Any]:
@@ -319,6 +385,20 @@ def mantel_permutation_two_sided(
     return float((hits + 1) / (permutations + 1))
 
 
+def _mantel_pair_task(
+    task: Tuple[int, str, str, np.ndarray, np.ndarray, int, int]
+) -> Tuple[int, str, str, float]:
+    idx, model_a, model_b, matrix_a, matrix_b, permutations, seed = task
+    pair_rng = np.random.default_rng(seed + idx + 1)
+    p = mantel_permutation_two_sided(
+        matrix_a,
+        matrix_b,
+        permutations=permutations,
+        rng=pair_rng,
+    )
+    return idx, model_a, model_b, p
+
+
 def bh_fdr_correction(p_values: List[float]) -> List[float]:
     m = len(p_values)
     order = np.argsort(p_values)
@@ -457,8 +537,10 @@ def main(
     output_dir: str,
     expected_layer_profile_id: Optional[str],
     requested_layers_spec: Optional[str],
+    mantel_workers: int,
 ) -> None:
     os.makedirs(output_dir, exist_ok=True)
+    run_start = perf_counter()
 
     compiled = load_compiled_data(data_file)
     manifest = load_manifest(manifest_path)
@@ -481,30 +563,48 @@ def main(
         )
 
     model_names = sorted(raw_models.keys())
+    model_pairs = build_model_pairs(model_names)
+    model_pair_triu = np.triu_indices(len(model_names), k=1)
     resolved_models: Dict[str, Dict[str, Any]] = {}
     resolved_layers: Dict[str, str] = {}
     categories: Dict[str, str] = {}
+    concept_triu = np.triu_indices(len(base_concepts), k=1)
     for model_name in model_names:
         model_data = raw_models[model_name]
         embeddings, resolved_layer = resolve_embeddings_for_layer(model_name, model_data, layer)
+        stacked_embeddings = stack_embeddings(embeddings, base_concepts)
         resolved_layers[model_name] = resolved_layer
         categories[model_name] = model_category(model_data)
         resolved_models[model_name] = {
             "raw": model_data,
             "embeddings": embeddings,
+            "stacked_embeddings": stacked_embeddings,
         }
+
+    image_models = [m for m in model_names if categories[m] == "image"]
+    print(
+        "Loaded robustness inputs: "
+        f"models={len(model_names)}, image_models={len(image_models)}, "
+        f"concepts={len(base_concepts)}, pairs={len(model_pairs)}"
+    )
 
     baseline_matrices: Dict[str, np.ndarray] = {}
     baseline_flats: Dict[str, np.ndarray] = {}
+    baseline_start = perf_counter()
     for model_name in model_names:
-        sim = build_similarity_matrix(resolved_models[model_name]["embeddings"], base_concepts)
+        stacked_embeddings = resolved_models[model_name]["stacked_embeddings"]
+        sim = build_similarity_matrix_from_stacked(stacked_embeddings)
         baseline_matrices[model_name] = sim
-        baseline_flats[model_name] = upper_triangle_flat(sim)
+        baseline_flats[model_name] = upper_triangle_flat(sim, concept_triu)
+    print(f"Built baseline similarity matrices in {perf_counter() - baseline_start:.1f}s")
 
-    image_models = [m for m in model_names if categories[m] == "image"]
     if not image_models:
         raise AnalysisError("Robustness analysis requires at least one image model.")
     cache_arrays: Dict[str, Dict[str, np.ndarray]] = {}
+    cache_tensors: Dict[str, np.ndarray] = {}
+    bootstrap_rows: Optional[int] = None
+    bootstrap_vectorized = True
+    cache_start = perf_counter()
     for model_name in image_models:
         layer_key = resolved_layers[model_name]
         cache_arrays[model_name] = load_image_cache_for_model(
@@ -517,80 +617,163 @@ def main(
             expected_layer_profile_id=expected_layer_profile_id,
             expected_requested_layers_spec=requested_layers_spec,
         )
+        cache_tensor = stack_per_concept_arrays(cache_arrays[model_name], base_concepts)
+        if cache_tensor is None:
+            bootstrap_vectorized = False
+            continue
+        cache_tensors[model_name] = cache_tensor
+        row_count = cache_tensor.shape[1]
+        if bootstrap_rows is None:
+            bootstrap_rows = row_count
+        elif bootstrap_rows != row_count:
+            bootstrap_vectorized = False
+    print(
+        f"Loaded image cache tensors in {perf_counter() - cache_start:.1f}s "
+        f"(vectorized_bootstrap={bootstrap_vectorized})"
+    )
 
     rng = np.random.default_rng(seed)
-    pair_draws: Dict[Tuple[str, str], List[float]] = {
-        _pair_key(a, b): []
-        for i, a in enumerate(model_names) for b in model_names[i + 1:]
-    }
-
-    for _ in range(bootstrap_draws):
-        sampled_indices = {}
-        for concept in base_concepts:
-            rows = cache_arrays[image_models[0]][concept].shape[0] if image_models else bootstrap_sample_size
+    pair_draws = np.empty((len(model_pairs), bootstrap_draws), dtype=np.float32)
+    bootstrap_start = perf_counter()
+    if bootstrap_vectorized and bootstrap_rows is not None and len(cache_tensors) == len(image_models):
+        concept_index = np.arange(len(base_concepts))[:, None]
+        for draw_idx in range(bootstrap_draws):
             if bootstrap_replacement:
-                idx = rng.integers(0, rows, size=bootstrap_sample_size)
+                sampled_indices = rng.integers(
+                    0,
+                    bootstrap_rows,
+                    size=(len(base_concepts), bootstrap_sample_size),
+                )
             else:
-                idx = rng.choice(rows, size=bootstrap_sample_size, replace=False)
-            sampled_indices[concept] = idx
+                sampled_indices = np.empty(
+                    (len(base_concepts), bootstrap_sample_size),
+                    dtype=np.int64,
+                )
+                for concept_idx in range(len(base_concepts)):
+                    sampled_indices[concept_idx] = rng.choice(
+                        bootstrap_rows,
+                        size=bootstrap_sample_size,
+                        replace=False,
+                    )
 
-        draw_flats: Dict[str, np.ndarray] = {}
-        for model_name in model_names:
-            if model_name not in image_models:
-                draw_flats[model_name] = baseline_flats[model_name]
-                continue
-            centroids = {}
+            draw_rows = []
+            for model_name in model_names:
+                if model_name not in image_models:
+                    draw_rows.append(baseline_flats[model_name])
+                    continue
+                sampled = cache_tensors[model_name][concept_index, sampled_indices]
+                centroids = sampled.mean(axis=1)
+                draw_rows.append(build_similarity_flat_from_stacked(centroids, concept_triu))
+
+            draw_corr = spearman_correlation_matrix(np.stack(draw_rows, axis=0))
+            pair_draws[:, draw_idx] = draw_corr[model_pair_triu]
+    else:
+        for draw_idx in range(bootstrap_draws):
+            sampled_indices = {}
             for concept in base_concepts:
-                arr = cache_arrays[model_name][concept]
-                centroids[concept] = arr[sampled_indices[concept]].mean(axis=0)
-            draw_matrix = build_similarity_matrix(centroids, base_concepts)
-            draw_flats[model_name] = upper_triangle_flat(draw_matrix)
+                rows = (
+                    cache_arrays[image_models[0]][concept].shape[0]
+                    if image_models
+                    else bootstrap_sample_size
+                )
+                if bootstrap_replacement:
+                    idx = rng.integers(0, rows, size=bootstrap_sample_size)
+                else:
+                    idx = rng.choice(rows, size=bootstrap_sample_size, replace=False)
+                sampled_indices[concept] = idx
 
-        for i, model_a in enumerate(model_names):
-            for model_b in model_names[i + 1:]:
-                key = _pair_key(model_a, model_b)
-                rho = _safe_spearman(draw_flats[model_a], draw_flats[model_b])
-                pair_draws[key].append(rho)
+            draw_rows = []
+            for model_name in model_names:
+                if model_name not in image_models:
+                    draw_rows.append(baseline_flats[model_name])
+                    continue
+                centroids = {}
+                for concept in base_concepts:
+                    arr = cache_arrays[model_name][concept]
+                    centroids[concept] = arr[sampled_indices[concept]].mean(axis=0)
+                draw_rows.append(build_similarity_flat_from_stacked(
+                    stack_embeddings(centroids, base_concepts),
+                    concept_triu,
+                ))
 
-    baseline_pairwise = build_pairwise_rhos(baseline_flats, model_names)
+            draw_corr = spearman_correlation_matrix(np.stack(draw_rows, axis=0))
+            pair_draws[:, draw_idx] = draw_corr[model_pair_triu]
+    print(f"Completed bootstrap stage in {perf_counter() - bootstrap_start:.1f}s")
+
+    baseline_corr = spearman_correlation_matrix(
+        np.stack([baseline_flats[model_name] for model_name in model_names], axis=0)
+    )
+    baseline_pair_values = baseline_corr[model_pair_triu]
+    baseline_pairwise = {
+        _pair_key(model_a, model_b): float(rho)
+        for (model_a, model_b), rho in zip(model_pairs, baseline_pair_values)
+    }
     rsa_bootstrap_results = []
-    for i, model_a in enumerate(model_names):
-        for model_b in model_names[i + 1:]:
-            key = _pair_key(model_a, model_b)
-            baseline_rho = baseline_pairwise[key]
-            deterministic = categories[model_a] != "image" and categories[model_b] != "image"
-            if deterministic:
-                rho_mean = baseline_rho
-                ci_low = baseline_rho
-                ci_high = baseline_rho
-            else:
-                draws = np.asarray(pair_draws[key], dtype=np.float32)
-                rho_mean = float(np.mean(draws))
-                ci_low, ci_high = [float(x) for x in np.quantile(draws, [0.025, 0.975])]
-            rsa_bootstrap_results.append(
-                {
-                    "model_a": model_a,
-                    "model_b": model_b,
-                    "rho_point_estimate": baseline_rho,
-                    "rho_mean": rho_mean,
-                    "ci_low": ci_low,
-                    "ci_high": ci_high,
-                    "deterministic_non_image_pair": deterministic,
-                }
-            )
+    for pair_idx, (model_a, model_b) in enumerate(model_pairs):
+        key = _pair_key(model_a, model_b)
+        baseline_rho = baseline_pairwise[key]
+        deterministic = categories[model_a] != "image" and categories[model_b] != "image"
+        if deterministic:
+            rho_mean = baseline_rho
+            ci_low = baseline_rho
+            ci_high = baseline_rho
+        else:
+            draws = pair_draws[pair_idx]
+            rho_mean = float(np.mean(draws))
+            ci_low, ci_high = [float(x) for x in np.quantile(draws, [0.025, 0.975])]
+        rsa_bootstrap_results.append(
+            {
+                "model_a": model_a,
+                "model_b": model_b,
+                "rho_point_estimate": baseline_rho,
+                "rho_mean": rho_mean,
+                "ci_low": ci_low,
+                "ci_high": ci_high,
+                "deterministic_non_image_pair": deterministic,
+            }
+        )
 
     p_values = []
     significance_rows = []
-    for idx, (model_a, model_b) in enumerate(
-        [(a, b) for i, a in enumerate(model_names) for b in model_names[i + 1:]]
-    ):
-        pair_rng = np.random.default_rng(seed + idx + 1)
-        p = mantel_permutation_two_sided(
-            baseline_matrices[model_a],
-            baseline_matrices[model_b],
-            permutations=mantel_permutations,
-            rng=pair_rng,
-        )
+    mantel_start = perf_counter()
+    worker_count = mantel_workers if mantel_workers > 0 else default_mantel_workers()
+    worker_count = max(1, min(worker_count, len(model_pairs)))
+    print(
+        "Running Mantel significance stage: "
+        f"pairs={len(model_pairs)}, permutations={mantel_permutations}, workers={worker_count}"
+    )
+    if worker_count == 1:
+        mantel_results = []
+        for idx, (model_a, model_b) in enumerate(model_pairs):
+            p = _mantel_pair_task(
+                (
+                    idx,
+                    model_a,
+                    model_b,
+                    baseline_matrices[model_a],
+                    baseline_matrices[model_b],
+                    mantel_permutations,
+                    seed,
+                )
+            )[3]
+            mantel_results.append((idx, model_a, model_b, p))
+    else:
+        tasks = [
+            (
+                idx,
+                model_a,
+                model_b,
+                baseline_matrices[model_a],
+                baseline_matrices[model_b],
+                mantel_permutations,
+                seed,
+            )
+            for idx, (model_a, model_b) in enumerate(model_pairs)
+        ]
+        with ProcessPoolExecutor(max_workers=worker_count) as executor:
+            mantel_results = list(executor.map(_mantel_pair_task, tasks, chunksize=1))
+        mantel_results.sort(key=lambda item: item[0])
+    for idx, model_a, model_b, p in mantel_results:
         p_values.append(p)
         significance_rows.append(
             {
@@ -600,6 +783,7 @@ def main(
                 "p_mantel_two_sided": p,
             }
         )
+    print(f"Completed Mantel significance stage in {perf_counter() - mantel_start:.1f}s")
     q_values = bh_fdr_correction(p_values)
     for row, q in zip(significance_rows, q_values):
         row["q_bh_fdr"] = q
@@ -614,13 +798,20 @@ def main(
             )
         source_by_concept[concept] = source
     unique_sources = sorted(set(source_by_concept.values()))
+    concept_index_map = {concept: idx for idx, concept in enumerate(base_concepts)}
 
     def pairwise_for_concepts(subset: List[str]) -> Dict[Tuple[str, str], float]:
-        flats = {}
+        subset_indices = np.asarray([concept_index_map[concept] for concept in subset], dtype=np.int64)
+        subset_triu = np.triu_indices(len(subset), k=1)
+        flat_rows = []
         for model_name in model_names:
-            matrix = build_similarity_matrix(resolved_models[model_name]["embeddings"], subset)
-            flats[model_name] = upper_triangle_flat(matrix)
-        return build_pairwise_rhos(flats, model_names)
+            stacked_embeddings = resolved_models[model_name]["stacked_embeddings"][subset_indices]
+            flat_rows.append(build_similarity_flat_from_stacked(stacked_embeddings, subset_triu))
+        corr = spearman_correlation_matrix(np.stack(flat_rows, axis=0))
+        return {
+            _pair_key(model_a, model_b): float(rho)
+            for (model_a, model_b), rho in zip(model_pairs, corr[model_pair_triu])
+        }
 
     source_holdout = {
         "min_concepts_for_rsa": min_concepts_for_rsa,
@@ -724,8 +915,10 @@ def main(
             if emb is None:
                 missing_templates.append(template_key)
                 continue
-            matrix = build_similarity_matrix(emb, base_concepts)
-            template_flats[template_key] = upper_triangle_flat(matrix)
+            template_flats[template_key] = build_similarity_flat_from_stacked(
+                stack_embeddings(emb, base_concepts),
+                concept_triu,
+            )
 
         if len(template_flats) < 2:
             prompt_sensitivity["skipped"].append(
@@ -739,17 +932,18 @@ def main(
 
         template_pairwise = []
         template_keys_sorted = sorted(template_flats.keys())
-        for i, template_a in enumerate(template_keys_sorted):
-            for template_b in template_keys_sorted[i + 1:]:
-                template_pairwise.append(
-                    {
-                        "template_a": template_a,
-                        "template_b": template_b,
-                        "rho": _safe_spearman(
-                            template_flats[template_a], template_flats[template_b]
-                        ),
-                    }
-                )
+        template_corr = spearman_correlation_matrix(
+            np.stack([template_flats[key] for key in template_keys_sorted], axis=0)
+        )
+        template_triu = np.triu_indices(len(template_keys_sorted), k=1)
+        for (idx_a, idx_b), rho in zip(zip(*template_triu), template_corr[template_triu]):
+            template_pairwise.append(
+                {
+                    "template_a": template_keys_sorted[idx_a],
+                    "template_b": template_keys_sorted[idx_b],
+                    "rho": float(rho),
+                }
+            )
 
         cross_modal = {}
         for template_key in template_keys_sorted:
@@ -802,32 +996,30 @@ def main(
 
     for fraction in ALIGNED5_FRACTIONS:
         label = _layer_label(fraction)
-        embs_for_fraction = {}
+        flat_rows = []
         for model_name in model_names:
             candidates = model_layer_candidates[model_name]
             if "selected" in candidates:
                 chosen = "selected"
-                embs = raw_models[model_name]["embeddings"]
+                embs = resolved_models[model_name]["stacked_embeddings"]
             else:
                 chosen = aligned_layer_key_for_fraction(candidates, fraction)
-                embs = raw_models[model_name]["embeddings_by_layer"][chosen]
-            aligned_layer["model_layer_selection"][model_name][label] = chosen
-            embs_for_fraction[model_name] = embs
-
-        flats = {}
-        for model_name in model_names:
-            matrix = build_similarity_matrix(embs_for_fraction[model_name], base_concepts)
-            flats[model_name] = upper_triangle_flat(matrix)
-        pairwise = []
-        for i, model_a in enumerate(model_names):
-            for model_b in model_names[i + 1:]:
-                pairwise.append(
-                    {
-                        "model_a": model_a,
-                        "model_b": model_b,
-                        "rho": _safe_spearman(flats[model_a], flats[model_b]),
-                    }
+                embs = stack_embeddings(
+                    raw_models[model_name]["embeddings_by_layer"][chosen],
+                    base_concepts,
                 )
+            aligned_layer["model_layer_selection"][model_name][label] = chosen
+            flat_rows.append(build_similarity_flat_from_stacked(embs, concept_triu))
+        corr = spearman_correlation_matrix(np.stack(flat_rows, axis=0))
+        pairwise = []
+        for (model_a, model_b), rho in zip(model_pairs, corr[model_pair_triu]):
+            pairwise.append(
+                {
+                    "model_a": model_a,
+                    "model_b": model_b,
+                    "rho": float(rho),
+                }
+            )
         aligned_layer["pairwise_by_fraction"][label] = pairwise
 
     payload = {
@@ -838,6 +1030,7 @@ def main(
             "bootstrap_sample_size": bootstrap_sample_size,
             "bootstrap_replacement": bootstrap_replacement,
             "mantel_permutations": mantel_permutations,
+            "mantel_workers": worker_count,
             "layer": layer,
             "base_concepts_count": len(base_concepts),
             "model_count": len(model_names),
@@ -881,6 +1074,7 @@ def main(
         output_path=os.path.join(output_dir, "source_holdout_delta_summary.png"),
     )
     print("Saved robustness plots.")
+    print(f"Robustness analysis completed in {perf_counter() - run_start:.1f}s")
 
 
 if __name__ == "__main__":
@@ -926,6 +1120,12 @@ if __name__ == "__main__":
         type=int,
         default=3000,
         help="Number of Mantel permutations per model pair.",
+    )
+    parser.add_argument(
+        "--mantel-workers",
+        type=int,
+        default=0,
+        help="Worker processes for Mantel tests. Use 0 for auto.",
     )
     parser.add_argument(
         "--min-concepts-for-rsa",
@@ -987,4 +1187,5 @@ if __name__ == "__main__":
         output_dir=args.output_dir,
         expected_layer_profile_id=args.expected_layer_profile_id,
         requested_layers_spec=args.requested_layers_spec,
+        mantel_workers=args.mantel_workers,
     )

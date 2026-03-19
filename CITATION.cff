@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this repository, please cite it using the metadata below."
-title: "Cross-Modal Representations"
-version: "v1.0.0"
+title: "Cross-Modal Representations: Scale250 Benchmark-Correction Release"
+version: "v2.0.0"
 type: software
 authors:
   - family-names: "Karki"
@@ -9,9 +9,9 @@ authors:
 repository-code: "https://github.com/abinashkarki/cross-modal-representations"
 url: "https://github.com/abinashkarki/cross-modal-representations"
 license: "MIT"
-date-released: "2026-03-06"
+date-released: "2026-03-19"
 abstract: >
-  Final release repository for a cross-modal representation study comparing
-  language, vision, and vision-language models under a robust local evaluation
-  protocol, including manuscript sources, curated data manifests, final result
-  artifacts, and reproducible analysis scripts.
+  Public release repository for the Scale250 cross-modal representation study,
+  including the current manuscript, figure pack, manifests, robustness and
+  architecture-summary artifacts, and reproducibility scripts. Heavy compiled
+  outputs and image payloads are excluded from git and indexed separately.

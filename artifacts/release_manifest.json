@@ -1,0 +1,89 @@
+{
+  "release_version": "v2.0.0",
+  "description": "Heavy compiled artifacts excluded from git for the Scale250 paper release.",
+  "external_artifacts": [
+    {
+      "id": "scale250-baseline-compiled",
+      "description": "Core 22-model selected-layer compiled Scale250 artifact.",
+      "checkout_path": "results/scale250_full/baseline/replication_results.json",
+      "local_archive_path": ".local_artifacts/results/scale250_full/baseline/replication_results.json",
+      "size_bytes": 957484212,
+      "sha256": "a428519d066b10a73c32bc4d7978451d5faf032aa37d0e20770aecbffdbc4e80",
+      "url": null
+    },
+    {
+      "id": "scale250-aligned5-compiled",
+      "description": "Core 22-model aligned5 compiled Scale250 artifact.",
+      "checkout_path": "results/scale250_full/aligned5/replication_results.json",
+      "local_archive_path": ".local_artifacts/results/scale250_full/aligned5/replication_results.json",
+      "size_bytes": 1205353705,
+      "sha256": "498a361a8dd56d056614535ffdcc7a7a7aee1029e2c22c626adb9ea8c46b2703",
+      "url": null
+    },
+    {
+      "id": "scale250-baseline25-extension-compiled",
+      "description": "Merged 25-model selected-layer compiled artifact including the completed autoregressive VLM extension.",
+      "checkout_path": "results/scale250_full/baseline25_extension/replication_results.json",
+      "local_archive_path": ".local_artifacts/results/scale250_full/baseline25_extension/replication_results.json",
+      "size_bytes": 1124007265,
+      "sha256": "7cd9bd9350b16edcc3d55bf9be52f0b3667f8f277f73d0dcdc295d452d4c16a9",
+      "url": null
+    },
+    {
+      "id": "scale250-arvlm3-extension-compiled",
+      "description": "Three-model autoregressive VLM extension compile used for architecture checks.",
+      "checkout_path": "results/scale250_full/arvlm3_extension/replication_results.json",
+      "local_archive_path": ".local_artifacts/results/scale250_full/arvlm3_extension/replication_results.json",
+      "size_bytes": 166528447,
+      "sha256": "c2a680f604878faa49064982ec072f2c03090b28b7543d6260f99fe766791c75",
+      "url": null
+    },
+    {
+      "id": "scale250-arvlm-qwen-compiled",
+      "description": "Two-model Qwen autoregressive VLM selected-layer compiled artifact.",
+      "checkout_path": "results/scale250_full/arvlm_qwen_baseline_compiled/replication_results.json",
+      "local_archive_path": ".local_artifacts/results/scale250_full/arvlm_qwen_baseline_compiled/replication_results.json",
+      "size_bytes": 100914505,
+      "sha256": "0de047b3ebfb41d0c935073eb2595e1e9266538638e3ad2acc7913ff28c102bd",
+      "url": null
+    }
+  ],
+  "local_archives": [
+    {
+      "path": ".local_artifacts/results/scale250_full",
+      "file_count": 16580,
+      "size_bytes": 7090486263,
+      "reason": "Full Scale250 run state, raw outputs, caches, logs, smokes, and partial experiments."
+    },
+    {
+      "path": ".local_artifacts/results/arvlm_smoke_qwen",
+      "file_count": 12,
+      "size_bytes": 2056524,
+      "reason": "Autoregressive VLM smoke validation outputs."
+    },
+    {
+      "path": ".local_artifacts/results/scale250_complete_subset",
+      "file_count": 567,
+      "size_bytes": 76120619,
+      "reason": "Intermediate subset experiment outputs."
+    },
+    {
+      "path": ".local_artifacts/data/images_multi",
+      "file_count": 840,
+      "size_bytes": 18510033,
+      "reason": "Legacy image payloads from the earlier local release."
+    },
+    {
+      "path": ".local_artifacts/data/images_250",
+      "file_count": 65,
+      "size_bytes": 1447384,
+      "reason": "Local image payloads from intermediate Scale250 build state."
+    },
+    {
+      "path": ".local_artifacts/data/images_250_fresh",
+      "file_count": 3849,
+      "size_bytes": 91350491,
+      "reason": "Fresh Scale250 image payloads kept only in local working state."
+    }
+  ]
+}

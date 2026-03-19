@@ -6,9 +6,9 @@ from typing import Any, Dict, Tuple
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.metrics.pairwise import cosine_similarity
-from scipy.stats import spearmanr
+from scipy.stats import rankdata, spearmanr
 from matplotlib.lines import Line2D
+from time import perf_counter
 
 # Config
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -29,16 +29,109 @@ COMPOUND_CONCEPTS_V2 = [
     ("mountain", "forest", "mountain forest"),
 ]
 KNOWN_COMPOUNDS = {c[2] for c in COMPOUND_CONCEPTS_V1 + COMPOUND_CONCEPTS_V2}
+DEFAULT_BOOTSTRAP_DRAWS = 1000
+DEFAULT_BOOTSTRAP_BATCH_SIZE = 64
 
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Helpers
 # ─────────────────────────────────────────────────────────────────────────────
 
+def cosine_similarity_1d(vec_a: np.ndarray, vec_b: np.ndarray) -> float:
+    a = np.asarray(vec_a, dtype=np.float32).reshape(-1)
+    b = np.asarray(vec_b, dtype=np.float32).reshape(-1)
+    denom = np.linalg.norm(a) * np.linalg.norm(b)
+    if denom == 0.0:
+        return 0.0
+    return float(np.dot(a, b) / denom)
+
+
+def stack_embeddings(embeddings: Dict[str, Any], concepts) -> np.ndarray:
+    return np.stack([np.asarray(embeddings[concept], dtype=np.float32) for concept in concepts], axis=0)
+
+
+def _row_normalize(matrix: np.ndarray) -> np.ndarray:
+    arr = np.asarray(matrix, dtype=np.float32)
+    norms = np.linalg.norm(arr, axis=1, keepdims=True)
+    norms = np.where(norms == 0.0, 1.0, norms)
+    return arr / norms
+
+
+def build_similarity_matrix_from_stacked(stacked_embeddings: np.ndarray) -> np.ndarray:
+    normalized = _row_normalize(stacked_embeddings)
+    matrix = normalized @ normalized.T
+    np.clip(matrix, -1.0, 1.0, out=matrix)
+    return matrix.astype(np.float32, copy=False)
+
+
+def spearman_correlation_matrix(rows: np.ndarray) -> np.ndarray:
+    ranked = np.empty(rows.shape, dtype=np.float32)
+    for idx, row in enumerate(rows):
+        ranked[idx] = rankdata(row, method="average").astype(np.float32)
+    ranked -= ranked.mean(axis=1, keepdims=True)
+    ranked = _row_normalize(ranked)
+    corr = ranked @ ranked.T
+    np.clip(corr, -1.0, 1.0, out=corr)
+    return corr.astype(np.float32, copy=False)
+
+
+def build_bootstrap_index_batches(
+    n_items: int,
+    n_bootstrap: int,
+    batch_size: int,
+    seed: int = 42,
+):
+    if n_bootstrap <= 0:
+        return []
+    rng = np.random.default_rng(seed)
+    batches = []
+    remaining = n_bootstrap
+    while remaining > 0:
+        size = min(batch_size, remaining)
+        batches.append(rng.integers(0, n_items, size=(size, n_items), dtype=np.int32))
+        remaining -= size
+    return batches
+
+
+def bootstrap_rsa_ci(
+    flat_a: np.ndarray,
+    flat_b: np.ndarray,
+    index_batches,
+    ci: float = 0.95,
+):
+    """Bootstrap 95% CI for Spearman ρ by resampling concept pairs."""
+    if not index_batches:
+        rho, _ = spearmanr(flat_a, flat_b)
+        return float(rho), float(rho)
+
+    draws = []
+    for idx in index_batches:
+        sample_a = np.take(flat_a, idx)
+        sample_b = np.take(flat_b, idx)
+        ranked_a = rankdata(sample_a, axis=1, method="average").astype(np.float32)
+        ranked_b = rankdata(sample_b, axis=1, method="average").astype(np.float32)
+        ranked_a -= ranked_a.mean(axis=1, keepdims=True)
+        ranked_b -= ranked_b.mean(axis=1, keepdims=True)
+        denom = np.linalg.norm(ranked_a, axis=1) * np.linalg.norm(ranked_b, axis=1)
+        numer = np.sum(ranked_a * ranked_b, axis=1)
+        batch = np.divide(
+            numer,
+            denom,
+            out=np.full(idx.shape[0], np.nan, dtype=np.float32),
+            where=denom > 0.0,
+        )
+        draws.append(batch)
+
+    rhos = np.concatenate(draws, axis=0)
+    alpha = (1 - ci) / 2
+    lo, hi = np.nanquantile(rhos, [alpha, 1 - alpha])
+    return float(lo), float(hi)
+
+
 def balance_score(emb_compound, emb1, emb2):
     """Balance compositionality: 1 = perfectly equidistant, 0 = fully biased."""
-    s1 = cosine_similarity(emb_compound, emb1)[0][0]
-    s2 = cosine_similarity(emb_compound, emb2)[0][0]
+    s1 = cosine_similarity_1d(emb_compound, emb1)
+    s2 = cosine_similarity_1d(emb_compound, emb2)
     total = s1 + s2
     ratio = s2 / total if total > 0 else 0.5
     return 1.0 - abs(0.5 - ratio) * 2
@@ -46,11 +139,11 @@ def balance_score(emb_compound, emb1, emb2):
 
 def additive_score(emb_compound, emb1, emb2):
     """Additive compositionality: cosine sim between compound and sum of parts."""
-    v1 = emb1.flatten()
-    v2 = emb2.flatten()
-    vc = emb_compound.flatten()
+    v1 = np.asarray(emb1, dtype=np.float32).flatten()
+    v2 = np.asarray(emb2, dtype=np.float32).flatten()
+    vc = np.asarray(emb_compound, dtype=np.float32).flatten()
     v_sum = v1 + v2
-    return cosine_similarity(vc.reshape(1, -1), v_sum.reshape(1, -1))[0][0]
+    return cosine_similarity_1d(vc, v_sum)
 
 
 def compute_compo_scores(embeddings, compound_list):
@@ -59,26 +152,12 @@ def compute_compo_scores(embeddings, compound_list):
     for comp1, comp2, compound in compound_list:
         if compound not in embeddings:
             continue
-        e1 = np.array(embeddings[comp1]).reshape(1, -1)
-        e2 = np.array(embeddings[comp2]).reshape(1, -1)
-        ec = np.array(embeddings[compound]).reshape(1, -1)
+        e1 = np.asarray(embeddings[comp1], dtype=np.float32)
+        e2 = np.asarray(embeddings[comp2], dtype=np.float32)
+        ec = np.asarray(embeddings[compound], dtype=np.float32)
         bal.append(balance_score(ec, e1, e2))
         add.append(additive_score(ec, e1, e2))
     return bal, add
-
-
-def bootstrap_rsa_ci(flat_a, flat_b, n_bootstrap=5000, ci=0.95):
-    """Bootstrap 95% CI for Spearman ρ by resampling concept pairs."""
-    n = len(flat_a)
-    rhos = []
-    rng = np.random.default_rng(42)
-    for _ in range(n_bootstrap):
-        idx = rng.integers(0, n, size=n)
-        rho, _ = spearmanr(flat_a[idx], flat_b[idx])
-        rhos.append(rho)
-    alpha = (1 - ci) / 2
-    lo, hi = np.quantile(rhos, [alpha, 1 - alpha])
-    return float(lo), float(hi)
 
 
 def model_category(mtype):
@@ -86,21 +165,39 @@ def model_category(mtype):
         return "causal"
     if mtype == "vision_language":
         return "vision_language"
+    if mtype == "vision_language_autoregressive":
+        return "vision_language_autoregressive"
     return "vision"
 
 
 def category_color(cat):
-    return {"causal": "#E74C3C", "vision_language": "#3498DB", "vision": "#9B59B6"}[cat]
+    return {
+        "causal": "#E74C3C",
+        "vision_language": "#3498DB",
+        "vision_language_autoregressive": "#16A085",
+        "vision": "#9B59B6",
+    }[cat]
 
 
 def ordered_models_and_colors(models_data):
-    cats = {"causal": [], "vision_language": [], "vision": []}
+    cats = {
+        "causal": [],
+        "vision_language": [],
+        "vision_language_autoregressive": [],
+        "vision": [],
+    }
     for m, mdata in models_data.items():
         cats[model_category(mdata["config"]["type"])].append(m)
-    ordered = cats["causal"] + cats["vision_language"] + cats["vision"]
+    ordered = (
+        cats["causal"]
+        + cats["vision_language"]
+        + cats["vision_language_autoregressive"]
+        + cats["vision"]
+    )
     colors = (
         [category_color("causal")] * len(cats["causal"])
         + [category_color("vision_language")] * len(cats["vision_language"])
+        + [category_color("vision_language_autoregressive")] * len(cats["vision_language_autoregressive"])
         + [category_color("vision")] * len(cats["vision"])
     )
     return ordered, colors
@@ -160,7 +257,8 @@ def resolve_embeddings_for_layer(
 
 LEGEND_ELEMENTS = [
     Line2D([0], [0], color="#E74C3C", lw=4, label="Language Models (Causal)"),
-    Line2D([0], [0], color="#3498DB", lw=4, label="Vision-Language"),
+    Line2D([0], [0], color="#3498DB", lw=4, label="Vision-Language (Contrastive)"),
+    Line2D([0], [0], color="#16A085", lw=4, label="Vision-Language (Autoregressive)"),
     Line2D([0], [0], color="#9B59B6", lw=4, label="Vision Models (SSL)"),
 ]
 
@@ -169,7 +267,13 @@ LEGEND_ELEMENTS = [
 # Main
 # ─────────────────────────────────────────────────────────────────────────────
 
-def main(layer: str, data_file: str, output_dir: str) -> None:
+def main(
+    layer: str,
+    data_file: str,
+    output_dir: str,
+    bootstrap_draws: int,
+    bootstrap_batch_size: int,
+) -> None:
     data_file = os.path.abspath(data_file)
     output_dir = os.path.abspath(output_dir)
     heatmaps_dir = os.path.join(output_dir, "heatmaps")
@@ -214,38 +318,50 @@ def main(layer: str, data_file: str, output_dir: str) -> None:
     )
     print(f"Layer mode: requested='{layer}'")
     print(f"Resolved layers: {resolved_layers}")
+    print(
+        f"Bootstrap config: draws={bootstrap_draws}, "
+        f"batch_size={bootstrap_batch_size}"
+    )
 
     # ── 1. Similarity matrices (base concepts only) ───────────────────────────
     print("Computing similarity matrices (base concepts only)...")
     sim_matrices = {}
+    sim_start = perf_counter()
     for model_name, mdata in models_data.items():
-        embs = mdata["embeddings"]
-        n = len(base_concepts)
-        mat = np.zeros((n, n))
-        for i, c1 in enumerate(base_concepts):
-            for j, c2 in enumerate(base_concepts):
-                e1 = np.array(embs[c1]).reshape(1, -1)
-                e2 = np.array(embs[c2]).reshape(1, -1)
-                mat[i, j] = cosine_similarity(e1, e2)[0][0]
-        sim_matrices[model_name] = mat
+        stacked = stack_embeddings(mdata["embeddings"], base_concepts)
+        sim_matrices[model_name] = build_similarity_matrix_from_stacked(stacked)
+    print(f"Built {len(sim_matrices)} similarity matrices in {perf_counter() - sim_start:.1f}s")
 
     # ── 2. RSA matrix with bootstrap CIs ─────────────────────────────────────
     n_pairs = len(base_concepts) * (len(base_concepts) - 1) // 2
     print(f"Computing RSA ({len(base_concepts)} base concepts, {n_pairs} pairs)...")
     triu_idx = np.triu_indices(len(base_concepts), k=1)
-    flat_sims = {m: sim_matrices[m][triu_idx] for m in model_names}
-
-    rsa_matrix = np.zeros((len(model_names), len(model_names)))
-    rsa_ci_lo  = np.zeros_like(rsa_matrix)
-    rsa_ci_hi  = np.zeros_like(rsa_matrix)
-
+    flat_sims = {m: sim_matrices[m][triu_idx].astype(np.float32, copy=False) for m in model_names}
+    flat_rows = np.stack([flat_sims[m] for m in model_names], axis=0)
+    rsa_matrix = spearman_correlation_matrix(flat_rows)
+    rsa_ci_lo = np.eye(len(model_names), dtype=np.float32)
+    rsa_ci_hi = np.eye(len(model_names), dtype=np.float32)
+    index_batches = build_bootstrap_index_batches(
+        flat_rows.shape[1],
+        bootstrap_draws,
+        bootstrap_batch_size,
+    )
+    pair_total = len(model_names) * (len(model_names) - 1) // 2
+    rsa_start = perf_counter()
+    pair_idx = 0
     for i, m1 in enumerate(model_names):
-        for j, m2 in enumerate(model_names):
-            rho, _ = spearmanr(flat_sims[m1], flat_sims[m2])
-            rsa_matrix[i, j] = rho
-            lo, hi = bootstrap_rsa_ci(flat_sims[m1], flat_sims[m2])
-            rsa_ci_lo[i, j] = lo
-            rsa_ci_hi[i, j] = hi
+        for j in range(i + 1, len(model_names)):
+            m2 = model_names[j]
+            lo, hi = bootstrap_rsa_ci(flat_sims[m1], flat_sims[m2], index_batches)
+            rsa_ci_lo[i, j] = rsa_ci_lo[j, i] = lo
+            rsa_ci_hi[i, j] = rsa_ci_hi[j, i] = hi
+            pair_idx += 1
+            if pair_idx % 25 == 0 or pair_idx == pair_total:
+                print(
+                    f"  bootstrap progress: {pair_idx}/{pair_total} pairs "
+                    f"({perf_counter() - rsa_start:.1f}s)"
+                )
+    print(f"Completed RSA stage in {perf_counter() - rsa_start:.1f}s")
 
     # Heatmap
     n_models = len(model_names)
@@ -463,5 +579,23 @@ if __name__ == "__main__":
         default="selected",
         help="Layer key to visualize: selected|default|last|-1|layer_N.",
     )
+    parser.add_argument(
+        "--bootstrap-draws",
+        type=int,
+        default=DEFAULT_BOOTSTRAP_DRAWS,
+        help="Bootstrap draws for RSA confidence intervals.",
+    )
+    parser.add_argument(
+        "--bootstrap-batch-size",
+        type=int,
+        default=DEFAULT_BOOTSTRAP_BATCH_SIZE,
+        help="Batch size for vectorized RSA bootstrap resampling.",
+    )
     args = parser.parse_args()
-    main(args.layer, data_file=args.data_file, output_dir=args.output_dir)
+    main(
+        args.layer,
+        data_file=args.data_file,
+        output_dir=args.output_dir,
+        bootstrap_draws=args.bootstrap_draws,
+        bootstrap_batch_size=args.bootstrap_batch_size,
+    )

@@ -1,0 +1,21 @@
+target_concept,target_filename,target_source,source_manifest,source_concept,source_filename,selection_note
+bridge,bridge_unsplash_01.jpg,unsplash,data/data_manifest_multi.json,ocean bridge,ocean bridge_007.jpg,Bridge centrally depicted over open water
+bridge,bridge_unsplash_02.jpg,unsplash,data/data_manifest_multi.json,ocean bridge,ocean bridge_011.jpg,Bridge centrally depicted over open water
+bridge,bridge_unsplash_03.jpg,unsplash,data/data_manifest_multi.json,ocean bridge,ocean bridge_014.jpg,Bridge centrally depicted from overhead view
+bridge,bridge_unsplash_04.jpg,unsplash,data/data_manifest_multi.json,ocean bridge,ocean bridge_025.jpg,Bridge remains the dominant named object
+bridge,bridge_unsplash_05.jpg,unsplash,data/data_manifest_multi.json,city bridge,city bridge_013.jpg,Bridge remains the dominant named object
+forest,forest_unsplash_01.jpg,unsplash,data/data_manifest_multi.json,mountain forest,mountain forest_000.jpg,Forest canopy dominates the image
+forest,forest_unsplash_02.jpg,unsplash,data/data_manifest_multi.json,mountain forest,mountain forest_002.jpg,Dense forest canopy dominates the image
+forest,forest_unsplash_03.jpg,unsplash,data/data_manifest_multi.json,mountain forest,mountain forest_007.jpg,Forest remains the dominant named scene element
+forest,forest_unsplash_04.jpg,unsplash,data/data_manifest_multi.json,mountain forest,mountain forest_019.jpg,Forested landscape dominates the image
+forest,forest_unsplash_05.jpg,unsplash,data/data_manifest_multi.json,mountain forest,mountain forest_022.jpg,Dense forest remains the dominant named scene element
+mountain,mountain_unsplash_01.jpg,unsplash,data/data_manifest_multi.json,mountain forest,mountain forest_004.jpg,Mountain landform is clearly central
+mountain,mountain_unsplash_02.jpg,unsplash,data/data_manifest_multi.json,mountain forest,mountain forest_008.jpg,Mountain ridge is clearly central
+mountain,mountain_unsplash_03.jpg,unsplash,data/data_manifest_multi.json,mountain forest,mountain forest_009.jpg,Mountain peak is clearly central
+mountain,mountain_unsplash_04.jpg,unsplash,data/data_manifest_multi.json,mountain forest,mountain forest_021.jpg,Mountain landform is clearly central
+mountain,mountain_unsplash_05.jpg,unsplash,data/data_manifest_multi.json,mountain forest,mountain forest_028.jpg,Mountain landform is clearly central
+ocean,ocean_unsplash_01.jpg,unsplash,data/data_manifest_multi.json,ocean bridge,ocean bridge_000.jpg,Ocean dominates the image despite a thin bridge element
+ocean,ocean_unsplash_02.jpg,unsplash,data/data_manifest_multi.json,ocean bridge,ocean bridge_003.jpg,Ocean remains the dominant named scene element
+ocean,ocean_unsplash_03.jpg,unsplash,data/data_manifest_multi.json,ocean bridge,ocean bridge_009.jpg,Ocean dominates the image despite a thin bridge element
+ocean,ocean_unsplash_04.jpg,unsplash,data/data_manifest_multi.json,ocean bridge,ocean bridge_019.jpg,Ocean and rocky coast dominate the image
+ocean,ocean_unsplash_05.jpg,unsplash,data/data_manifest_multi.json,ocean bridge,ocean bridge_021.jpg,Ocean coastline remains the dominant named scene element

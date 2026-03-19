@@ -1,41 +1,46 @@
 # Release Notes
 
-## v1.0.0
+## v2.0.0
 
-Initial public backup release of the final cross-modal representation study.
+Scale250 paper release and repository cleanup for public upload.
 
 ### Included
 
-- Final manuscript in `manuscript/` as Markdown, LaTeX, and print-ready HTML
-- Curated 30-image-per-concept dataset and manifest
-- Reproducible analysis scripts
-- Final baseline and aligned-layer result artifacts
-- Signed-off summary reports and representative paper figures
+- Current Scale250 manuscript in canonical paths:
+  - `manuscript/paper.md`
+  - `manuscript/paper.html`
+  - `manuscript/paper.tex`
+- Full Scale250 figure pack under `manuscript/figures/scale250/`
+- Canonical Scale250 manifest and provenance metadata
+- Core extraction, compilation, robustness, scaling, and figure scripts
+- Lean paper-facing result artifacts under `results/scale250_full/`
+- Release artifact manifest and checksums under `artifacts/`
+- Release guardrail script and CI scaffold
 
-### Main Results
+### Excluded From Git
 
-- Language-language median RSA: `0.661`
-- Vision-vision median RSA: `0.682`
-- Vision-to-vision-language median RSA: `0.702`
-- Language-to-vision median RSA: `0.259`
-- Language-to-vision-language median RSA: `0.230`
-- LOSO ImageNet mean delta: `-0.1564`
-- Prompt sensitivity mean max-absolute delta: `0.1960`
-- Aligned-layer mean RSA trend: `0.3424 -> 0.4149 -> 0.4345 -> 0.4403 -> 0.4639`
+- Image payloads
+- Full Scale250 compiled `replication_results.json` files
+- Raw per-model embedding outputs
+- Logs, caches, smoke runs, and partial experiments
+- Model weights and local HF caches
+
+### Main Findings Reflected In This Release
+
+- Small benchmarks materially overstated language-image convergence in the earlier local release.
+- Within-family structure remains strong.
+- Both contrastive and autoregressive VLMs are substantially closer to vision than to language in the current selected-layer analysis.
+- Mid-to-late aligned layers carry stronger cross-family structure than the terminal selected layer.
+- No clean language-model size law explains cross-modal alignment in this local panel.
 
 ### Release Cleanup
 
-- Extracted the study into a standalone repository outside the larger lab workspace
-- Removed virtual environments, local model caches, runtime logs, and intermediate cache folders
-- Compressed oversized compiled result JSON artifacts for GitHub compatibility
-- Normalized historical absolute paths inside summary and metadata artifacts
-- Added a release-oriented README and a print-ready HTML manuscript
+- Promoted the current Scale250 paper to canonical `manuscript/paper.*` paths.
+- Archived the previous paper under `manuscript/legacy/where_representations_diverge/`.
+- Moved heavy local-only data and run state into `.local_artifacts/`.
+- Rebuilt `results/scale250_full/` as a lean public tree containing only small canonical paper-facing outputs.
+- Added artifact indexing, local materialization support, and release guardrails.
 
-### Canonical Files
+## v1.0.0
 
-- `manuscript/paper.md`
-- `manuscript/paper.tex`
-- `manuscript/paper_arxiv_ready.html`
-- `results/baseline/`
-- `results/aligned5/`
-- `results/summaries/V2_FINAL_SIGNOFF.md`
+Initial standalone local-release backup before the Scale250 benchmark correction pass.

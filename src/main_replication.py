@@ -7,10 +7,15 @@ import sys
 import traceback
 import logging
 import hashlib
+import inspect
+import re
 import tempfile
+from importlib import metadata as importlib_metadata
+from contextlib import contextmanager
 from datetime import datetime
 from typing import Any, Dict, List, Tuple, Optional
 from PIL import Image
+from huggingface_hub import snapshot_download
 import torch
 import numpy as np
 import transformers
@@ -25,8 +30,13 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 mx = None
 mlx_load = None
+mlx_vlm_load = None
+mlx_vlm_prepare_inputs = None
+mlx_vlm_apply_chat_template = None
 HAS_MLX = False
 MLX_IMPORT_ERROR = None
+HAS_MLX_VLM = False
+MLX_VLM_IMPORT_ERROR = None
 
 # Optimization env vars
 os.environ["HF_HUB_ENABLE_HF_TRANSFER"] = "0"
@@ -39,7 +49,7 @@ print(f"Using device: {device}")
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 EXPERIMENT_DIR = os.path.dirname(SCRIPT_DIR)
 REPO_ROOT = os.path.dirname(os.path.dirname(EXPERIMENT_DIR))
-MANIFEST_PATH = os.path.join(EXPERIMENT_DIR, "data", "data_manifest_multi.json")
+MANIFEST_PATH = os.path.join(EXPERIMENT_DIR, "data", "data_manifest_250.json")
 LOCAL_MODELS_DIR = os.path.join(REPO_ROOT, "models")
 
 PROMPT_TEMPLATE = "The concept of {concept}"
@@ -311,6 +321,37 @@ VISION_MODELS_VLM = {
     },
 }
 
+VISION_MODELS_AR_VLM = {
+    "Qwen3.5-2B-Base-MLX-8bit": {
+        "id": "mlx-community/Qwen3.5-2B-8bit",
+        "type": "vision_language_autoregressive",
+        "backend": "mlx_vlm",
+        "param_size_b": 2.0,
+        "quantization": "8bit",
+    },
+    "Qwen3.5-4B-Base-MLX-8bit": {
+        "id": "mlx-community/Qwen3.5-4B-MLX-8bit",
+        "type": "vision_language_autoregressive",
+        "backend": "mlx_vlm",
+        "param_size_b": 4.0,
+        "quantization": "8bit",
+    },
+    "Phi-3.5-vision-instruct-MLX-8bit": {
+        "id": "mlx-community/Phi-3.5-vision-instruct-8bit",
+        "type": "vision_language_autoregressive",
+        "backend": "mlx_vlm",
+        "param_size_b": 4.2,
+        "quantization": "8bit",
+    },
+    "SmolVLM2-2.2B-Instruct-MLX-Quantized": {
+        "id": "mlx-community/SmolVLM2-2.2B-Instruct-mlx",
+        "type": "vision_language_autoregressive",
+        "backend": "mlx_vlm",
+        "param_size_b": 2.2,
+        "quantization": "quantized",
+    },
+}
+
 # Concepts and Image Files
 base_concepts = [
     "fire", "water", "forest", "city", "space",
@@ -377,6 +418,27 @@ def raise_model_load_error(
     raise ExtractionError(
         f"Failed to load {component} for '{model_id}'. Original error: {original_error}"
     ) from original_error
+
+
+@contextmanager
+def hf_offline_mode(enabled: bool):
+    """Force Hugging Face and Transformers into offline mode when requested."""
+    if not enabled:
+        yield
+        return
+
+    keys = ("HF_HUB_OFFLINE", "TRANSFORMERS_OFFLINE")
+    previous = {key: os.environ.get(key) for key in keys}
+    try:
+        os.environ["HF_HUB_OFFLINE"] = "1"
+        os.environ["TRANSFORMERS_OFFLINE"] = "1"
+        yield
+    finally:
+        for key, value in previous.items():
+            if value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = value
 
 
 def build_manifest_fingerprint(manifest: Dict[str, Any]) -> str:
@@ -470,6 +532,35 @@ def apply_local_mlx_override(
     return config
 
 
+def resolve_mlx_model_source(
+    model_name: str,
+    config: Dict[str, Any],
+    logger: Optional[logging.Logger],
+    local_files_only: bool,
+) -> str:
+    """Resolve an MLX model source path, honoring local-only mode for HF cache usage."""
+    source = str(config["id"])
+    if os.path.isdir(source):
+        return source
+
+    try:
+        with hf_offline_mode(local_files_only):
+            resolved = snapshot_download(
+                repo_id=source,
+                local_files_only=local_files_only,
+            )
+    except Exception as exc:
+        raise_model_load_error(
+            model_id=source,
+            component="MLX model snapshot",
+            local_files_only=local_files_only,
+            original_error=exc,
+        )
+    if logger is not None:
+        logger.info("Resolved MLX model source for %s to %s", model_name, resolved)
+    return resolved
+
+
 def normalize_layer_spec_text(layer_spec: str) -> str:
     raw = str(layer_spec).strip()
     if not raw:
@@ -506,6 +597,48 @@ def ensure_mlx_available() -> Tuple[Any, Any]:
     mlx_load = _mlx_load
     HAS_MLX = True
     return mx, mlx_load
+
+
+def ensure_mlx_vlm_available() -> Tuple[Any, Any, Any, Any]:
+    """Lazily import MLX-VLM stack only when an autoregressive VLM is requested."""
+    global mx, mlx_vlm_load, mlx_vlm_prepare_inputs, mlx_vlm_apply_chat_template
+    global HAS_MLX_VLM, MLX_VLM_IMPORT_ERROR
+
+    if (
+        HAS_MLX_VLM
+        and mx is not None
+        and mlx_vlm_load is not None
+        and mlx_vlm_prepare_inputs is not None
+        and mlx_vlm_apply_chat_template is not None
+    ):
+        return mx, mlx_vlm_load, mlx_vlm_prepare_inputs, mlx_vlm_apply_chat_template
+
+    if MLX_VLM_IMPORT_ERROR is not None:
+        raise ExtractionError(f"MLX-VLM backend unavailable: {MLX_VLM_IMPORT_ERROR}")
+
+    try:
+        mlx_vlm_version = importlib_metadata.version("mlx-vlm")
+        version_parts = tuple(int(part) for part in re.findall(r"\d+", mlx_vlm_version)[:3])
+        if version_parts < (0, 4, 0):
+            raise ExtractionError(
+                "Autoregressive VLM extraction requires mlx-vlm>=0.4.0 "
+                f"(found {mlx_vlm_version}). Upgrade the active environment before running "
+                "Qwen3.5/Phi-3.5/SmolVLM2 AR-VLM models."
+            )
+        import mlx.core as _mx
+        from mlx_vlm import load as _mlx_vlm_load
+        from mlx_vlm.prompt_utils import apply_chat_template as _mlx_vlm_apply_chat_template
+        from mlx_vlm.utils import prepare_inputs as _mlx_vlm_prepare_inputs
+    except Exception as exc:
+        MLX_VLM_IMPORT_ERROR = exc
+        raise ExtractionError(f"MLX-VLM backend unavailable: {exc}") from exc
+
+    mx = _mx
+    mlx_vlm_load = _mlx_vlm_load
+    mlx_vlm_prepare_inputs = _mlx_vlm_prepare_inputs
+    mlx_vlm_apply_chat_template = _mlx_vlm_apply_chat_template
+    HAS_MLX_VLM = True
+    return mx, mlx_vlm_load, mlx_vlm_prepare_inputs, mlx_vlm_apply_chat_template
 
 
 def default_cache_manifest(
@@ -690,21 +823,22 @@ def save_cached_per_image_by_layer(
         atomic_write_npy(path, np.asarray(array, dtype=np.float32))
 
 
-def load_data_manifest():
-    if not os.path.exists(MANIFEST_PATH):
+def load_data_manifest(manifest_path: Optional[str] = None):
+    resolved_manifest_path = os.path.abspath(manifest_path or MANIFEST_PATH)
+    if not os.path.exists(resolved_manifest_path):
         raise FileNotFoundError(
-            f"Data manifest not found at {MANIFEST_PATH}. "
-            "Ensure data/data_manifest_multi.json and data/images_multi are present."
+            f"Data manifest not found at {resolved_manifest_path}. "
+            "Ensure data/data_manifest_250.json is present and any referenced local images are available."
         )
 
-    with open(MANIFEST_PATH, "r") as f:
+    with open(resolved_manifest_path, "r") as f:
         manifest = json.load(f)
 
     concept_to_images = manifest.get("concept_to_images", {})
     if not concept_to_images:
         raise ValueError("Manifest is missing 'concept_to_images' mapping.")
 
-    return manifest, concept_to_images
+    return manifest, concept_to_images, resolved_manifest_path
 
 
 def validate_manifest_images(required_concepts, concept_to_images):
@@ -1058,6 +1192,120 @@ def get_siglip_embedding_multi(
     per_image = np.stack(all_emb, axis=0).astype(np.float32)
     return per_image.mean(axis=0).astype(np.float32), per_image
 
+
+def _build_mlx_vlm_prompt(processor: Any, model: Any) -> Any:
+    _, _, _, chat_template = ensure_mlx_vlm_available()
+    try:
+        return chat_template(
+            processor,
+            model.config,
+            "",
+            add_generation_prompt=False,
+            num_images=1,
+        )
+    except Exception:
+        # Fallback is only used to get image-token placeholders into the processor path.
+        return "<image>"
+
+
+def _collect_mlx_vlm_embedding_kwargs(model: Any, model_inputs: Dict[str, Any]) -> Dict[str, Any]:
+    signature = inspect.signature(model.get_input_embeddings)
+    kwargs: Dict[str, Any] = {}
+    accepts_var_kwargs = any(
+        param.kind == inspect.Parameter.VAR_KEYWORD
+        for param in signature.parameters.values()
+    )
+    for name in signature.parameters:
+        if name == "self":
+            continue
+        if name in model_inputs:
+            kwargs[name] = model_inputs[name]
+
+    if "inputs" in signature.parameters and "inputs" not in kwargs and "input_ids" in model_inputs:
+        kwargs["inputs"] = model_inputs["input_ids"]
+    if "input_ids" in signature.parameters and "input_ids" not in kwargs and "inputs" in model_inputs:
+        kwargs["input_ids"] = model_inputs["inputs"]
+    if "pixel_values" in signature.parameters and "pixel_values" not in kwargs and "pixel_values" in model_inputs:
+        kwargs["pixel_values"] = model_inputs["pixel_values"]
+    if accepts_var_kwargs:
+        for name, value in model_inputs.items():
+            kwargs.setdefault(name, value)
+    return kwargs
+
+
+def _mlx_vlm_image_token_mask(model: Any, input_ids: np.ndarray) -> np.ndarray:
+    config = getattr(model, "config", None)
+    model_type = getattr(config, "model_type", "")
+
+    if model_type in {"phi3_v", "phi4mm"}:
+        return input_ids < 0
+
+    image_token_index = getattr(config, "image_token_index", None)
+    video_token_index = getattr(config, "video_token_index", None)
+
+    if image_token_index is not None:
+        mask = input_ids == image_token_index
+        if video_token_index is not None:
+            mask |= input_ids == video_token_index
+        return mask
+
+    raise ExtractionError(
+        f"Could not determine image-token mask for autoregressive VLM type '{model_type}'."
+    )
+
+
+def get_autoregressive_vlm_embedding_mlx(
+    image_path: str,
+    processor: Any,
+    model: Any,
+) -> np.ndarray:
+    """Extract the mean inserted image-token embedding for one image using MLX-VLM.
+
+    This uses the model's multimodal projector path rather than raw vision-tower features, which
+    makes the representation a closer analogue to the image-side signal actually fused into the
+    autoregressive decoder.
+    """
+    mx_backend, _, prepare_inputs, _ = ensure_mlx_vlm_available()
+    image = Image.open(image_path).convert("RGB")
+    prompt = _build_mlx_vlm_prompt(processor, model)
+    model_inputs = prepare_inputs(
+        processor,
+        images=image,
+        prompts=prompt,
+        image_token_index=getattr(model.config, "image_token_index", None),
+        return_tensors="mlx",
+    )
+    call_kwargs = _collect_mlx_vlm_embedding_kwargs(model, model_inputs)
+    embedding_features = model.get_input_embeddings(**call_kwargs)
+
+    input_ids = np.array(model_inputs["input_ids"])
+    image_mask = _mlx_vlm_image_token_mask(model, input_ids)
+    if not np.any(image_mask):
+        raise ExtractionError("Autoregressive VLM input did not contain any image token positions.")
+
+    inputs_embeds = np.array(
+        embedding_features.inputs_embeds.astype(mx_backend.float32),
+        dtype=np.float32,
+    )
+    selected = inputs_embeds[image_mask]
+    if selected.size == 0:
+        raise ExtractionError("Autoregressive VLM embedding mask selected zero tokens.")
+    return selected.reshape(-1, inputs_embeds.shape[-1]).mean(axis=0).astype(np.float32)
+
+
+def get_autoregressive_vlm_embedding_multi_mlx(
+    image_paths: List[str],
+    processor: Any,
+    model: Any,
+) -> Tuple[np.ndarray, np.ndarray]:
+    """Extract and average autoregressive VLM embeddings across multiple images."""
+    all_emb: List[np.ndarray] = []
+    for path in image_paths:
+        emb = get_autoregressive_vlm_embedding_mlx(path, processor, model)
+        all_emb.append(np.asarray(emb, dtype=np.float32))
+    per_image = np.stack(all_emb, axis=0).astype(np.float32)
+    return per_image.mean(axis=0).astype(np.float32), per_image
+
 # --- Analysis Functions ---
 
 def calculate_similarity(emb1, emb2):
@@ -1103,6 +1351,7 @@ def run_replication_for_model(
     model_name: str,
     force: bool = False,
     layers_arg: str = DEFAULT_LAYER_SPEC,
+    manifest_path: Optional[str] = None,
     cache_image_embeddings: bool = True,
     cache_dir: str = DEFAULT_CACHE_DIR,
     force_cache_rebuild: bool = False,
@@ -1126,6 +1375,7 @@ def run_replication_for_model(
     logger.info("=" * 70)
     logger.info(f"Started: {datetime.now().isoformat()}")
     logger.info(f"Requested layers: {layers_arg}")
+    logger.info(f"Manifest path: {os.path.abspath(manifest_path or MANIFEST_PATH)}")
     logger.info(f"Cache image embeddings: {cache_image_embeddings}")
     logger.info(f"Cache dir: {os.path.abspath(cache_dir)}")
     logger.info(f"Force cache rebuild: {force_cache_rebuild}")
@@ -1144,7 +1394,8 @@ def run_replication_for_model(
         logger.info("Use --force to overwrite.")
         return
 
-    manifest, concept_to_images = load_data_manifest()
+    manifest, concept_to_images, resolved_manifest_path = load_data_manifest(manifest_path)
+    run_concepts = list(concept_to_images.keys())
     try:
         layer_spec = parse_layer_spec(layers_arg)
         templates = get_text_templates(text_template_set)
@@ -1157,13 +1408,14 @@ def run_replication_for_model(
     cache_root = os.path.abspath(cache_dir)
     cache_model_dir = os.path.join(cache_root, model_name)
     cache_manifest_path = os.path.join(cache_model_dir, "cache_manifest.json")
-    concept_image_map = {concept: concept_to_images[concept] for concept in all_concepts}
+    concept_image_map = {concept: concept_to_images[concept] for concept in run_concepts}
 
     model_result = {
         "timestamp": datetime.now().isoformat(),
         "metadata": {
             "environment": get_environment_metadata(),
             "data_manifest_version": manifest.get("manifest_version", "unknown"),
+            "manifest_path": resolved_manifest_path,
             "text_prompt_template": templates["t0"],
             "text_embedding_method": "last_token",
             "vision_embedding_method": "multi_image_average",
@@ -1177,7 +1429,7 @@ def run_replication_for_model(
             "layer_profile_id": layer_profile_id,
             "requested_layers_spec": requested_layers_spec,
         },
-        "concepts": all_concepts,
+        "concepts": run_concepts,
         "models": {}
     }
 
@@ -1204,9 +1456,10 @@ def run_replication_for_model(
             if backend == "hf":
                 logger.info(f"\nProcessing Language Model {model_name} (HF/CPU for stability)...")
                 try:
-                    tokenizer = AutoTokenizer.from_pretrained(
-                        config["id"], local_files_only=local_files_only
-                    )
+                    with hf_offline_mode(local_files_only):
+                        tokenizer = AutoTokenizer.from_pretrained(
+                            config["id"], local_files_only=local_files_only
+                        )
                 except Exception as exc:
                     raise_model_load_error(
                         model_id=config["id"],
@@ -1215,9 +1468,10 @@ def run_replication_for_model(
                         original_error=exc,
                     )
                 try:
-                    model = AutoModelForCausalLM.from_pretrained(
-                        config["id"], local_files_only=local_files_only
-                    ).to("cpu").eval()
+                    with hf_offline_mode(local_files_only):
+                        model = AutoModelForCausalLM.from_pretrained(
+                            config["id"], local_files_only=local_files_only
+                        ).to("cpu").eval()
                 except Exception as exc:
                     raise_model_load_error(
                         model_id=config["id"],
@@ -1226,7 +1480,7 @@ def run_replication_for_model(
                         original_error=exc,
                     )
 
-                for concept in all_concepts:
+                for concept in run_concepts:
                     for template_key, template in templates.items():
                         logger.info(
                             f"     {concept}: template={template_key} language extraction"
@@ -1267,7 +1521,13 @@ def run_replication_for_model(
                         "     MLX backend currently exposes final hidden state only. "
                         "Falling back to last-layer extraction."
                     )
-                model, tokenizer = mlx_loader(config["id"])
+                mlx_source = resolve_mlx_model_source(
+                    model_name,
+                    config,
+                    logger,
+                    local_files_only=local_files_only,
+                )
+                model, tokenizer = mlx_loader(mlx_source)
                 layer_info = {
                     "supports_layer_selection": False,
                     "reason": "mlx backend currently returns final hidden state only",
@@ -1276,7 +1536,7 @@ def run_replication_for_model(
                 }
                 for tk in templates:
                     template_embeddings_by_layer[tk] = {"layer_last": {}}
-                for concept in all_concepts:
+                for concept in run_concepts:
                     for template_key, template in templates.items():
                         logger.info(
                             f"     {concept}: template={template_key} MLX extraction"
@@ -1335,7 +1595,7 @@ def run_replication_for_model(
 
         elif model_name in VISION_MODELS_SSL:
             config = VISION_MODELS_SSL[model_name]
-            validate_manifest_images(all_concepts, concept_to_images)
+            validate_manifest_images(run_concepts, concept_to_images)
             trust_rc = config.get("trust_remote_code", False)
 
             cache_manifest = None
@@ -1369,11 +1629,12 @@ def run_replication_for_model(
                     return processor, model, target_device
                 logger.info(f"Loading processor for {model_name}...")
                 try:
-                    processor = AutoImageProcessor.from_pretrained(
-                        config["id"],
-                        trust_remote_code=trust_rc,
-                        local_files_only=local_files_only,
-                    )
+                    with hf_offline_mode(local_files_only):
+                        processor = AutoImageProcessor.from_pretrained(
+                            config["id"],
+                            trust_remote_code=trust_rc,
+                            local_files_only=local_files_only,
+                        )
                 except Exception as exc:
                     raise_model_load_error(
                         model_id=config["id"],
@@ -1390,11 +1651,12 @@ def run_replication_for_model(
                             _orig.all_tied_weights_keys = property(
                                 lambda self: getattr(self, "_tied_weights_keys", None) or {}
                             )
-                    model = AutoModel.from_pretrained(
-                        config["id"],
-                        trust_remote_code=trust_rc,
-                        local_files_only=local_files_only,
-                    ).to(target_device).eval()
+                    with hf_offline_mode(local_files_only):
+                        model = AutoModel.from_pretrained(
+                            config["id"],
+                            trust_remote_code=trust_rc,
+                            local_files_only=local_files_only,
+                        ).to(target_device).eval()
                     dummy = processor(images=Image.new("RGB", (224, 224)), return_tensors="pt").to(
                         target_device
                     )
@@ -1407,11 +1669,12 @@ def run_replication_for_model(
                     logger.warning(traceback.format_exc())
                     target_device = torch.device("cpu")
                     try:
-                        model = AutoModel.from_pretrained(
-                            config["id"],
-                            trust_remote_code=trust_rc,
-                            local_files_only=local_files_only,
-                        ).to(target_device).eval()
+                        with hf_offline_mode(local_files_only):
+                            model = AutoModel.from_pretrained(
+                                config["id"],
+                                trust_remote_code=trust_rc,
+                                local_files_only=local_files_only,
+                            ).to(target_device).eval()
                     except Exception as cpu_exc:
                         raise_model_load_error(
                             model_id=config["id"],
@@ -1422,7 +1685,7 @@ def run_replication_for_model(
                 logger.info(f"\nProcessing Vision SSL Model {model_name} ({target_device})...")
                 return processor, model, target_device
 
-            for concept in all_concepts:
+            for concept in run_concepts:
                 image_paths = [os.path.join(EXPERIMENT_DIR, p) for p in concept_to_images[concept]]
                 per_image_by_layer = None
                 if cache_image_embeddings and not force_cache_rebuild and expected_layer_keys:
@@ -1519,7 +1782,7 @@ def run_replication_for_model(
 
         elif model_name in VISION_MODELS_VLM:
             config = VISION_MODELS_VLM[model_name]
-            validate_manifest_images(all_concepts, concept_to_images)
+            validate_manifest_images(run_concepts, concept_to_images)
             if not is_last_layer_only_request(layer_spec):
                 logger.warning(
                     "Vision-language image-feature extraction currently returns final image features only. "
@@ -1555,9 +1818,10 @@ def run_replication_for_model(
                     return processor, model, target_device
                 logger.info(f"Loading processor for {model_name}...")
                 try:
-                    processor = AutoProcessor.from_pretrained(
-                        config["id"], local_files_only=local_files_only
-                    )
+                    with hf_offline_mode(local_files_only):
+                        processor = AutoProcessor.from_pretrained(
+                            config["id"], local_files_only=local_files_only
+                        )
                 except Exception as exc:
                     logger.warning(
                         "  AutoProcessor load failed for %s (%s). "
@@ -1566,9 +1830,10 @@ def run_replication_for_model(
                         exc,
                     )
                     try:
-                        processor = AutoImageProcessor.from_pretrained(
-                            config["id"], local_files_only=local_files_only
-                        )
+                        with hf_offline_mode(local_files_only):
+                            processor = AutoImageProcessor.from_pretrained(
+                                config["id"], local_files_only=local_files_only
+                            )
                     except Exception as img_exc:
                         raise_model_load_error(
                             model_id=config["id"],
@@ -1578,9 +1843,10 @@ def run_replication_for_model(
                         )
                 logger.info(f"Loading model {model_name} onto {target_device}...")
                 try:
-                    model = AutoModel.from_pretrained(
-                        config["id"], local_files_only=local_files_only
-                    ).to(target_device).eval()
+                    with hf_offline_mode(local_files_only):
+                        model = AutoModel.from_pretrained(
+                            config["id"], local_files_only=local_files_only
+                        ).to(target_device).eval()
                     dummy = processor(
                         images=Image.new("RGB", (224, 224)), return_tensors="pt"
                     ).to(target_device)
@@ -1613,7 +1879,7 @@ def run_replication_for_model(
                 return processor, model, target_device
 
             embeddings: Dict[str, List[float]] = {}
-            for concept in all_concepts:
+            for concept in run_concepts:
                 image_paths = [os.path.join(EXPERIMENT_DIR, p) for p in concept_to_images[concept]]
                 per_image_by_layer = None
                 if cache_image_embeddings and not force_cache_rebuild:
@@ -1678,6 +1944,132 @@ def run_replication_for_model(
                     layer_metadata=layer_info,
                 )
                 atomic_write_json(cache_manifest_path, cache_payload)
+        elif model_name in VISION_MODELS_AR_VLM:
+            config = VISION_MODELS_AR_VLM[model_name]
+            validate_manifest_images(run_concepts, concept_to_images)
+            if not is_last_layer_only_request(layer_spec):
+                logger.warning(
+                    "Autoregressive VLM extraction currently returns final inserted image-token "
+                    "features only. Requested multi-layer selection will fall back to the final layer."
+                )
+
+            cache_manifest = None
+            if cache_image_embeddings and not force_cache_rebuild:
+                cache_manifest = load_cache_manifest(
+                    cache_manifest_path,
+                    model_name,
+                    config,
+                    manifest_fingerprint,
+                    layer_profile_id,
+                    requested_layers_spec,
+                )
+            expected_layer_keys = list(cache_manifest["layer_keys"]) if cache_manifest else ["layer_last"]
+            if expected_layer_keys != ["layer_last"]:
+                raise DataIntegrityError(
+                    f"Autoregressive VLM cache must use ['layer_last'], found {expected_layer_keys}"
+                )
+            expected_embedding_dim: Optional[int] = (
+                int(cache_manifest["embedding_dim"]) if cache_manifest else None
+            )
+
+            processor = None
+            model = None
+
+            def ensure_ar_vlm_loaded() -> Tuple[Any, Any]:
+                nonlocal processor, model
+                if processor is not None and model is not None:
+                    return processor, model
+                _, mlx_vlm_loader, _, _ = ensure_mlx_vlm_available()
+                mlx_source = resolve_mlx_model_source(
+                    model_name,
+                    config,
+                    logger,
+                    local_files_only,
+                )
+                logger.info("Loading autoregressive VLM %s from %s...", model_name, mlx_source)
+                try:
+                    model, processor = mlx_vlm_loader(mlx_source, lazy=False)
+                except Exception as exc:
+                    raise_model_load_error(
+                        model_id=str(config["id"]),
+                        component="autoregressive VLM weights",
+                        local_files_only=local_files_only,
+                        original_error=exc,
+                    )
+                logger.info("\nProcessing Autoregressive VLM %s (MLX)...", model_name)
+                return processor, model
+
+            embeddings: Dict[str, List[float]] = {}
+            for concept in run_concepts:
+                image_paths = [os.path.join(EXPERIMENT_DIR, p) for p in concept_to_images[concept]]
+                per_image_by_layer = None
+                if cache_image_embeddings and not force_cache_rebuild:
+                    per_image_by_layer = load_cached_per_image_by_layer(
+                        cache_model_dir=cache_model_dir,
+                        layer_keys=expected_layer_keys,
+                        concept=concept,
+                        expected_rows=len(image_paths),
+                        expected_dim=expected_embedding_dim,
+                    )
+                    if per_image_by_layer is not None:
+                        logger.info(
+                            f"     {concept}: loaded cached embeddings ({len(image_paths)} images)"
+                        )
+                if per_image_by_layer is None:
+                    processor, model = ensure_ar_vlm_loaded()
+                    logger.info(f"     {concept}: extracting and caching {len(image_paths)} images")
+                    _, per_image = get_autoregressive_vlm_embedding_multi_mlx(
+                        image_paths,
+                        processor,
+                        model,
+                    )
+                    per_image_by_layer = {"layer_last": per_image}
+                    if cache_image_embeddings:
+                        os.makedirs(cache_model_dir, exist_ok=True)
+                        save_cached_per_image_by_layer(cache_model_dir, concept, per_image_by_layer)
+
+                arr = ensure_cache_array(
+                    np.asarray(per_image_by_layer["layer_last"], dtype=np.float32),
+                    expected_rows=len(image_paths),
+                    expected_dim=expected_embedding_dim,
+                    cache_path=cache_file_path(cache_model_dir, "layer_last", concept),
+                )
+                if expected_embedding_dim is None:
+                    expected_embedding_dim = int(arr.shape[1])
+                embeddings[concept] = arr.mean(axis=0).astype(np.float32).tolist()
+
+            layer_info = {
+                "requested_layers": layers_arg,
+                "supports_layer_selection": False,
+                "reason": (
+                    "autoregressive VLM get_input_embeddings path returns final inserted "
+                    "image-token features only"
+                ),
+                "selected_layer_keys": ["layer_last"],
+                "default_layer_key": "layer_last",
+            }
+            model_result["models"][model_name] = {
+                "config": config,
+                "embeddings": embeddings,
+                "embeddings_by_layer": {
+                    "layer_last": embeddings,
+                },
+                "layer_metadata": layer_info,
+            }
+            if cache_image_embeddings:
+                sample_vec = next(iter(embeddings.values()))
+                cache_payload = default_cache_manifest(
+                    model_name=model_name,
+                    model_config=config,
+                    manifest_fingerprint=manifest_fingerprint,
+                    concept_to_images=concept_image_map,
+                    layer_keys=["layer_last"],
+                    embedding_dim=len(sample_vec),
+                    layer_profile_id=layer_profile_id,
+                    requested_layers_spec=requested_layers_spec,
+                    layer_metadata=layer_info,
+                )
+                atomic_write_json(cache_manifest_path, cache_payload)
         else:
             raise ConfigurationError(f"Model '{model_name}' not found in configurations.")
 
@@ -1713,6 +2105,12 @@ if __name__ == "__main__":
             "Layer selection: '-1' (default), 'all', 'aligned5', "
             "or comma-separated indices like '0,4,8,-1'."
         ),
+    )
+    parser.add_argument(
+        "--manifest-path",
+        type=str,
+        default=MANIFEST_PATH,
+        help=f"Data manifest path (default: {MANIFEST_PATH}).",
     )
     parser.add_argument(
         "--cache-image-embeddings",
@@ -1763,6 +2161,7 @@ if __name__ == "__main__":
         args.model,
         force=args.force,
         layers_arg=args.layers,
+        manifest_path=args.manifest_path,
         cache_image_embeddings=parse_bool_arg(args.cache_image_embeddings),
         cache_dir=args.cache_dir,
         force_cache_rebuild=args.force_cache_rebuild,

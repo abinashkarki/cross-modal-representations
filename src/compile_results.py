@@ -9,7 +9,7 @@ RAW_DATA_DIR = os.path.join(EXPERIMENT_DIR, "results", "replication", "raw_data"
 COMPILED_OUTPUT_PATH = os.path.join(
     EXPERIMENT_DIR, "results", "replication", "replication_results.json"
 )
-DEFAULT_MANIFEST_PATH = os.path.join(EXPERIMENT_DIR, "data", "data_manifest_multi.json")
+DEFAULT_MANIFEST_PATH = os.path.join(EXPERIMENT_DIR, "data", "data_manifest_250.json")
 
 
 def load_expected_concepts(manifest_path):

@@ -1,0 +1,5 @@
+Qwen3-1.7B-MLX-8bit
+Granite-3.3-2B-Instruct-8bit
+DINOv2-base
+I-JEPA
+SigLIP2

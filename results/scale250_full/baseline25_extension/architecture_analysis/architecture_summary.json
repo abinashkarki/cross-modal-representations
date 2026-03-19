@@ -1,0 +1,156 @@
+{
+  "data_file": "/Users/hi/projects/cross-modal-representations/results/scale250_full/baseline25_extension/replication_results.json",
+  "n_models": 25,
+  "n_concepts": 250,
+  "model_order": [
+    "Falcon3-1B-Instruct-8bit",
+    "Granite-3.3-2B-Instruct-8bit",
+    "LFM2-2.6B-Exp-8bit",
+    "Qwen2.5-1.5B-Instruct-8bit",
+    "Qwen3-0.6B-MLX-8bit",
+    "Qwen3-1.7B-MLX-8bit",
+    "Qwen3-4B-MLX-8bit",
+    "SmolLM3-3B-8bit",
+    "CLIP-ViT-B32",
+    "MetaCLIP-B32-400m",
+    "SigLIP",
+    "SigLIP2",
+    "Phi-3.5-vision-instruct-MLX-8bit",
+    "Qwen3.5-2B-Base-MLX-8bit",
+    "Qwen3.5-4B-Base-MLX-8bit",
+    "BEiT-base",
+    "ConvNeXt-v2",
+    "DINOv2-base",
+    "DINOv2-small",
+    "DINOv3-ConvNeXt-tiny",
+    "Hiera-base",
+    "I-JEPA",
+    "ViT-MAE-base",
+    "ViT-MSN-base",
+    "data2vec-vision"
+  ],
+  "family_map": {
+    "Falcon3-1B-Instruct-8bit": "language",
+    "Granite-3.3-2B-Instruct-8bit": "language",
+    "LFM2-2.6B-Exp-8bit": "language",
+    "Qwen2.5-1.5B-Instruct-8bit": "language",
+    "Qwen3-0.6B-MLX-8bit": "language",
+    "Qwen3-1.7B-MLX-8bit": "language",
+    "Qwen3-4B-MLX-8bit": "language",
+    "SmolLM3-3B-8bit": "language",
+    "CLIP-ViT-B32": "contrastive_vlm",
+    "MetaCLIP-B32-400m": "contrastive_vlm",
+    "SigLIP": "contrastive_vlm",
+    "SigLIP2": "contrastive_vlm",
+    "Phi-3.5-vision-instruct-MLX-8bit": "autoregressive_vlm",
+    "Qwen3.5-2B-Base-MLX-8bit": "autoregressive_vlm",
+    "Qwen3.5-4B-Base-MLX-8bit": "autoregressive_vlm",
+    "BEiT-base": "vision",
+    "ConvNeXt-v2": "vision",
+    "DINOv2-base": "vision",
+    "DINOv2-small": "vision",
+    "DINOv3-ConvNeXt-tiny": "vision",
+    "Hiera-base": "vision",
+    "I-JEPA": "vision",
+    "ViT-MAE-base": "vision",
+    "ViT-MSN-base": "vision",
+    "data2vec-vision": "vision"
+  },
+  "bridge_summary": [
+    {
+      "model": "CLIP-ViT-B32",
+      "family": "contrastive_vlm",
+      "mean_to_language": 0.04032893478870392,
+      "mean_to_vision": 0.5038177371025085,
+      "mean_to_contrastive_vlm": 0.8796300888061523,
+      "mean_to_autoregressive_vlm": 0.7247589230537415,
+      "vision_minus_language": 0.4634888023138046
+    },
+    {
+      "model": "MetaCLIP-B32-400m",
+      "family": "contrastive_vlm",
+      "mean_to_language": 0.04870119318366051,
+      "mean_to_vision": 0.5082250833511353,
+      "mean_to_contrastive_vlm": 0.9049460291862488,
+      "mean_to_autoregressive_vlm": 0.7242425084114075,
+      "vision_minus_language": 0.45952389016747475
+    },
+    {
+      "model": "SigLIP",
+      "family": "contrastive_vlm",
+      "mean_to_language": 0.022565077990293503,
+      "mean_to_vision": 0.47880735993385315,
+      "mean_to_contrastive_vlm": 0.8845939636230469,
+      "mean_to_autoregressive_vlm": 0.6966963410377502,
+      "vision_minus_language": 0.45624228194355965
+    },
+    {
+      "model": "SigLIP2",
+      "family": "contrastive_vlm",
+      "mean_to_language": 0.011562783271074295,
+      "mean_to_vision": 0.5103532075881958,
+      "mean_to_contrastive_vlm": 0.9060584902763367,
+      "mean_to_autoregressive_vlm": 0.7352332472801208,
+      "vision_minus_language": 0.4987904243171215
+    },
+    {
+      "model": "Phi-3.5-vision-instruct-MLX-8bit",
+      "family": "autoregressive_vlm",
+      "mean_to_language": 0.04034564271569252,
+      "mean_to_vision": 0.4737064242362976,
+      "mean_to_contrastive_vlm": 0.651861846446991,
+      "mean_to_autoregressive_vlm": 0.8661566376686096,
+      "vision_minus_language": 0.4333607815206051
+    },
+    {
+      "model": "Qwen3.5-2B-Base-MLX-8bit",
+      "family": "autoregressive_vlm",
+      "mean_to_language": 0.03990175947546959,
+      "mean_to_vision": 0.5356789827346802,
+      "mean_to_contrastive_vlm": 0.7664775848388672,
+      "mean_to_autoregressive_vlm": 0.9156272411346436,
+      "vision_minus_language": 0.4957772232592106
+    },
+    {
+      "model": "Qwen3.5-4B-Base-MLX-8bit",
+      "family": "autoregressive_vlm",
+      "mean_to_language": 0.04103745520114899,
+      "mean_to_vision": 0.5271786451339722,
+      "mean_to_contrastive_vlm": 0.7423588633537292,
+      "mean_to_autoregressive_vlm": 0.921546459197998,
+      "vision_minus_language": 0.4861411899328232
+    }
+  ],
+  "family_block_labels": [
+    "Language",
+    "Contrastive VLM",
+    "Autoregressive VLM",
+    "Vision"
+  ],
+  "family_block_mean_rsa": [
+    [
+      0.6143422722816467,
+      0.03078950010240078,
+      0.0404282845556736,
+      0.015524214133620262
+    ],
+    [
+      0.03078949823975563,
+      0.8938071131706238,
+      0.7202327251434326,
+      0.5003008842468262
+    ],
+    [
+      0.0404282882809639,
+      0.7202327251434326,
+      0.9011101126670837,
+      0.5121880173683167
+    ],
+    [
+      0.015524214133620262,
+      0.5003008246421814,
+      0.5121880173683167,
+      0.38268107175827026
+    ]
+  ]
+}

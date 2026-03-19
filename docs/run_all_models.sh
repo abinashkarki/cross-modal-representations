@@ -7,7 +7,7 @@ EXPERIMENT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 SRC_DIR="$EXPERIMENT_DIR/src"
 
 PYTHON_BIN="${PYTHON_BIN:-python}"
-MODEL_TIMEOUT="${MODEL_TIMEOUT:-1200}"
+MODEL_TIMEOUT="${MODEL_TIMEOUT:-7200}"
 RUN_PROFILE="${RUN_PROFILE:-baseline}"
 ANALYSIS_LAYER="${ANALYSIS_LAYER:-selected}"
 RUN_ROBUSTNESS="$(echo "${RUN_ROBUSTNESS:-1}" | tr '[:upper:]' '[:lower:]')"
@@ -30,7 +30,7 @@ BOOTSTRAP_REPLACEMENT="$(echo "${BOOTSTRAP_REPLACEMENT:-true}" | tr '[:upper:]' 
 MANTEL_PERMUTATIONS="${MANTEL_PERMUTATIONS:-3000}"
 MIN_CONCEPTS_FOR_RSA="${MIN_CONCEPTS_FOR_RSA:-8}"
 
-MANIFEST_PATH="${MANIFEST_PATH:-$EXPERIMENT_DIR/data/data_manifest_multi.json}"
+MANIFEST_PATH="${MANIFEST_PATH:-$EXPERIMENT_DIR/data/data_manifest_250.json}"
 
 if [ "$RUN_PROFILE" = "baseline" ]; then
     LAYERS="-1"
@@ -144,6 +144,7 @@ for MODEL in "${MODELS[@]}"; do
         --model "$MODEL"
         --force
         --layers "$LAYERS"
+        --manifest-path "$MANIFEST_PATH"
         --output-dir "$RAW_DIR"
         --log-dir "$LOG_DIR"
         --cache-image-embeddings "$CACHE_IMAGE_EMBEDDINGS"

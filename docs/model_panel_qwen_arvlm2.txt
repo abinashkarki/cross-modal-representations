@@ -1,0 +1,2 @@
+Qwen3.5-2B-Base-MLX-8bit
+Qwen3.5-4B-Base-MLX-8bit

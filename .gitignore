@@ -10,8 +10,46 @@ __pycache__/
 htmlcov/
 .venv/
 venv/
+
+# Local-only archives and recovery state
+.local_artifacts/
+
+# macOS / editor noise
+*.swp
+*.swo
+
+# Manuscript build byproducts not kept in git
 *.pdf
 *.aux
 *.log
 *.out
 *.toc
+
+# Local model payloads and partial downloads
+*.safetensors
+*.safetensors.index.json
+*.incomplete
+
+# Image payloads stay local; the public repo keeps manifests/provenance only
+data/images_multi/
+data/images_250/
+data/images_250_fresh/
+data/scale250_fresh_candidates/
+
+# Large generated run state
+results/arvlm_smoke_qwen/
+results/scale250_complete_subset/
+results/source_runs/
+results/summaries/
+results/scale250_full/**/cache/
+results/scale250_full/**/logs/
+results/scale250_full/**/raw_data/
+results/scale250_full/**/nohup.out
+results/scale250_full/**/replication_results.json
+results/scale250_full/**/run.log
+results/scale250_full/**/pipeline_*.log
+
+# Keep canonical manuscript outputs under manuscript/paper.*
+manuscript/paper_scale250.md
+manuscript/paper_scale250.html
+manuscript/paper_scale250.tex

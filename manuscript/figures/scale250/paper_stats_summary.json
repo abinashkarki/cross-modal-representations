@@ -1,0 +1,2264 @@
+{
+  "old_broad_summary": {
+    "language-language": {
+      "count": 28,
+      "mean_rho": 0.6702628548434163,
+      "sig_fraction": 1.0
+    },
+    "image-image": {
+      "count": 91,
+      "mean_rho": 0.6721063682420712,
+      "sig_fraction": 0.978021978021978
+    },
+    "language-image": {
+      "count": 112,
+      "mean_rho": 0.24180160268547807,
+      "sig_fraction": 0.35714285714285715
+    }
+  },
+  "new_broad_summary": {
+    "language-language": {
+      "count": 28,
+      "mean_rho": 0.6143422275781631,
+      "sig_fraction": 1.0
+    },
+    "image-image": {
+      "count": 91,
+      "mean_rho": 0.4680825579850065,
+      "sig_fraction": 0.978021978021978
+    },
+    "language-image": {
+      "count": 112,
+      "mean_rho": 0.01988560597133723,
+      "sig_fraction": 0.1875
+    }
+  },
+  "prompt_sensitivity": [
+    {
+      "model": "SmolLM3-3B-8bit",
+      "max_abs_delta": 0.12378939668171401
+    },
+    {
+      "model": "Falcon3-1B-Instruct-8bit",
+      "max_abs_delta": 0.09493664560348646
+    },
+    {
+      "model": "Qwen3-0.6B-MLX-8bit",
+      "max_abs_delta": 0.09123043251260293
+    },
+    {
+      "model": "Qwen3-4B-MLX-8bit",
+      "max_abs_delta": 0.08181069789056736
+    },
+    {
+      "model": "LFM2-2.6B-Exp-8bit",
+      "max_abs_delta": 0.06991524121037263
+    },
+    {
+      "model": "Qwen2.5-1.5B-Instruct-8bit",
+      "max_abs_delta": 0.06075724523527165
+    },
+    {
+      "model": "Qwen3-1.7B-MLX-8bit",
+      "max_abs_delta": 0.04601374277073132
+    },
+    {
+      "model": "Granite-3.3-2B-Instruct-8bit",
+      "max_abs_delta": 0.0446468328242588
+    }
+  ],
+  "aligned_depth_summary": {
+    "overall": {
+      "d00": 0.23810723980634727,
+      "d25": 0.305324741194702,
+      "d50": 0.30943029477801254,
+      "d75": 0.3095592234346177,
+      "d100": 0.26833251581347883
+    },
+    "language-language": {
+      "d00": 0.6143422275781631,
+      "d25": 0.6143422275781631,
+      "d50": 0.6143422275781631,
+      "d75": 0.6143422275781631,
+      "d100": 0.6143422275781631
+    },
+    "image-image": {
+      "d00": 0.38585849372403963,
+      "d25": 0.5317000655436909,
+      "d50": 0.5372215808666014,
+      "d75": 0.5450246256704514,
+      "d100": 0.4679025795494953
+    },
+    "language-image": {
+      "d00": 0.02400059905526827,
+      "d25": 0.044140418565283265,
+      "d50": 0.048121891630996415,
+      "d75": 0.04204783308211647,
+      "d100": 0.019679411086794323
+    }
+  },
+  "scale_summary": [
+    {
+      "model": "Qwen3-0.6B-MLX-8bit",
+      "size_b": 0.6,
+      "mean_vision_rho": 0.04550793998729852
+    },
+    {
+      "model": "Falcon3-1B-Instruct-8bit",
+      "size_b": 1.0,
+      "mean_vision_rho": 0.03011641516848976
+    },
+    {
+      "model": "Qwen2.5-1.5B-Instruct-8bit",
+      "size_b": 1.54,
+      "mean_vision_rho": -0.004339999181303066
+    },
+    {
+      "model": "Qwen3-1.7B-MLX-8bit",
+      "size_b": 1.7,
+      "mean_vision_rho": 0.004673688183207447
+    },
+    {
+      "model": "Granite-3.3-2B-Instruct-8bit",
+      "size_b": 2.0,
+      "mean_vision_rho": -0.033272540108256296
+    },
+    {
+      "model": "LFM2-2.6B-Exp-8bit",
+      "size_b": 2.6,
+      "mean_vision_rho": 0.020745457961342174
+    },
+    {
+      "model": "SmolLM3-3B-8bit",
+      "size_b": 3.0,
+      "mean_vision_rho": 0.026823021981381475
+    },
+    {
+      "model": "Qwen3-4B-MLX-8bit",
+      "size_b": 4.0,
+      "mean_vision_rho": 0.03393984887057123
+    }
+  ],
+  "baseline_cka_summary": {
+    "row_normalize": true,
+    "model_names": [
+      "BEiT-base",
+      "CLIP-ViT-B32",
+      "ConvNeXt-v2",
+      "DINOv2-base",
+      "DINOv2-small",
+      "DINOv3-ConvNeXt-tiny",
+      "Falcon3-1B-Instruct-8bit",
+      "Granite-3.3-2B-Instruct-8bit",
+      "Hiera-base",
+      "I-JEPA",
+      "LFM2-2.6B-Exp-8bit",
+      "MetaCLIP-B32-400m",
+      "Qwen2.5-1.5B-Instruct-8bit",
+      "Qwen3-0.6B-MLX-8bit",
+      "Qwen3-1.7B-MLX-8bit",
+      "Qwen3-4B-MLX-8bit",
+      "SigLIP",
+      "SigLIP2",
+      "SmolLM3-3B-8bit",
+      "ViT-MAE-base",
+      "ViT-MSN-base",
+      "data2vec-vision"
+    ],
+    "pairwise": [
+      {
+        "model_a": "BEiT-base",
+        "model_b": "CLIP-ViT-B32",
+        "cka": 0.6739303060421316,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "BEiT-base",
+        "model_b": "ConvNeXt-v2",
+        "cka": 0.5448895608617934,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "BEiT-base",
+        "model_b": "DINOv2-base",
+        "cka": 0.5659231043373987,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "BEiT-base",
+        "model_b": "DINOv2-small",
+        "cka": 0.5968444729414552,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "BEiT-base",
+        "model_b": "DINOv3-ConvNeXt-tiny",
+        "cka": 0.597926665757269,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "BEiT-base",
+        "model_b": "Falcon3-1B-Instruct-8bit",
+        "cka": 0.5443273410755627,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "BEiT-base",
+        "model_b": "Granite-3.3-2B-Instruct-8bit",
+        "cka": 0.3725546951696927,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "BEiT-base",
+        "model_b": "Hiera-base",
+        "cka": 0.5474423882748939,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "BEiT-base",
+        "model_b": "I-JEPA",
+        "cka": 0.6305805578834566,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "BEiT-base",
+        "model_b": "LFM2-2.6B-Exp-8bit",
+        "cka": 0.43810765460717294,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "BEiT-base",
+        "model_b": "MetaCLIP-B32-400m",
+        "cka": 0.6799874714432315,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "BEiT-base",
+        "model_b": "Qwen2.5-1.5B-Instruct-8bit",
+        "cka": 0.34370642469383633,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "BEiT-base",
+        "model_b": "Qwen3-0.6B-MLX-8bit",
+        "cka": 0.4849131912230224,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "BEiT-base",
+        "model_b": "Qwen3-1.7B-MLX-8bit",
+        "cka": 0.39899448964839157,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "BEiT-base",
+        "model_b": "Qwen3-4B-MLX-8bit",
+        "cka": 0.4691264783811264,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "BEiT-base",
+        "model_b": "SigLIP",
+        "cka": 0.6728040203171184,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "BEiT-base",
+        "model_b": "SigLIP2",
+        "cka": 0.6794421538770465,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "BEiT-base",
+        "model_b": "SmolLM3-3B-8bit",
+        "cka": 0.4201507906599995,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "BEiT-base",
+        "model_b": "ViT-MAE-base",
+        "cka": 0.61231019214368,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "BEiT-base",
+        "model_b": "ViT-MSN-base",
+        "cka": 0.33947014389261077,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "BEiT-base",
+        "model_b": "data2vec-vision",
+        "cka": 0.5277001121705481,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "CLIP-ViT-B32",
+        "model_b": "ConvNeXt-v2",
+        "cka": 0.5908213982819138,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "CLIP-ViT-B32",
+        "model_b": "DINOv2-base",
+        "cka": 0.6013436636037128,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "CLIP-ViT-B32",
+        "model_b": "DINOv2-small",
+        "cka": 0.668392001234836,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "CLIP-ViT-B32",
+        "model_b": "DINOv3-ConvNeXt-tiny",
+        "cka": 0.6936413327970006,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "CLIP-ViT-B32",
+        "model_b": "Falcon3-1B-Instruct-8bit",
+        "cka": 0.6214393515039245,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "CLIP-ViT-B32",
+        "model_b": "Granite-3.3-2B-Instruct-8bit",
+        "cka": 0.42434918182059617,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "CLIP-ViT-B32",
+        "model_b": "Hiera-base",
+        "cka": 0.5926879627464111,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "CLIP-ViT-B32",
+        "model_b": "I-JEPA",
+        "cka": 0.7066508607540222,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "CLIP-ViT-B32",
+        "model_b": "LFM2-2.6B-Exp-8bit",
+        "cka": 0.4943920814920397,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "CLIP-ViT-B32",
+        "model_b": "MetaCLIP-B32-400m",
+        "cka": 0.9711743107905847,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "CLIP-ViT-B32",
+        "model_b": "Qwen2.5-1.5B-Instruct-8bit",
+        "cka": 0.41487529598752393,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "CLIP-ViT-B32",
+        "model_b": "Qwen3-0.6B-MLX-8bit",
+        "cka": 0.5984927009116154,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "CLIP-ViT-B32",
+        "model_b": "Qwen3-1.7B-MLX-8bit",
+        "cka": 0.4833543250547365,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "CLIP-ViT-B32",
+        "model_b": "Qwen3-4B-MLX-8bit",
+        "cka": 0.5699636737424911,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "CLIP-ViT-B32",
+        "model_b": "SigLIP",
+        "cka": 0.939978506569942,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "CLIP-ViT-B32",
+        "model_b": "SigLIP2",
+        "cka": 0.9472115877534498,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "CLIP-ViT-B32",
+        "model_b": "SmolLM3-3B-8bit",
+        "cka": 0.4911243667023581,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "CLIP-ViT-B32",
+        "model_b": "ViT-MAE-base",
+        "cka": 0.7936183491135239,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "CLIP-ViT-B32",
+        "model_b": "ViT-MSN-base",
+        "cka": 0.36536095476617786,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "CLIP-ViT-B32",
+        "model_b": "data2vec-vision",
+        "cka": 0.7039271908136151,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "ConvNeXt-v2",
+        "model_b": "DINOv2-base",
+        "cka": 0.8469689705641491,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "ConvNeXt-v2",
+        "model_b": "DINOv2-small",
+        "cka": 0.7973828771725765,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "ConvNeXt-v2",
+        "model_b": "DINOv3-ConvNeXt-tiny",
+        "cka": 0.8285979436443482,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "ConvNeXt-v2",
+        "model_b": "Falcon3-1B-Instruct-8bit",
+        "cka": 0.5884842760694805,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "ConvNeXt-v2",
+        "model_b": "Granite-3.3-2B-Instruct-8bit",
+        "cka": 0.48552441127707646,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "ConvNeXt-v2",
+        "model_b": "Hiera-base",
+        "cka": 0.9358712300731796,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "ConvNeXt-v2",
+        "model_b": "I-JEPA",
+        "cka": 0.5837892522935861,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "ConvNeXt-v2",
+        "model_b": "LFM2-2.6B-Exp-8bit",
+        "cka": 0.5755416326965233,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "ConvNeXt-v2",
+        "model_b": "MetaCLIP-B32-400m",
+        "cka": 0.6096764471478503,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "ConvNeXt-v2",
+        "model_b": "Qwen2.5-1.5B-Instruct-8bit",
+        "cka": 0.3916121166733694,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "ConvNeXt-v2",
+        "model_b": "Qwen3-0.6B-MLX-8bit",
+        "cka": 0.490162461811023,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "ConvNeXt-v2",
+        "model_b": "Qwen3-1.7B-MLX-8bit",
+        "cka": 0.44165191302695106,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "ConvNeXt-v2",
+        "model_b": "Qwen3-4B-MLX-8bit",
+        "cka": 0.4981962888995228,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "ConvNeXt-v2",
+        "model_b": "SigLIP",
+        "cka": 0.6324973899650236,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "ConvNeXt-v2",
+        "model_b": "SigLIP2",
+        "cka": 0.6407005684488237,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "ConvNeXt-v2",
+        "model_b": "SmolLM3-3B-8bit",
+        "cka": 0.5069907563736495,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "ConvNeXt-v2",
+        "model_b": "ViT-MAE-base",
+        "cka": 0.4568611698881335,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "ConvNeXt-v2",
+        "model_b": "ViT-MSN-base",
+        "cka": 0.3619638894420985,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "ConvNeXt-v2",
+        "model_b": "data2vec-vision",
+        "cka": 0.40448293784300954,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv2-base",
+        "model_b": "DINOv2-small",
+        "cka": 0.8464415270449379,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv2-base",
+        "model_b": "DINOv3-ConvNeXt-tiny",
+        "cka": 0.8414193161796716,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv2-base",
+        "model_b": "Falcon3-1B-Instruct-8bit",
+        "cka": 0.6155197835995624,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv2-base",
+        "model_b": "Granite-3.3-2B-Instruct-8bit",
+        "cka": 0.49584135500281606,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv2-base",
+        "model_b": "Hiera-base",
+        "cka": 0.8422227949039511,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv2-base",
+        "model_b": "I-JEPA",
+        "cka": 0.6036707494544106,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv2-base",
+        "model_b": "LFM2-2.6B-Exp-8bit",
+        "cka": 0.58841312609984,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv2-base",
+        "model_b": "MetaCLIP-B32-400m",
+        "cka": 0.6291058835938678,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv2-base",
+        "model_b": "Qwen2.5-1.5B-Instruct-8bit",
+        "cka": 0.4058481431267712,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv2-base",
+        "model_b": "Qwen3-0.6B-MLX-8bit",
+        "cka": 0.5072361073602962,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv2-base",
+        "model_b": "Qwen3-1.7B-MLX-8bit",
+        "cka": 0.4580551779811344,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv2-base",
+        "model_b": "Qwen3-4B-MLX-8bit",
+        "cka": 0.5186146273627036,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv2-base",
+        "model_b": "SigLIP",
+        "cka": 0.648625408425337,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv2-base",
+        "model_b": "SigLIP2",
+        "cka": 0.6575418917930844,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv2-base",
+        "model_b": "SmolLM3-3B-8bit",
+        "cka": 0.5209681687676836,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv2-base",
+        "model_b": "ViT-MAE-base",
+        "cka": 0.4362976271677267,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv2-base",
+        "model_b": "ViT-MSN-base",
+        "cka": 0.4109770217161221,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv2-base",
+        "model_b": "data2vec-vision",
+        "cka": 0.40136876807171884,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv2-small",
+        "model_b": "DINOv3-ConvNeXt-tiny",
+        "cka": 0.8283207988021638,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv2-small",
+        "model_b": "Falcon3-1B-Instruct-8bit",
+        "cka": 0.5983288570953493,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv2-small",
+        "model_b": "Granite-3.3-2B-Instruct-8bit",
+        "cka": 0.4628560452079266,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv2-small",
+        "model_b": "Hiera-base",
+        "cka": 0.7942565423449065,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv2-small",
+        "model_b": "I-JEPA",
+        "cka": 0.6235646120502837,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv2-small",
+        "model_b": "LFM2-2.6B-Exp-8bit",
+        "cka": 0.5464992064198818,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv2-small",
+        "model_b": "MetaCLIP-B32-400m",
+        "cka": 0.6885281552931667,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv2-small",
+        "model_b": "Qwen2.5-1.5B-Instruct-8bit",
+        "cka": 0.39501694622666955,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv2-small",
+        "model_b": "Qwen3-0.6B-MLX-8bit",
+        "cka": 0.5072672552057768,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv2-small",
+        "model_b": "Qwen3-1.7B-MLX-8bit",
+        "cka": 0.4456891473103051,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv2-small",
+        "model_b": "Qwen3-4B-MLX-8bit",
+        "cka": 0.512414613246799,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv2-small",
+        "model_b": "SigLIP",
+        "cka": 0.7078727415257138,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv2-small",
+        "model_b": "SigLIP2",
+        "cka": 0.71267682625754,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv2-small",
+        "model_b": "SmolLM3-3B-8bit",
+        "cka": 0.4973535083575194,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv2-small",
+        "model_b": "ViT-MAE-base",
+        "cka": 0.5037373558394891,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv2-small",
+        "model_b": "ViT-MSN-base",
+        "cka": 0.3893619635610806,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv2-small",
+        "model_b": "data2vec-vision",
+        "cka": 0.4597941427234793,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv3-ConvNeXt-tiny",
+        "model_b": "Falcon3-1B-Instruct-8bit",
+        "cka": 0.6197793058617109,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv3-ConvNeXt-tiny",
+        "model_b": "Granite-3.3-2B-Instruct-8bit",
+        "cka": 0.4868843300100876,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv3-ConvNeXt-tiny",
+        "model_b": "Hiera-base",
+        "cka": 0.8222018021743228,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv3-ConvNeXt-tiny",
+        "model_b": "I-JEPA",
+        "cka": 0.6482903523268818,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv3-ConvNeXt-tiny",
+        "model_b": "LFM2-2.6B-Exp-8bit",
+        "cka": 0.5667601353538195,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv3-ConvNeXt-tiny",
+        "model_b": "MetaCLIP-B32-400m",
+        "cka": 0.7096263863179106,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv3-ConvNeXt-tiny",
+        "model_b": "Qwen2.5-1.5B-Instruct-8bit",
+        "cka": 0.4183111592565441,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv3-ConvNeXt-tiny",
+        "model_b": "Qwen3-0.6B-MLX-8bit",
+        "cka": 0.5299053483495283,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv3-ConvNeXt-tiny",
+        "model_b": "Qwen3-1.7B-MLX-8bit",
+        "cka": 0.46816611070755587,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv3-ConvNeXt-tiny",
+        "model_b": "Qwen3-4B-MLX-8bit",
+        "cka": 0.5347426490872805,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv3-ConvNeXt-tiny",
+        "model_b": "SigLIP",
+        "cka": 0.7260504827351737,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv3-ConvNeXt-tiny",
+        "model_b": "SigLIP2",
+        "cka": 0.7341016739270947,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv3-ConvNeXt-tiny",
+        "model_b": "SmolLM3-3B-8bit",
+        "cka": 0.5188935417552863,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "DINOv3-ConvNeXt-tiny",
+        "model_b": "ViT-MAE-base",
+        "cka": 0.5387908144402845,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv3-ConvNeXt-tiny",
+        "model_b": "ViT-MSN-base",
+        "cka": 0.42539921655572127,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "DINOv3-ConvNeXt-tiny",
+        "model_b": "data2vec-vision",
+        "cka": 0.47756146423427676,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "Falcon3-1B-Instruct-8bit",
+        "model_b": "Granite-3.3-2B-Instruct-8bit",
+        "cka": 0.728511011454682,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Falcon3-1B-Instruct-8bit",
+        "model_b": "Hiera-base",
+        "cka": 0.5849080585912555,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Falcon3-1B-Instruct-8bit",
+        "model_b": "I-JEPA",
+        "cka": 0.5447923902096538,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Falcon3-1B-Instruct-8bit",
+        "model_b": "LFM2-2.6B-Exp-8bit",
+        "cka": 0.783071947783143,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Falcon3-1B-Instruct-8bit",
+        "model_b": "MetaCLIP-B32-400m",
+        "cka": 0.6382255206021834,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Falcon3-1B-Instruct-8bit",
+        "model_b": "Qwen2.5-1.5B-Instruct-8bit",
+        "cka": 0.6881462277906296,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Falcon3-1B-Instruct-8bit",
+        "model_b": "Qwen3-0.6B-MLX-8bit",
+        "cka": 0.76913430385871,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Falcon3-1B-Instruct-8bit",
+        "model_b": "Qwen3-1.7B-MLX-8bit",
+        "cka": 0.6913619018184324,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Falcon3-1B-Instruct-8bit",
+        "model_b": "Qwen3-4B-MLX-8bit",
+        "cka": 0.8044904377228563,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Falcon3-1B-Instruct-8bit",
+        "model_b": "SigLIP",
+        "cka": 0.6438673973045174,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Falcon3-1B-Instruct-8bit",
+        "model_b": "SigLIP2",
+        "cka": 0.6439238570465743,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Falcon3-1B-Instruct-8bit",
+        "model_b": "SmolLM3-3B-8bit",
+        "cka": 0.7349858499351812,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Falcon3-1B-Instruct-8bit",
+        "model_b": "ViT-MAE-base",
+        "cka": 0.4632162660535377,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Falcon3-1B-Instruct-8bit",
+        "model_b": "ViT-MSN-base",
+        "cka": 0.3149948646564053,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Falcon3-1B-Instruct-8bit",
+        "model_b": "data2vec-vision",
+        "cka": 0.4322392741598622,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Granite-3.3-2B-Instruct-8bit",
+        "model_b": "Hiera-base",
+        "cka": 0.4815975397280466,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Granite-3.3-2B-Instruct-8bit",
+        "model_b": "I-JEPA",
+        "cka": 0.37717118066951716,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Granite-3.3-2B-Instruct-8bit",
+        "model_b": "LFM2-2.6B-Exp-8bit",
+        "cka": 0.7376841592130634,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Granite-3.3-2B-Instruct-8bit",
+        "model_b": "MetaCLIP-B32-400m",
+        "cka": 0.4410217191029292,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Granite-3.3-2B-Instruct-8bit",
+        "model_b": "Qwen2.5-1.5B-Instruct-8bit",
+        "cka": 0.7897001125870303,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Granite-3.3-2B-Instruct-8bit",
+        "model_b": "Qwen3-0.6B-MLX-8bit",
+        "cka": 0.7389279003781374,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Granite-3.3-2B-Instruct-8bit",
+        "model_b": "Qwen3-1.7B-MLX-8bit",
+        "cka": 0.6946503152423681,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Granite-3.3-2B-Instruct-8bit",
+        "model_b": "Qwen3-4B-MLX-8bit",
+        "cka": 0.8206787172453929,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Granite-3.3-2B-Instruct-8bit",
+        "model_b": "SigLIP",
+        "cka": 0.4466489113545149,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Granite-3.3-2B-Instruct-8bit",
+        "model_b": "SigLIP2",
+        "cka": 0.4518193089183175,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Granite-3.3-2B-Instruct-8bit",
+        "model_b": "SmolLM3-3B-8bit",
+        "cka": 0.7336066478463436,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Granite-3.3-2B-Instruct-8bit",
+        "model_b": "ViT-MAE-base",
+        "cka": 0.31418237629532486,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Granite-3.3-2B-Instruct-8bit",
+        "model_b": "ViT-MSN-base",
+        "cka": 0.243687052476936,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Granite-3.3-2B-Instruct-8bit",
+        "model_b": "data2vec-vision",
+        "cka": 0.3075590015997208,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Hiera-base",
+        "model_b": "I-JEPA",
+        "cka": 0.5892655844197413,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "Hiera-base",
+        "model_b": "LFM2-2.6B-Exp-8bit",
+        "cka": 0.5704918093042994,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Hiera-base",
+        "model_b": "MetaCLIP-B32-400m",
+        "cka": 0.6105067682895622,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "Hiera-base",
+        "model_b": "Qwen2.5-1.5B-Instruct-8bit",
+        "cka": 0.3905430963292509,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Hiera-base",
+        "model_b": "Qwen3-0.6B-MLX-8bit",
+        "cka": 0.4888825401359089,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Hiera-base",
+        "model_b": "Qwen3-1.7B-MLX-8bit",
+        "cka": 0.43821452652231346,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Hiera-base",
+        "model_b": "Qwen3-4B-MLX-8bit",
+        "cka": 0.4955786423936608,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Hiera-base",
+        "model_b": "SigLIP",
+        "cka": 0.6297081045176731,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "Hiera-base",
+        "model_b": "SigLIP2",
+        "cka": 0.6392569506408559,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "Hiera-base",
+        "model_b": "SmolLM3-3B-8bit",
+        "cka": 0.5040586307551423,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Hiera-base",
+        "model_b": "ViT-MAE-base",
+        "cka": 0.4649764455315149,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "Hiera-base",
+        "model_b": "ViT-MSN-base",
+        "cka": 0.3541602910369272,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "Hiera-base",
+        "model_b": "data2vec-vision",
+        "cka": 0.4117318535572154,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "I-JEPA",
+        "model_b": "LFM2-2.6B-Exp-8bit",
+        "cka": 0.44505681927615703,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "I-JEPA",
+        "model_b": "MetaCLIP-B32-400m",
+        "cka": 0.6990209261318071,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "I-JEPA",
+        "model_b": "Qwen2.5-1.5B-Instruct-8bit",
+        "cka": 0.35004948517634443,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "I-JEPA",
+        "model_b": "Qwen3-0.6B-MLX-8bit",
+        "cka": 0.4716796238968102,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "I-JEPA",
+        "model_b": "Qwen3-1.7B-MLX-8bit",
+        "cka": 0.4028844255731262,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "I-JEPA",
+        "model_b": "Qwen3-4B-MLX-8bit",
+        "cka": 0.4702376087940627,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "I-JEPA",
+        "model_b": "SigLIP",
+        "cka": 0.691320381038509,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "I-JEPA",
+        "model_b": "SigLIP2",
+        "cka": 0.7106518619484926,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "I-JEPA",
+        "model_b": "SmolLM3-3B-8bit",
+        "cka": 0.42726218421412715,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "I-JEPA",
+        "model_b": "ViT-MAE-base",
+        "cka": 0.7440319327667626,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "I-JEPA",
+        "model_b": "ViT-MSN-base",
+        "cka": 0.383659764583824,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "I-JEPA",
+        "model_b": "data2vec-vision",
+        "cka": 0.6228470134698564,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "LFM2-2.6B-Exp-8bit",
+        "model_b": "MetaCLIP-B32-400m",
+        "cka": 0.5150796034989933,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "LFM2-2.6B-Exp-8bit",
+        "model_b": "Qwen2.5-1.5B-Instruct-8bit",
+        "cka": 0.6806139611301151,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "LFM2-2.6B-Exp-8bit",
+        "model_b": "Qwen3-0.6B-MLX-8bit",
+        "cka": 0.7007150761828149,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "LFM2-2.6B-Exp-8bit",
+        "model_b": "Qwen3-1.7B-MLX-8bit",
+        "cka": 0.6829906724974605,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "LFM2-2.6B-Exp-8bit",
+        "model_b": "Qwen3-4B-MLX-8bit",
+        "cka": 0.7545598534614532,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "LFM2-2.6B-Exp-8bit",
+        "model_b": "SigLIP",
+        "cka": 0.5196170631955978,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "LFM2-2.6B-Exp-8bit",
+        "model_b": "SigLIP2",
+        "cka": 0.5269674677574723,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "LFM2-2.6B-Exp-8bit",
+        "model_b": "SmolLM3-3B-8bit",
+        "cka": 0.7330482619389826,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "LFM2-2.6B-Exp-8bit",
+        "model_b": "ViT-MAE-base",
+        "cka": 0.36820326974515066,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "LFM2-2.6B-Exp-8bit",
+        "model_b": "ViT-MSN-base",
+        "cka": 0.2930299241381403,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "LFM2-2.6B-Exp-8bit",
+        "model_b": "data2vec-vision",
+        "cka": 0.341655709068892,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "MetaCLIP-B32-400m",
+        "model_b": "Qwen2.5-1.5B-Instruct-8bit",
+        "cka": 0.42916353998543905,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "MetaCLIP-B32-400m",
+        "model_b": "Qwen3-0.6B-MLX-8bit",
+        "cka": 0.6129928021913558,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "MetaCLIP-B32-400m",
+        "model_b": "Qwen3-1.7B-MLX-8bit",
+        "cka": 0.4981957924077029,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "MetaCLIP-B32-400m",
+        "model_b": "Qwen3-4B-MLX-8bit",
+        "cka": 0.5879584871710802,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "MetaCLIP-B32-400m",
+        "model_b": "SigLIP",
+        "cka": 0.9545260093568785,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "MetaCLIP-B32-400m",
+        "model_b": "SigLIP2",
+        "cka": 0.9604934703898751,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "MetaCLIP-B32-400m",
+        "model_b": "SmolLM3-3B-8bit",
+        "cka": 0.5081495759264831,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "MetaCLIP-B32-400m",
+        "model_b": "ViT-MAE-base",
+        "cka": 0.7665734968151715,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "MetaCLIP-B32-400m",
+        "model_b": "ViT-MSN-base",
+        "cka": 0.38827018118802464,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "MetaCLIP-B32-400m",
+        "model_b": "data2vec-vision",
+        "cka": 0.6971623538694585,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "Qwen2.5-1.5B-Instruct-8bit",
+        "model_b": "Qwen3-0.6B-MLX-8bit",
+        "cka": 0.7349714873185108,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Qwen2.5-1.5B-Instruct-8bit",
+        "model_b": "Qwen3-1.7B-MLX-8bit",
+        "cka": 0.7369649740800971,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Qwen2.5-1.5B-Instruct-8bit",
+        "model_b": "Qwen3-4B-MLX-8bit",
+        "cka": 0.8277299075391656,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Qwen2.5-1.5B-Instruct-8bit",
+        "model_b": "SigLIP",
+        "cka": 0.4316269301497185,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Qwen2.5-1.5B-Instruct-8bit",
+        "model_b": "SigLIP2",
+        "cka": 0.4356562247144732,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Qwen2.5-1.5B-Instruct-8bit",
+        "model_b": "SmolLM3-3B-8bit",
+        "cka": 0.7088632464542446,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Qwen2.5-1.5B-Instruct-8bit",
+        "model_b": "ViT-MAE-base",
+        "cka": 0.30654539281780135,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Qwen2.5-1.5B-Instruct-8bit",
+        "model_b": "ViT-MSN-base",
+        "cka": 0.22776973912857076,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Qwen2.5-1.5B-Instruct-8bit",
+        "model_b": "data2vec-vision",
+        "cka": 0.3075651881113616,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Qwen3-0.6B-MLX-8bit",
+        "model_b": "Qwen3-1.7B-MLX-8bit",
+        "cka": 0.7221653775134668,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Qwen3-0.6B-MLX-8bit",
+        "model_b": "Qwen3-4B-MLX-8bit",
+        "cka": 0.8411676403998578,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Qwen3-0.6B-MLX-8bit",
+        "model_b": "SigLIP",
+        "cka": 0.6075805309991419,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Qwen3-0.6B-MLX-8bit",
+        "model_b": "SigLIP2",
+        "cka": 0.6102021594295474,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Qwen3-0.6B-MLX-8bit",
+        "model_b": "SmolLM3-3B-8bit",
+        "cka": 0.7107083510207824,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Qwen3-0.6B-MLX-8bit",
+        "model_b": "ViT-MAE-base",
+        "cka": 0.454777001985777,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Qwen3-0.6B-MLX-8bit",
+        "model_b": "ViT-MSN-base",
+        "cka": 0.2773323684866319,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Qwen3-0.6B-MLX-8bit",
+        "model_b": "data2vec-vision",
+        "cka": 0.4429562475017573,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Qwen3-1.7B-MLX-8bit",
+        "model_b": "Qwen3-4B-MLX-8bit",
+        "cka": 0.796272445697658,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Qwen3-1.7B-MLX-8bit",
+        "model_b": "SigLIP",
+        "cka": 0.49877392448028446,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Qwen3-1.7B-MLX-8bit",
+        "model_b": "SigLIP2",
+        "cka": 0.5041392567284987,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Qwen3-1.7B-MLX-8bit",
+        "model_b": "SmolLM3-3B-8bit",
+        "cka": 0.6812421660489133,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Qwen3-1.7B-MLX-8bit",
+        "model_b": "ViT-MAE-base",
+        "cka": 0.36834068842712575,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Qwen3-1.7B-MLX-8bit",
+        "model_b": "ViT-MSN-base",
+        "cka": 0.2510926374857532,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Qwen3-1.7B-MLX-8bit",
+        "model_b": "data2vec-vision",
+        "cka": 0.34957052978099606,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Qwen3-4B-MLX-8bit",
+        "model_b": "SigLIP",
+        "cka": 0.585704237189297,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Qwen3-4B-MLX-8bit",
+        "model_b": "SigLIP2",
+        "cka": 0.5903085577928222,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Qwen3-4B-MLX-8bit",
+        "model_b": "SmolLM3-3B-8bit",
+        "cka": 0.7728669309115052,
+        "pair_type": "language-language"
+      },
+      {
+        "model_a": "Qwen3-4B-MLX-8bit",
+        "model_b": "ViT-MAE-base",
+        "cka": 0.42883749008267846,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Qwen3-4B-MLX-8bit",
+        "model_b": "ViT-MSN-base",
+        "cka": 0.2923542805789801,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "Qwen3-4B-MLX-8bit",
+        "model_b": "data2vec-vision",
+        "cka": 0.4220797452792129,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "SigLIP",
+        "model_b": "SigLIP2",
+        "cka": 0.9749169365311938,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "SigLIP",
+        "model_b": "SmolLM3-3B-8bit",
+        "cka": 0.5120561289410526,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "SigLIP",
+        "model_b": "ViT-MAE-base",
+        "cka": 0.7337501867571018,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "SigLIP",
+        "model_b": "ViT-MSN-base",
+        "cka": 0.388794069455915,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "SigLIP",
+        "model_b": "data2vec-vision",
+        "cka": 0.691916765268903,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "SigLIP2",
+        "model_b": "SmolLM3-3B-8bit",
+        "cka": 0.5163980269895941,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "SigLIP2",
+        "model_b": "ViT-MAE-base",
+        "cka": 0.7595119914003379,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "SigLIP2",
+        "model_b": "ViT-MSN-base",
+        "cka": 0.40144391237307747,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "SigLIP2",
+        "model_b": "data2vec-vision",
+        "cka": 0.7081514555673055,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "SmolLM3-3B-8bit",
+        "model_b": "ViT-MAE-base",
+        "cka": 0.3711945181858528,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "SmolLM3-3B-8bit",
+        "model_b": "ViT-MSN-base",
+        "cka": 0.2609909697422132,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "SmolLM3-3B-8bit",
+        "model_b": "data2vec-vision",
+        "cka": 0.351757294231863,
+        "pair_type": "language-image"
+      },
+      {
+        "model_a": "ViT-MAE-base",
+        "model_b": "ViT-MSN-base",
+        "cka": 0.27905332371740577,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "ViT-MAE-base",
+        "model_b": "data2vec-vision",
+        "cka": 0.7126030681352409,
+        "pair_type": "image-image"
+      },
+      {
+        "model_a": "ViT-MSN-base",
+        "model_b": "data2vec-vision",
+        "cka": 0.2601763529143364,
+        "pair_type": "image-image"
+      }
+    ],
+    "matrix": [
+      [
+        1.0,
+        0.673930287361145,
+        0.5448895692825317,
+        0.5659230947494507,
+        0.596844494342804,
+        0.597926676273346,
+        0.5443273186683655,
+        0.3725546896457672,
+        0.5474423766136169,
+        0.6305805444717407,
+        0.4381076693534851,
+        0.6799874901771545,
+        0.3437064290046692,
+        0.4849132001399994,
+        0.39899447560310364,
+        0.46912649273872375,
+        0.6728039979934692,
+        0.6794421672821045,
+        0.4201507866382599,
+        0.6123101711273193,
+        0.33947014808654785,
+        0.5277001261711121
+      ],
+      [
+        0.673930287361145,
+        1.0,
+        0.590821385383606,
+        0.6013436913490295,
+        0.66839200258255,
+        0.6936413049697876,
+        0.6214393377304077,
+        0.42434918880462646,
+        0.5926879644393921,
+        0.7066508531570435,
+        0.494392067193985,
+        0.9711742997169495,
+        0.4148752987384796,
+        0.5984926819801331,
+        0.4833543300628662,
+        0.5699636936187744,
+        0.9399784803390503,
+        0.9472115635871887,
+        0.49112436175346375,
+        0.7936183214187622,
+        0.36536094546318054,
+        0.703927218914032
+      ],
+      [
+        0.5448895692825317,
+        0.590821385383606,
+        1.0,
+        0.846968948841095,
+        0.7973828911781311,
+        0.8285979628562927,
+        0.5884842872619629,
+        0.48552441596984863,
+        0.9358712434768677,
+        0.5837892293930054,
+        0.575541615486145,
+        0.6096764206886292,
+        0.39161211252212524,
+        0.4901624619960785,
+        0.4416519105434418,
+        0.4981962740421295,
+        0.6324973702430725,
+        0.6407005786895752,
+        0.5069907307624817,
+        0.4568611681461334,
+        0.3619638979434967,
+        0.4044829308986664
+      ],
+      [
+        0.5659230947494507,
+        0.6013436913490295,
+        0.846968948841095,
+        1.0,
+        0.8464415073394775,
+        0.8414193391799927,
+        0.6155197620391846,
+        0.4958413541316986,
+        0.8422228097915649,
+        0.6036707758903503,
+        0.5884131193161011,
+        0.6291058659553528,
+        0.4058481454849243,
+        0.507236123085022,
+        0.45805516839027405,
+        0.518614649772644,
+        0.6486254334449768,
+        0.6575418710708618,
+        0.5209681391716003,
+        0.43629762530326843,
+        0.4109770357608795,
+        0.40136876702308655
+      ],
+      [
+        0.596844494342804,
+        0.66839200258255,
+        0.7973828911781311,
+        0.8464415073394775,
+        1.0,
+        0.8283208012580872,
+        0.5983288288116455,
+        0.4628560543060303,
+        0.7942565679550171,
+        0.623564600944519,
+        0.5464991927146912,
+        0.6885281801223755,
+        0.39501693844795227,
+        0.5072672367095947,
+        0.4456891417503357,
+        0.5124146342277527,
+        0.707872748374939,
+        0.7126768231391907,
+        0.4973534941673279,
+        0.5037373304367065,
+        0.3893619775772095,
+        0.45979413390159607
+      ],
+      [
+        0.597926676273346,
+        0.6936413049697876,
+        0.8285979628562927,
+        0.8414193391799927,
+        0.8283208012580872,
+        1.0,
+        0.6197792887687683,
+        0.48688432574272156,
+        0.8222017884254456,
+        0.6482903361320496,
+        0.5667601227760315,
+        0.7096263766288757,
+        0.41831114888191223,
+        0.5299053192138672,
+        0.4681661128997803,
+        0.5347426533699036,
+        0.7260504961013794,
+        0.7341016530990601,
+        0.5188935399055481,
+        0.5387908220291138,
+        0.42539921402931213,
+        0.47756147384643555
+      ],
+      [
+        0.5443273186683655,
+        0.6214393377304077,
+        0.5884842872619629,
+        0.6155197620391846,
+        0.5983288288116455,
+        0.6197792887687683,
+        1.0,
+        0.7285110354423523,
+        0.5849080681800842,
+        0.5447924137115479,
+        0.7830719351768494,
+        0.6382254958152771,
+        0.6881462335586548,
+        0.7691342830657959,
+        0.6913619041442871,
+        0.8044904470443726,
+        0.6438673734664917,
+        0.6439238786697388,
+        0.7349858283996582,
+        0.46321627497673035,
+        0.3149948716163635,
+        0.43223926424980164
+      ],
+      [
+        0.3725546896457672,
+        0.42434918880462646,
+        0.48552441596984863,
+        0.4958413541316986,
+        0.4628560543060303,
+        0.48688432574272156,
+        0.7285110354423523,
+        1.0,
+        0.48159754276275635,
+        0.37717118859291077,
+        0.7376841306686401,
+        0.44102171063423157,
+        0.7897000908851624,
+        0.7389279007911682,
+        0.6946502923965454,
+        0.8206787109375,
+        0.4466489255428314,
+        0.4518193006515503,
+        0.7336066365242004,
+        0.3141823709011078,
+        0.24368704855442047,
+        0.3075590133666992
+      ],
+      [
+        0.5474423766136169,
+        0.5926879644393921,
+        0.9358712434768677,
+        0.8422228097915649,
+        0.7942565679550171,
+        0.8222017884254456,
+        0.5849080681800842,
+        0.48159754276275635,
+        1.0,
+        0.5892655849456787,
+        0.5704917907714844,
+        0.6105067729949951,
+        0.3905431032180786,
+        0.48888254165649414,
+        0.4382145404815674,
+        0.4955786466598511,
+        0.6297081112861633,
+        0.6392569541931152,
+        0.5040586590766907,
+        0.4649764597415924,
+        0.35416027903556824,
+        0.4117318391799927
+      ],
+      [
+        0.6305805444717407,
+        0.7066508531570435,
+        0.5837892293930054,
+        0.6036707758903503,
+        0.623564600944519,
+        0.6482903361320496,
+        0.5447924137115479,
+        0.37717118859291077,
+        0.5892655849456787,
+        1.0,
+        0.44505682587623596,
+        0.6990209221839905,
+        0.3500494956970215,
+        0.4716796278953552,
+        0.40288442373275757,
+        0.4702376127243042,
+        0.6913203597068787,
+        0.7106518745422363,
+        0.42726218700408936,
+        0.7440319061279297,
+        0.3836597502231598,
+        0.6228470206260681
+      ],
+      [
+        0.4381076693534851,
+        0.494392067193985,
+        0.575541615486145,
+        0.5884131193161011,
+        0.5464991927146912,
+        0.5667601227760315,
+        0.7830719351768494,
+        0.7376841306686401,
+        0.5704917907714844,
+        0.44505682587623596,
+        1.0,
+        0.5150796175003052,
+        0.6806139349937439,
+        0.7007150650024414,
+        0.6829906702041626,
+        0.7545598745346069,
+        0.5196170806884766,
+        0.526967465877533,
+        0.7330482602119446,
+        0.3682032823562622,
+        0.29302993416786194,
+        0.3416557013988495
+      ],
+      [
+        0.6799874901771545,
+        0.9711742997169495,
+        0.6096764206886292,
+        0.6291058659553528,
+        0.6885281801223755,
+        0.7096263766288757,
+        0.6382254958152771,
+        0.44102171063423157,
+        0.6105067729949951,
+        0.6990209221839905,
+        0.5150796175003052,
+        1.0,
+        0.42916354537010193,
+        0.6129928231239319,
+        0.4981957972049713,
+        0.5879585146903992,
+        0.9545260071754456,
+        0.9604934453964233,
+        0.5081495642662048,
+        0.7665734887123108,
+        0.38827016949653625,
+        0.6971623301506042
+      ],
+      [
+        0.3437064290046692,
+        0.4148752987384796,
+        0.39161211252212524,
+        0.4058481454849243,
+        0.39501693844795227,
+        0.41831114888191223,
+        0.6881462335586548,
+        0.7897000908851624,
+        0.3905431032180786,
+        0.3500494956970215,
+        0.6806139349937439,
+        0.42916354537010193,
+        1.0,
+        0.7349714636802673,
+        0.736965000629425,
+        0.8277298808097839,
+        0.43162691593170166,
+        0.43565621972084045,
+        0.7088632583618164,
+        0.3065454065799713,
+        0.22776973247528076,
+        0.30756518244743347
+      ],
+      [
+        0.4849132001399994,
+        0.5984926819801331,
+        0.4901624619960785,
+        0.507236123085022,
+        0.5072672367095947,
+        0.5299053192138672,
+        0.7691342830657959,
+        0.7389279007911682,
+        0.48888254165649414,
+        0.4716796278953552,
+        0.7007150650024414,
+        0.6129928231239319,
+        0.7349714636802673,
+        1.0,
+        0.7221654057502747,
+        0.8411676287651062,
+        0.6075805425643921,
+        0.6102021336555481,
+        0.7107083797454834,
+        0.4547770023345947,
+        0.2773323655128479,
+        0.44295623898506165
+      ],
+      [
+        0.39899447560310364,
+        0.4833543300628662,
+        0.4416519105434418,
+        0.45805516839027405,
+        0.4456891417503357,
+        0.4681661128997803,
+        0.6913619041442871,
+        0.6946502923965454,
+        0.4382145404815674,
+        0.40288442373275757,
+        0.6829906702041626,
+        0.4981957972049713,
+        0.736965000629425,
+        0.7221654057502747,
+        1.0,
+        0.7962724566459656,
+        0.4987739324569702,
+        0.504139244556427,
+        0.6812421679496765,
+        0.36834070086479187,
+        0.2510926425457001,
+        0.34957054257392883
+      ],
+      [
+        0.46912649273872375,
+        0.5699636936187744,
+        0.4981962740421295,
+        0.518614649772644,
+        0.5124146342277527,
+        0.5347426533699036,
+        0.8044904470443726,
+        0.8206787109375,
+        0.4955786466598511,
+        0.4702376127243042,
+        0.7545598745346069,
+        0.5879585146903992,
+        0.8277298808097839,
+        0.8411676287651062,
+        0.7962724566459656,
+        1.0,
+        0.5857042074203491,
+        0.5903085470199585,
+        0.7728669047355652,
+        0.42883747816085815,
+        0.2923542857170105,
+        0.42207974195480347
+      ],
+      [
+        0.6728039979934692,
+        0.9399784803390503,
+        0.6324973702430725,
+        0.6486254334449768,
+        0.707872748374939,
+        0.7260504961013794,
+        0.6438673734664917,
+        0.4466489255428314,
+        0.6297081112861633,
+        0.6913203597068787,
+        0.5196170806884766,
+        0.9545260071754456,
+        0.43162691593170166,
+        0.6075805425643921,
+        0.4987739324569702,
+        0.5857042074203491,
+        1.0,
+        0.974916934967041,
+        0.5120561122894287,
+        0.7337501645088196,
+        0.38879406452178955,
+        0.6919167637825012
+      ],
+      [
+        0.6794421672821045,
+        0.9472115635871887,
+        0.6407005786895752,
+        0.6575418710708618,
+        0.7126768231391907,
+        0.7341016530990601,
+        0.6439238786697388,
+        0.4518193006515503,
+        0.6392569541931152,
+        0.7106518745422363,
+        0.526967465877533,
+        0.9604934453964233,
+        0.43565621972084045,
+        0.6102021336555481,
+        0.504139244556427,
+        0.5903085470199585,
+        0.974916934967041,
+        1.0,
+        0.516398012638092,
+        0.7595120072364807,
+        0.4014438986778259,
+        0.7081514596939087
+      ],
+      [
+        0.4201507866382599,
+        0.49112436175346375,
+        0.5069907307624817,
+        0.5209681391716003,
+        0.4973534941673279,
+        0.5188935399055481,
+        0.7349858283996582,
+        0.7336066365242004,
+        0.5040586590766907,
+        0.42726218700408936,
+        0.7330482602119446,
+        0.5081495642662048,
+        0.7088632583618164,
+        0.7107083797454834,
+        0.6812421679496765,
+        0.7728669047355652,
+        0.5120561122894287,
+        0.516398012638092,
+        1.0,
+        0.3711945116519928,
+        0.2609909772872925,
+        0.351757287979126
+      ],
+      [
+        0.6123101711273193,
+        0.7936183214187622,
+        0.4568611681461334,
+        0.43629762530326843,
+        0.5037373304367065,
+        0.5387908220291138,
+        0.46321627497673035,
+        0.3141823709011078,
+        0.4649764597415924,
+        0.7440319061279297,
+        0.3682032823562622,
+        0.7665734887123108,
+        0.3065454065799713,
+        0.4547770023345947,
+        0.36834070086479187,
+        0.42883747816085815,
+        0.7337501645088196,
+        0.7595120072364807,
+        0.3711945116519928,
+        1.0,
+        0.27905333042144775,
+        0.7126030921936035
+      ],
+      [
+        0.33947014808654785,
+        0.36536094546318054,
+        0.3619638979434967,
+        0.4109770357608795,
+        0.3893619775772095,
+        0.42539921402931213,
+        0.3149948716163635,
+        0.24368704855442047,
+        0.35416027903556824,
+        0.3836597502231598,
+        0.29302993416786194,
+        0.38827016949653625,
+        0.22776973247528076,
+        0.2773323655128479,
+        0.2510926425457001,
+        0.2923542857170105,
+        0.38879406452178955,
+        0.4014438986778259,
+        0.2609909772872925,
+        0.27905333042144775,
+        1.0,
+        0.2601763606071472
+      ],
+      [
+        0.5277001261711121,
+        0.703927218914032,
+        0.4044829308986664,
+        0.40136876702308655,
+        0.45979413390159607,
+        0.47756147384643555,
+        0.43223926424980164,
+        0.3075590133666992,
+        0.4117318391799927,
+        0.6228470206260681,
+        0.3416557013988495,
+        0.6971623301506042,
+        0.30756518244743347,
+        0.44295623898506165,
+        0.34957054257392883,
+        0.42207974195480347,
+        0.6919167637825012,
+        0.7081514596939087,
+        0.351757287979126,
+        0.7126030921936035,
+        0.2601763606071472,
+        1.0
+      ]
+    ],
+    "broad_summary": {
+      "language-language": {
+        "count": 28,
+        "mean_cka": 0.7428510673239642,
+        "median_cka": 0.734978668626846
+      },
+      "image-image": {
+        "count": 91,
+        "mean_cka": 0.6338367001844383,
+        "median_cka": 0.6407005684488237
+      },
+      "language-image": {
+        "count": 112,
+        "mean_cka": 0.46570373181894953,
+        "median_cka": 0.47663858181242835
+      }
+    },
+    "rsa_agreement": {
+      "pearson": 0.722903751533064,
+      "spearman": 0.7049952296578984
+    }
+  },
+  "arvlm25_extension_summary": {
+    "data_file": "/Users/hi/projects/cross-modal-representations/results/scale250_full/baseline25_extension/replication_results.json",
+    "n_models": 25,
+    "n_concepts": 250,
+    "model_order": [
+      "Falcon3-1B-Instruct-8bit",
+      "Granite-3.3-2B-Instruct-8bit",
+      "LFM2-2.6B-Exp-8bit",
+      "Qwen2.5-1.5B-Instruct-8bit",
+      "Qwen3-0.6B-MLX-8bit",
+      "Qwen3-1.7B-MLX-8bit",
+      "Qwen3-4B-MLX-8bit",
+      "SmolLM3-3B-8bit",
+      "CLIP-ViT-B32",
+      "MetaCLIP-B32-400m",
+      "SigLIP",
+      "SigLIP2",
+      "Phi-3.5-vision-instruct-MLX-8bit",
+      "Qwen3.5-2B-Base-MLX-8bit",
+      "Qwen3.5-4B-Base-MLX-8bit",
+      "BEiT-base",
+      "ConvNeXt-v2",
+      "DINOv2-base",
+      "DINOv2-small",
+      "DINOv3-ConvNeXt-tiny",
+      "Hiera-base",
+      "I-JEPA",
+      "ViT-MAE-base",
+      "ViT-MSN-base",
+      "data2vec-vision"
+    ],
+    "family_map": {
+      "Falcon3-1B-Instruct-8bit": "language",
+      "Granite-3.3-2B-Instruct-8bit": "language",
+      "LFM2-2.6B-Exp-8bit": "language",
+      "Qwen2.5-1.5B-Instruct-8bit": "language",
+      "Qwen3-0.6B-MLX-8bit": "language",
+      "Qwen3-1.7B-MLX-8bit": "language",
+      "Qwen3-4B-MLX-8bit": "language",
+      "SmolLM3-3B-8bit": "language",
+      "CLIP-ViT-B32": "contrastive_vlm",
+      "MetaCLIP-B32-400m": "contrastive_vlm",
+      "SigLIP": "contrastive_vlm",
+      "SigLIP2": "contrastive_vlm",
+      "Phi-3.5-vision-instruct-MLX-8bit": "autoregressive_vlm",
+      "Qwen3.5-2B-Base-MLX-8bit": "autoregressive_vlm",
+      "Qwen3.5-4B-Base-MLX-8bit": "autoregressive_vlm",
+      "BEiT-base": "vision",
+      "ConvNeXt-v2": "vision",
+      "DINOv2-base": "vision",
+      "DINOv2-small": "vision",
+      "DINOv3-ConvNeXt-tiny": "vision",
+      "Hiera-base": "vision",
+      "I-JEPA": "vision",
+      "ViT-MAE-base": "vision",
+      "ViT-MSN-base": "vision",
+      "data2vec-vision": "vision"
+    },
+    "bridge_summary": [
+      {
+        "model": "CLIP-ViT-B32",
+        "family": "contrastive_vlm",
+        "mean_to_language": 0.04032893478870392,
+        "mean_to_vision": 0.5038177371025085,
+        "mean_to_contrastive_vlm": 0.8796300888061523,
+        "mean_to_autoregressive_vlm": 0.7247589230537415,
+        "vision_minus_language": 0.4634888023138046
+      },
+      {
+        "model": "MetaCLIP-B32-400m",
+        "family": "contrastive_vlm",
+        "mean_to_language": 0.04870119318366051,
+        "mean_to_vision": 0.5082250833511353,
+        "mean_to_contrastive_vlm": 0.9049460291862488,
+        "mean_to_autoregressive_vlm": 0.7242425084114075,
+        "vision_minus_language": 0.45952389016747475
+      },
+      {
+        "model": "SigLIP",
+        "family": "contrastive_vlm",
+        "mean_to_language": 0.022565077990293503,
+        "mean_to_vision": 0.47880735993385315,
+        "mean_to_contrastive_vlm": 0.8845939636230469,
+        "mean_to_autoregressive_vlm": 0.6966963410377502,
+        "vision_minus_language": 0.45624228194355965
+      },
+      {
+        "model": "SigLIP2",
+        "family": "contrastive_vlm",
+        "mean_to_language": 0.011562783271074295,
+        "mean_to_vision": 0.5103532075881958,
+        "mean_to_contrastive_vlm": 0.9060584902763367,
+        "mean_to_autoregressive_vlm": 0.7352332472801208,
+        "vision_minus_language": 0.4987904243171215
+      },
+      {
+        "model": "Phi-3.5-vision-instruct-MLX-8bit",
+        "family": "autoregressive_vlm",
+        "mean_to_language": 0.04034564271569252,
+        "mean_to_vision": 0.4737064242362976,
+        "mean_to_contrastive_vlm": 0.651861846446991,
+        "mean_to_autoregressive_vlm": 0.8661566376686096,
+        "vision_minus_language": 0.4333607815206051
+      },
+      {
+        "model": "Qwen3.5-2B-Base-MLX-8bit",
+        "family": "autoregressive_vlm",
+        "mean_to_language": 0.03990175947546959,
+        "mean_to_vision": 0.5356789827346802,
+        "mean_to_contrastive_vlm": 0.7664775848388672,
+        "mean_to_autoregressive_vlm": 0.9156272411346436,
+        "vision_minus_language": 0.4957772232592106
+      },
+      {
+        "model": "Qwen3.5-4B-Base-MLX-8bit",
+        "family": "autoregressive_vlm",
+        "mean_to_language": 0.04103745520114899,
+        "mean_to_vision": 0.5271786451339722,
+        "mean_to_contrastive_vlm": 0.7423588633537292,
+        "mean_to_autoregressive_vlm": 0.921546459197998,
+        "vision_minus_language": 0.4861411899328232
+      }
+    ],
+    "family_block_labels": [
+      "Language",
+      "Contrastive VLM",
+      "Autoregressive VLM",
+      "Vision"
+    ],
+    "family_block_mean_rsa": [
+      [
+        0.6143422722816467,
+        0.03078950010240078,
+        0.0404282845556736,
+        0.015524214133620262
+      ],
+      [
+        0.03078949823975563,
+        0.8938071131706238,
+        0.7202327251434326,
+        0.5003008842468262
+      ],
+      [
+        0.0404282882809639,
+        0.7202327251434326,
+        0.9011101126670837,
+        0.5121880173683167
+      ],
+      [
+        0.015524214133620262,
+        0.5003008246421814,
+        0.5121880173683167,
+        0.38268107175827026
+      ]
+    ]
+  }
+}
