@@ -2,6 +2,12 @@
 
 This runbook turns the 250-concept scale-up into a staged 2-3 day workflow on the existing repo.
 
+Public release note:
+
+- `data/data_manifest_250.json` is the canonical analysis manifest and references image payloads excluded from git
+- for a fresh public rebuild, start with `docs/dataset_reconstruction.md`
+- use this runbook only after you have either rebuilt a runnable dataset or restored the heavy compiled artifacts locally
+
 ## Recommended Confirmatory Design
 
 - `250` concepts
@@ -25,7 +31,14 @@ Preflight now also enforces exact per-concept source balance whenever a manifest
 Start from:
 
 - roster scaffold: `data/concept_roster_250_scaffold.json`
+- fresh build initializer: `src/init_scale250_fresh_build.py`
 - generator: `src/generate_manifest_from_roster.py`
+
+Recommended public starting point:
+
+```bash
+python src/init_scale250_fresh_build.py
+```
 
 Generate an editable manifest skeleton with empty image lists:
 
@@ -56,8 +69,8 @@ Use the curation sync helper during dataset construction:
 
 ```bash
 python src/sync_manifest_curation.py \
-  --manifest-path data/data_manifest_250.json \
-  --image-root data/images_250 \
+  --manifest-path data/data_manifest_250_fresh.json \
+  --image-root data/images_250_fresh \
   --sync-image-paths true \
   --infer-image-sources-from-filenames true \
   --write
@@ -67,8 +80,8 @@ For a strict gate on source coverage while curating:
 
 ```bash
 python src/sync_manifest_curation.py \
-  --manifest-path data/data_manifest_250.json \
-  --image-root data/images_250 \
+  --manifest-path data/data_manifest_250_fresh.json \
+  --image-root data/images_250_fresh \
   --sync-image-paths true \
   --infer-image-sources-from-filenames true \
   --strict-image-sources true \
@@ -116,6 +129,10 @@ Suggested prompt rule:
   - a fixed prompt ensemble built from the extracted templates
 
 ## Day 1: Smoke Panel Then Full Baseline Extraction
+
+For the commands below, substitute your own finalized extraction manifest path when rebuilding from
+source. In the author's local run this was `data/data_manifest_250.json`; a fresh public rebuild may
+instead keep a separate finalized manifest such as `data/data_manifest_250_fresh.json`.
 
 ### 1) Manifest preflight
 

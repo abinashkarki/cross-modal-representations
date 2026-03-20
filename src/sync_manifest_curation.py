@@ -8,7 +8,7 @@ from typing import Any, Dict, List, Set
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(SCRIPT_DIR)
-DEFAULT_MANIFEST_PATH = os.path.join(REPO_ROOT, "data", "data_manifest_250_skeleton.json")
+DEFAULT_MANIFEST_PATH = os.path.join(REPO_ROOT, "data", "data_manifest_250_fresh.json")
 IMAGE_EXTS = (".jpg", ".jpeg", ".png", ".webp")
 
 
@@ -82,7 +82,7 @@ def main() -> None:
     parser.add_argument("--manifest-path", default=DEFAULT_MANIFEST_PATH)
     parser.add_argument(
         "--image-root",
-        default="data/images_250",
+        default="data/images_250_fresh",
         help="Image root relative to repo root or as an absolute path.",
     )
     parser.add_argument(

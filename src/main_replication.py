@@ -50,7 +50,11 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 EXPERIMENT_DIR = os.path.dirname(SCRIPT_DIR)
 REPO_ROOT = os.path.dirname(os.path.dirname(EXPERIMENT_DIR))
 MANIFEST_PATH = os.path.join(EXPERIMENT_DIR, "data", "data_manifest_250.json")
-LOCAL_MODELS_DIR = os.path.join(REPO_ROOT, "models")
+DEFAULT_LOCAL_MODELS_DIR = os.path.join(EXPERIMENT_DIR, "models")
+LEGACY_LOCAL_MODELS_DIR = os.path.join(REPO_ROOT, "models")
+LOCAL_MODELS_DIR = os.environ.get("LOCAL_MODELS_DIR") or (
+    DEFAULT_LOCAL_MODELS_DIR if os.path.isdir(DEFAULT_LOCAL_MODELS_DIR) else LEGACY_LOCAL_MODELS_DIR
+)
 
 PROMPT_TEMPLATE = "The concept of {concept}"
 DEFAULT_LAYER_SPEC = "-1"

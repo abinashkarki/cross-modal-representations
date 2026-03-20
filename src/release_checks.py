@@ -1,5 +1,7 @@
 import json
 import subprocess
+import sys
+import tempfile
 from fnmatch import fnmatch
 from pathlib import Path
 
@@ -37,10 +39,15 @@ REQUIRED_FILES = [
     "requirements-curation.txt",
     "Makefile",
     "docs/release_reproducibility.md",
+    "docs/dataset_reconstruction.md",
     "artifacts/release_manifest.json",
     "artifacts/SHA256SUMS.txt",
     "data/README.md",
     "data/data_manifest_250.json",
+    "data/data_manifest_250_skeleton.json",
+    "data/concept_roster_250_scaffold.json",
+    "fixtures/dataset_rebuild_smoke/README.md",
+    "fixtures/dataset_rebuild_smoke/roster.json",
     "results/README.md",
     "results/scale250_full/baseline/robustness_opt_full/robustness_stats.json",
     "results/scale250_full/aligned5/robustness/robustness_stats.json",
@@ -95,6 +102,9 @@ def check_manifest_shape() -> list[str]:
     manifest_path = REPO_ROOT / "artifacts" / "release_manifest.json"
     with open(manifest_path, "r", encoding="utf-8") as handle:
         manifest = json.load(handle)
+    distribution_mode = manifest.get("distribution_mode")
+    if distribution_mode not in {"local_archive_only", "urls_published"}:
+        errors.append("release_manifest.json missing distribution_mode or has unsupported value")
     if "external_artifacts" not in manifest:
         errors.append("release_manifest.json missing external_artifacts")
     if "local_archives" not in manifest:
@@ -103,9 +113,95 @@ def check_manifest_shape() -> list[str]:
         for key in ["id", "checkout_path", "local_archive_path", "size_bytes", "sha256"]:
             if key not in artifact:
                 errors.append(f"Artifact entry missing {key}: {artifact}")
+        if distribution_mode == "urls_published" and not artifact.get("url"):
+            errors.append(f"Artifact entry missing published URL: {artifact['id']}")
         checkout = REPO_ROOT / artifact["checkout_path"]
         if checkout.exists() and checkout.stat().st_size == 0:
             errors.append(f"Empty checkout artifact placeholder: {artifact['checkout_path']}")
+    return errors
+
+
+def run_checked(cmd: list[str]) -> tuple[bool, str]:
+    completed = subprocess.run(
+        cmd,
+        cwd=REPO_ROOT,
+        text=True,
+        capture_output=True,
+    )
+    output = (completed.stdout or "") + (completed.stderr or "")
+    return completed.returncode == 0, output.strip()
+
+
+def check_dataset_fixture() -> list[str]:
+    errors = []
+    fixture_root = REPO_ROOT / "fixtures" / "dataset_rebuild_smoke"
+    image_root_rel = "fixtures/dataset_rebuild_smoke/images"
+
+    with tempfile.TemporaryDirectory(prefix="cmr_fixture_") as tmp_dir:
+        tmp_path = Path(tmp_dir)
+        manifest_path = tmp_path / "fixture_manifest.json"
+        candidate_root = tmp_path / "fixture_candidates"
+        provenance_path = tmp_path / "fixture_provenance.csv"
+        inventory_path = tmp_path / "fixture_inventory.csv"
+        tracker_path = tmp_path / "fixture_tracker.csv"
+
+        commands = [
+            [
+                sys.executable,
+                "src/init_scale250_fresh_build.py",
+                "--roster-path",
+                str(fixture_root / "roster.json"),
+                "--manifest-path",
+                str(manifest_path),
+                "--image-root",
+                image_root_rel,
+                "--candidate-root",
+                str(candidate_root),
+                "--provenance-path",
+                str(provenance_path),
+                "--inventory-output",
+                str(inventory_path),
+                "--tracker-output",
+                str(tracker_path),
+                "--force",
+            ],
+            [
+                sys.executable,
+                "src/sync_manifest_curation.py",
+                "--manifest-path",
+                str(manifest_path),
+                "--image-root",
+                image_root_rel,
+                "--sync-image-paths",
+                "true",
+                "--infer-image-sources-from-filenames",
+                "true",
+                "--strict-image-sources",
+                "true",
+                "--strict-source-balance",
+                "true",
+                "--write",
+            ],
+            [
+                sys.executable,
+                "src/preflight_replication.py",
+                "--phase",
+                "pre",
+                "--manifest",
+                str(manifest_path),
+                "--min-images-per-concept",
+                "3",
+                "--require-image-source-metadata",
+                "true",
+            ],
+        ]
+
+        for cmd in commands:
+            ok, output = run_checked(cmd)
+            if not ok:
+                errors.append("Dataset fixture check failed:\n" + output)
+                return errors
+
     return errors
 
 
@@ -116,6 +212,7 @@ def main() -> None:
     errors.extend(check_forbidden_tracked(tracked))
     errors.extend(check_large_tracked_files(tracked))
     errors.extend(check_manifest_shape())
+    errors.extend(check_dataset_fixture())
 
     if errors:
         print("RELEASE CHECK FAILED")

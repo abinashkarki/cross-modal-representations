@@ -1,5 +1,6 @@
 {
   "release_version": "v2.0.0",
+  "distribution_mode": "local_archive_only",
   "description": "Heavy compiled artifacts excluded from git for the Scale250 paper release.",
   "external_artifacts": [
     {

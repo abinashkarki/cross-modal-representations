@@ -1,6 +1,6 @@
 # Scale250 Result Surface
 
-This directory is the lean public result surface for the current paper.
+This directory is the lean public result surface for the canonical Scale250 paper.
 
 ## Included In Git
 
@@ -18,4 +18,5 @@ This directory is the lean public result surface for the current paper.
 - smoke runs and partial experiments
 
 Use `artifacts/release_manifest.json` plus `src/materialize_release_artifacts.py` if you need the
-heavy compiled artifacts restored into their canonical paths locally.
+heavy compiled artifacts restored into their canonical paths locally. In the current public release,
+that restore path is local-archive only until external artifact URLs are published.

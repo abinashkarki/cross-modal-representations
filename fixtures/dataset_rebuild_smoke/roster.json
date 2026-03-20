@@ -1,0 +1,37 @@
+{
+  "roster_version": "fixture-1.0.0",
+  "description": "Tiny public smoke roster for dataset reconstruction validation.",
+  "images_per_concept_target": 3,
+  "source_balance_policy": {
+    "required_sources": [
+      "imagenet",
+      "openimages",
+      "unsplash"
+    ],
+    "target_per_source": {
+      "imagenet": 1,
+      "openimages": 1,
+      "unsplash": 1
+    }
+  },
+  "selection_notes": "Synthetic smoke fixture only. Not part of the paper benchmark.",
+  "strata": [
+    {
+      "id": "animals_fixture",
+      "target_count": 2,
+      "core_candidates": [
+        {
+          "concept": "cat",
+          "semantic_type": "entity",
+          "source_feasibility": "fixture"
+        },
+        {
+          "concept": "dog",
+          "semantic_type": "entity",
+          "source_feasibility": "fixture"
+        }
+      ],
+      "reserve_candidates": []
+    }
+  ]
+}

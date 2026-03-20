@@ -22,7 +22,7 @@ from transformers import CLIPModel, CLIPProcessor
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(SCRIPT_DIR)
-DEFAULT_MANIFEST_PATH = os.path.join(REPO_ROOT, "data", "data_manifest_250_fresh_pilot30.json")
+DEFAULT_MANIFEST_PATH = os.path.join(REPO_ROOT, "data", "data_manifest_250_fresh.json")
 IMAGE_SIZE = (224, 224)
 IMAGE_EXTS = (".jpg", ".jpeg", ".png", ".webp")
 IMAGENET_LABELS_URL = "https://raw.githubusercontent.com/pytorch/hub/master/imagenet_classes.txt"

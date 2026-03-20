@@ -49,7 +49,10 @@ def copy_from_local_archive(artifact: dict, force: bool) -> None:
 def download_from_url(artifact: dict, force: bool) -> None:
     url = artifact.get("url")
     if not url:
-        raise SystemExit(f"Artifact {artifact['id']} has no URL in the manifest.")
+        raise SystemExit(
+            f"Artifact {artifact['id']} has no URL in the manifest. "
+            "This release only supports --from-local-archive unless external artifact URLs are published."
+        )
     dst = REPO_ROOT / artifact["checkout_path"]
     if dst.exists() and not force:
         raise SystemExit(f"Destination exists: {dst}. Use --force to overwrite.")
@@ -105,4 +108,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

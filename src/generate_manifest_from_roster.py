@@ -39,7 +39,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Generate a manifest skeleton from a concept roster.")
     parser.add_argument("--roster-path", default=DEFAULT_ROSTER_PATH)
     parser.add_argument("--output-path", default=DEFAULT_OUTPUT_PATH)
-    parser.add_argument("--image-root", default="data/images_250")
+    parser.add_argument("--image-root", default="data/images_250_fresh")
     parser.add_argument(
         "--populate-placeholder-paths",
         type=str,

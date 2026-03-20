@@ -1,6 +1,9 @@
-.PHONY: release-check materialize-local-artifacts paper-figures paper-render
+.PHONY: release-check dataset-fixture-check materialize-local-artifacts paper-figures paper-render
 
 release-check:
+	python src/release_checks.py
+
+dataset-fixture-check:
 	python src/release_checks.py
 
 materialize-local-artifacts:

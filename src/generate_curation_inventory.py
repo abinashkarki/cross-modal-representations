@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Sequence
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(SCRIPT_DIR)
-DEFAULT_MANIFEST_PATH = os.path.join(REPO_ROOT, "data", "data_manifest_250_skeleton.json")
+DEFAULT_MANIFEST_PATH = os.path.join(REPO_ROOT, "data", "data_manifest_250_fresh.json")
 DEFAULT_INVENTORY_PATH = os.path.join(REPO_ROOT, "data", "scale250_curation_inventory.csv")
 DEFAULT_TRACKER_PATH = os.path.join(REPO_ROOT, "data", "scale250_concept_tracker.csv")
 
@@ -71,7 +71,9 @@ def main() -> None:
     target_per_source = {
         source: int(count) for source, count in policy.get("target_per_source", {}).items()
     }
-    image_root_relpath = args.image_root_relpath or manifest.get("shadow_build", {}).get("active_image_root", "data/images_250")
+    image_root_relpath = args.image_root_relpath or manifest.get("shadow_build", {}).get(
+        "active_image_root", "data/images_250_fresh"
+    )
     if not required_sources or not target_per_source:
         raise ValueError("Manifest is missing source_balance_policy.required_sources/target_per_source.")
 

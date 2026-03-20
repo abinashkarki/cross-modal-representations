@@ -2,11 +2,11 @@
 
 ## v2.0.0
 
-Scale250 paper release and repository cleanup for public upload.
+Scale250 canonical paper release and repository cleanup for public upload.
 
 ### Included
 
-- Current Scale250 manuscript in canonical paths:
+- Canonical Scale250 manuscript in canonical paths:
   - `manuscript/paper.md`
   - `manuscript/paper.html`
   - `manuscript/paper.tex`
@@ -27,7 +27,8 @@ Scale250 paper release and repository cleanup for public upload.
 
 ### Main Findings Reflected In This Release
 
-- Small benchmarks materially overstated language-image convergence in the earlier local release.
+- In supporting comparison to the earlier small benchmark, small benchmarks materially overstated
+  language-image convergence on this panel.
 - Within-family structure remains strong.
 - Both contrastive and autoregressive VLMs are substantially closer to vision than to language in the current selected-layer analysis.
 - Mid-to-late aligned layers carry stronger cross-family structure than the terminal selected layer.
@@ -35,12 +36,14 @@ Scale250 paper release and repository cleanup for public upload.
 
 ### Release Cleanup
 
-- Promoted the current Scale250 paper to canonical `manuscript/paper.*` paths.
-- Archived the previous paper under `manuscript/legacy/where_representations_diverge/`.
+- Promoted the Scale250 paper to canonical `manuscript/paper.*` paths.
+- Archived the earlier small-benchmark paper under `manuscript/legacy/where_representations_diverge/`.
 - Moved heavy local-only data and run state into `.local_artifacts/`.
 - Rebuilt `results/scale250_full/` as a lean public tree containing only small canonical paper-facing outputs.
 - Added artifact indexing, local materialization support, and release guardrails.
+- Added a public dataset-reconstruction path with shipped roster/skeleton inputs and a tiny runnable smoke fixture.
 
 ## v1.0.0
 
-Initial standalone local-release backup before the Scale250 benchmark correction pass.
+Initial standalone local prototype release before the Scale250 study was promoted as the canonical
+public paper.

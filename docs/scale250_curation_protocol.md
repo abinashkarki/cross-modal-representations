@@ -2,6 +2,11 @@
 
 This protocol is for the stage before model extraction, when the dataset is still being assembled.
 
+Public release note:
+
+- `data/data_manifest_250.json` is the canonical analysis manifest and references image payloads excluded from git
+- for a fresh public rebuild, start from `data/concept_roster_250_scaffold.json` and `src/init_scale250_fresh_build.py`
+
 ## Goal
 
 Build a `250`-concept benchmark with exact within-concept source balance:
@@ -15,6 +20,8 @@ Every confirmatory concept must satisfy the exact `5/5/5` quota. If a concept ca
 ## Core Files
 
 - roster: `data/concept_roster_250_scaffold.json`
+- fresh build initializer: `src/init_scale250_fresh_build.py`
+- fresh build manifest: `data/data_manifest_250_fresh.json` after initialization
 - manifest skeleton: `data/data_manifest_250_skeleton.json`
 - inventory generator: `src/generate_curation_inventory.py`
 - manifest sync helper: `src/sync_manifest_curation.py`
@@ -24,7 +31,7 @@ Every confirmatory concept must satisfy the exact `5/5/5` quota. If a concept ca
 Store images in:
 
 ```text
-data/images_250/<storage_slug>/
+data/images_250_fresh/<storage_slug>/
 ```
 
 Use filenames that encode the source:
@@ -36,9 +43,9 @@ Use filenames that encode the source:
 Examples:
 
 ```text
-data/images_250/cat/cat_imagenet_01.jpg
-data/images_250/cat/cat_openimages_01.jpg
-data/images_250/cat/cat_unsplash_01.jpg
+data/images_250_fresh/cat/cat_imagenet_01.jpg
+data/images_250_fresh/cat/cat_openimages_01.jpg
+data/images_250_fresh/cat/cat_unsplash_01.jpg
 ```
 
 Why this matters:
@@ -50,39 +57,45 @@ Why this matters:
 ## Curator Workflow
 
 1. Freeze the concept roster.
-2. Generate the curation inventory and concept tracker:
+2. Initialize the fresh shadow build:
+
+```bash
+python src/init_scale250_fresh_build.py
+```
+
+3. Generate the curation inventory and concept tracker if needed:
 
 ```bash
 python src/generate_curation_inventory.py \
-  --manifest-path data/data_manifest_250_skeleton.json
+  --manifest-path data/data_manifest_250_fresh.json
 ```
 
-3. Work from `data/scale250_curation_inventory.csv` while collecting images.
-4. Save accepted images into the correct concept folder using the standard filename pattern.
-5. After each curation batch, sync the manifest:
+4. Work from `data/scale250_fresh_curation_inventory.csv` while collecting images.
+5. Save accepted images into the correct concept folder using the standard filename pattern.
+6. After each curation batch, sync the manifest:
 
 ```bash
 python src/sync_manifest_curation.py \
-  --manifest-path data/data_manifest_250_skeleton.json \
-  --image-root data/images_250 \
+  --manifest-path data/data_manifest_250_fresh.json \
+  --image-root data/images_250_fresh \
   --sync-image-paths true \
   --infer-image-sources-from-filenames true \
   --write
 ```
 
-6. Run the strict quota gate periodically:
+7. Run the strict quota gate periodically:
 
 ```bash
 python src/sync_manifest_curation.py \
-  --manifest-path data/data_manifest_250_skeleton.json \
-  --image-root data/images_250 \
+  --manifest-path data/data_manifest_250_fresh.json \
+  --image-root data/images_250_fresh \
   --sync-image-paths true \
   --infer-image-sources-from-filenames true \
   --strict-image-sources true \
   --strict-source-balance true
 ```
 
-Only rename the manifest to `data/data_manifest_250.json` when it is fully curated and passes the strict gate.
+Only promote a fresh manifest into your own extraction workflow once it is fully curated and passes the strict gate.
 
 ## Inclusion Rules
 

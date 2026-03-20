@@ -1,0 +1,5814 @@
+{
+  "manifest_version": "3.0.0",
+  "description": "Manifest skeleton generated from the 250-concept roster scaffold. Populate concept_to_images, clip_scores, and image_sources before running extraction.",
+  "manifest_status": "skeleton_empty_image_lists",
+  "images_per_concept_target": 15,
+  "image_size": [
+    224,
+    224
+  ],
+  "sources": {
+    "imagenet": "ILSVRC/imagenet-1k validation split via HuggingFace datasets",
+    "openimages": "Open Images V7 via FiftyOne",
+    "unsplash": "Unsplash API"
+  },
+  "source_balance_policy": {
+    "mode": "within_concept_balanced",
+    "required_sources": [
+      "imagenet",
+      "openimages",
+      "unsplash"
+    ],
+    "target_per_source": {
+      "imagenet": 5,
+      "openimages": 5,
+      "unsplash": 5
+    },
+    "minimum_per_source": {
+      "imagenet": 5,
+      "openimages": 5,
+      "unsplash": 5
+    },
+    "allow_source_substitution": false,
+    "drop_concept_if_unbalanced": true
+  },
+  "selection_protocol": {
+    "design": "stratified_a_priori",
+    "primary_set": "base250",
+    "roster_source": "data/concept_roster_250_scaffold.json",
+    "reserve_pool_per_stratum": 8,
+    "include_compounds_in_primary_set": false,
+    "strata_target_counts": {
+      "animals": 25,
+      "plants_fungi": 25,
+      "food_drink": 25,
+      "clothing_accessories": 25,
+      "tools_household": 25,
+      "furniture_appliances_containers": 25,
+      "vehicles_machines": 25,
+      "buildings_infrastructure": 25,
+      "natural_landforms_waterscapes": 25,
+      "musical_instruments": 25
+    }
+  },
+  "analysis_contract": {
+    "primary_source_holdout_mode": "per_image_source",
+    "primary_source_holdout_field": "concept_metadata.*.image_sources",
+    "concept_level_source_field_status": "deprecated_for_balanced_runs",
+    "prompt_protocol": "extract baseline3; analyze prompt range or preregistered ensemble"
+  },
+  "concept_to_images": {
+    "cat": [],
+    "dog": [],
+    "horse": [],
+    "cow": [],
+    "sheep": [],
+    "goat": [],
+    "pig": [],
+    "rabbit": [],
+    "squirrel": [],
+    "fox": [],
+    "wolf": [],
+    "bear": [],
+    "lion": [],
+    "tiger": [],
+    "zebra": [],
+    "giraffe": [],
+    "deer": [],
+    "elephant": [],
+    "monkey": [],
+    "dolphin": [],
+    "whale": [],
+    "turtle": [],
+    "snake": [],
+    "frog": [],
+    "butterfly": [],
+    "tree": [],
+    "flower": [],
+    "mushroom": [],
+    "cactus": [],
+    "fern": [],
+    "bamboo": [],
+    "palm tree": [],
+    "pine tree": [],
+    "oak tree": [],
+    "maple tree": [],
+    "sunflower": [],
+    "rose": [],
+    "tulip": [],
+    "daisy": [],
+    "orchid": [],
+    "lily": [],
+    "ivy": [],
+    "moss": [],
+    "grass": [],
+    "leaf": [],
+    "corn": [],
+    "wheat": [],
+    "pumpkin": [],
+    "seaweed": [],
+    "succulent": [],
+    "apple": [],
+    "banana": [],
+    "orange": [],
+    "lemon": [],
+    "strawberry": [],
+    "grape": [],
+    "watermelon": [],
+    "pineapple": [],
+    "peach": [],
+    "pear": [],
+    "carrot": [],
+    "tomato": [],
+    "cucumber": [],
+    "broccoli": [],
+    "onion": [],
+    "potato": [],
+    "bread": [],
+    "cake": [],
+    "pizza": [],
+    "hamburger": [],
+    "hot dog": [],
+    "sandwich": [],
+    "coffee": [],
+    "tea": [],
+    "egg": [],
+    "shirt": [],
+    "jacket": [],
+    "coat": [],
+    "sweater": [],
+    "dress": [],
+    "skirt": [],
+    "jeans": [],
+    "shorts": [],
+    "sock": [],
+    "shoe": [],
+    "boot": [],
+    "sandal": [],
+    "hat": [],
+    "cap": [],
+    "scarf": [],
+    "glove": [],
+    "backpack": [],
+    "handbag": [],
+    "wallet": [],
+    "belt": [],
+    "tie": [],
+    "umbrella": [],
+    "watch": [],
+    "sunglasses": [],
+    "necklace": [],
+    "hammer": [],
+    "screwdriver": [],
+    "wrench": [],
+    "pliers": [],
+    "drill": [],
+    "saw": [],
+    "ladder": [],
+    "shovel": [],
+    "axe": [],
+    "broom": [],
+    "mop": [],
+    "bucket": [],
+    "scissors": [],
+    "knife": [],
+    "spoon": [],
+    "fork": [],
+    "plate": [],
+    "bowl": [],
+    "cup": [],
+    "mug": [],
+    "teapot": [],
+    "kettle": [],
+    "pan": [],
+    "pot": [],
+    "lamp": [],
+    "chair": [],
+    "table": [],
+    "desk": [],
+    "bed": [],
+    "sofa": [],
+    "cabinet": [],
+    "bookshelf": [],
+    "dresser": [],
+    "stool": [],
+    "bench": [],
+    "mirror": [],
+    "clock": [],
+    "door": [],
+    "window": [],
+    "refrigerator": [],
+    "oven": [],
+    "stove": [],
+    "sink": [],
+    "bathtub": [],
+    "toilet": [],
+    "washing machine": [],
+    "bottle": [],
+    "vase": [],
+    "basket": [],
+    "pillow": [],
+    "car": [],
+    "truck": [],
+    "bus": [],
+    "van": [],
+    "motorcycle": [],
+    "bicycle": [],
+    "scooter": [],
+    "train": [],
+    "tram": [],
+    "airplane": [],
+    "helicopter": [],
+    "boat": [],
+    "ship": [],
+    "submarine": [],
+    "tractor": [],
+    "bulldozer": [],
+    "excavator": [],
+    "forklift": [],
+    "construction crane": [],
+    "ambulance": [],
+    "fire engine": [],
+    "police car": [],
+    "rocket": [],
+    "snowmobile": [],
+    "sailboat": [],
+    "house": [],
+    "apartment building": [],
+    "skyscraper": [],
+    "barn": [],
+    "cabin": [],
+    "church": [],
+    "mosque": [],
+    "temple": [],
+    "castle": [],
+    "tower": [],
+    "bridge": [],
+    "lighthouse": [],
+    "stadium": [],
+    "warehouse": [],
+    "factory": [],
+    "greenhouse": [],
+    "windmill": [],
+    "water tower": [],
+    "dam": [],
+    "tunnel": [],
+    "pier": [],
+    "gazebo": [],
+    "fountain": [],
+    "monument": [],
+    "archway": [],
+    "mountain": [],
+    "hill": [],
+    "valley": [],
+    "cliff": [],
+    "canyon": [],
+    "cave": [],
+    "volcano": [],
+    "glacier": [],
+    "desert": [],
+    "beach": [],
+    "island": [],
+    "waterfall": [],
+    "river": [],
+    "lake": [],
+    "pond": [],
+    "ocean": [],
+    "forest": [],
+    "meadow": [],
+    "swamp": [],
+    "marsh": [],
+    "dune": [],
+    "coastline": [],
+    "bay": [],
+    "coral reef": [],
+    "snowfield": [],
+    "guitar": [],
+    "piano": [],
+    "violin": [],
+    "trumpet": [],
+    "saxophone": [],
+    "drum": [],
+    "flute": [],
+    "clarinet": [],
+    "cello": [],
+    "harp": [],
+    "banjo": [],
+    "ukulele": [],
+    "accordion": [],
+    "trombone": [],
+    "tuba": [],
+    "keyboard": [],
+    "tambourine": [],
+    "maracas": [],
+    "xylophone": [],
+    "oboe": [],
+    "bass guitar": [],
+    "french horn": [],
+    "mandolin": [],
+    "harmonica": [],
+    "bagpipe": []
+  },
+  "concept_metadata": {
+    "cat": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "cat",
+      "num_images": 0,
+      "description": "cat",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "dog": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "dog",
+      "num_images": 0,
+      "description": "dog",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "horse": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "horse",
+      "num_images": 0,
+      "description": "horse",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "cow": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "cow",
+      "num_images": 0,
+      "description": "cow",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "sheep": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "sheep",
+      "num_images": 0,
+      "description": "sheep",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "goat": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "goat",
+      "num_images": 0,
+      "description": "goat",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "pig": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "pig",
+      "num_images": 0,
+      "description": "pig",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "rabbit": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "rabbit",
+      "num_images": 0,
+      "description": "rabbit",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "squirrel": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "squirrel",
+      "num_images": 0,
+      "description": "squirrel",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "fox": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "fox",
+      "num_images": 0,
+      "description": "fox",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "wolf": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "wolf",
+      "num_images": 0,
+      "description": "wolf",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "bear": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "bear",
+      "num_images": 0,
+      "description": "bear",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "lion": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "lion",
+      "num_images": 0,
+      "description": "lion",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "tiger": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "tiger",
+      "num_images": 0,
+      "description": "tiger",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "zebra": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "zebra",
+      "num_images": 0,
+      "description": "zebra",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "giraffe": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "giraffe",
+      "num_images": 0,
+      "description": "giraffe",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "deer": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "deer",
+      "num_images": 0,
+      "description": "deer",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "elephant": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "elephant",
+      "num_images": 0,
+      "description": "elephant",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "monkey": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "monkey",
+      "num_images": 0,
+      "description": "monkey",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "dolphin": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "dolphin",
+      "num_images": 0,
+      "description": "dolphin",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "whale": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "whale",
+      "num_images": 0,
+      "description": "whale",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "turtle": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "turtle",
+      "num_images": 0,
+      "description": "turtle",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "snake": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "snake",
+      "num_images": 0,
+      "description": "snake",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "frog": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "frog",
+      "num_images": 0,
+      "description": "frog",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "butterfly": {
+      "source": "mixed_balanced",
+      "stratum": "animals",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "butterfly",
+      "num_images": 0,
+      "description": "butterfly",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "tree": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "tree",
+      "num_images": 0,
+      "description": "tree",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "flower": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "flower",
+      "num_images": 0,
+      "description": "flower",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "mushroom": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "mushroom",
+      "num_images": 0,
+      "description": "mushroom",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "cactus": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "cactus",
+      "num_images": 0,
+      "description": "cactus",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "fern": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "fern",
+      "num_images": 0,
+      "description": "fern",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "bamboo": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "bamboo",
+      "num_images": 0,
+      "description": "bamboo",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "palm tree": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "palm_tree",
+      "num_images": 0,
+      "description": "palm tree",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "pine tree": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "pine_tree",
+      "num_images": 0,
+      "description": "pine tree",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "oak tree": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "oak_tree",
+      "num_images": 0,
+      "description": "oak tree",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "maple tree": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "maple_tree",
+      "num_images": 0,
+      "description": "maple tree",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "sunflower": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "sunflower",
+      "num_images": 0,
+      "description": "sunflower",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "rose": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "rose",
+      "num_images": 0,
+      "description": "rose",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "tulip": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "tulip",
+      "num_images": 0,
+      "description": "tulip",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "daisy": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "daisy",
+      "num_images": 0,
+      "description": "daisy",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "orchid": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "orchid",
+      "num_images": 0,
+      "description": "orchid",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "lily": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "lily",
+      "num_images": 0,
+      "description": "lily",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "ivy": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "ivy",
+      "num_images": 0,
+      "description": "ivy",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "moss": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "moss",
+      "num_images": 0,
+      "description": "moss",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "grass": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "grass",
+      "num_images": 0,
+      "description": "grass",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "leaf": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "leaf",
+      "num_images": 0,
+      "description": "leaf",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "corn": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "corn",
+      "num_images": 0,
+      "description": "corn",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "wheat": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "wheat",
+      "num_images": 0,
+      "description": "wheat",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "pumpkin": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "pumpkin",
+      "num_images": 0,
+      "description": "pumpkin",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "seaweed": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "seaweed",
+      "num_images": 0,
+      "description": "seaweed",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "succulent": {
+      "source": "mixed_balanced",
+      "stratum": "plants_fungi",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "succulent",
+      "num_images": 0,
+      "description": "succulent",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "apple": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "apple",
+      "num_images": 0,
+      "description": "apple",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "banana": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "banana",
+      "num_images": 0,
+      "description": "banana",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "orange": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "orange",
+      "num_images": 0,
+      "description": "orange",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "lemon": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "lemon",
+      "num_images": 0,
+      "description": "lemon",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "strawberry": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "strawberry",
+      "num_images": 0,
+      "description": "strawberry",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "grape": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "grape",
+      "num_images": 0,
+      "description": "grape",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "watermelon": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "watermelon",
+      "num_images": 0,
+      "description": "watermelon",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "pineapple": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "pineapple",
+      "num_images": 0,
+      "description": "pineapple",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "peach": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "peach",
+      "num_images": 0,
+      "description": "peach",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "pear": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "pear",
+      "num_images": 0,
+      "description": "pear",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "carrot": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "carrot",
+      "num_images": 0,
+      "description": "carrot",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "tomato": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "tomato",
+      "num_images": 0,
+      "description": "tomato",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "cucumber": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "cucumber",
+      "num_images": 0,
+      "description": "cucumber",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "broccoli": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "broccoli",
+      "num_images": 0,
+      "description": "broccoli",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "onion": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "onion",
+      "num_images": 0,
+      "description": "onion",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "potato": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "potato",
+      "num_images": 0,
+      "description": "potato",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "bread": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "bread",
+      "num_images": 0,
+      "description": "bread",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "cake": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "cake",
+      "num_images": 0,
+      "description": "cake",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "pizza": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "pizza",
+      "num_images": 0,
+      "description": "pizza",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "hamburger": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "hamburger",
+      "num_images": 0,
+      "description": "hamburger",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "hot dog": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "hot_dog",
+      "num_images": 0,
+      "description": "hot dog",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "sandwich": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "sandwich",
+      "num_images": 0,
+      "description": "sandwich",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "coffee": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "coffee",
+      "num_images": 0,
+      "description": "coffee",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "tea": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "tea",
+      "num_images": 0,
+      "description": "tea",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "egg": {
+      "source": "mixed_balanced",
+      "stratum": "food_drink",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "egg",
+      "num_images": 0,
+      "description": "egg",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "shirt": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "shirt",
+      "num_images": 0,
+      "description": "shirt",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "jacket": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "jacket",
+      "num_images": 0,
+      "description": "jacket",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "coat": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "coat",
+      "num_images": 0,
+      "description": "coat",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "sweater": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "sweater",
+      "num_images": 0,
+      "description": "sweater",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "dress": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "dress",
+      "num_images": 0,
+      "description": "dress",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "skirt": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "skirt",
+      "num_images": 0,
+      "description": "skirt",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "jeans": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "jeans",
+      "num_images": 0,
+      "description": "jeans",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "shorts": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "shorts",
+      "num_images": 0,
+      "description": "shorts",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "sock": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "sock",
+      "num_images": 0,
+      "description": "sock",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "shoe": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "shoe",
+      "num_images": 0,
+      "description": "shoe",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "boot": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "boot",
+      "num_images": 0,
+      "description": "boot",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "sandal": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "sandal",
+      "num_images": 0,
+      "description": "sandal",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "hat": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "hat",
+      "num_images": 0,
+      "description": "hat",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "cap": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "cap",
+      "num_images": 0,
+      "description": "cap",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "scarf": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "scarf",
+      "num_images": 0,
+      "description": "scarf",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "glove": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "glove",
+      "num_images": 0,
+      "description": "glove",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "backpack": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "backpack",
+      "num_images": 0,
+      "description": "backpack",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "handbag": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "handbag",
+      "num_images": 0,
+      "description": "handbag",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "wallet": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "wallet",
+      "num_images": 0,
+      "description": "wallet",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "belt": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "belt",
+      "num_images": 0,
+      "description": "belt",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "tie": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "tie",
+      "num_images": 0,
+      "description": "tie",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "umbrella": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "umbrella",
+      "num_images": 0,
+      "description": "umbrella",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "watch": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "watch",
+      "num_images": 0,
+      "description": "watch",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "sunglasses": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "sunglasses",
+      "num_images": 0,
+      "description": "sunglasses",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "necklace": {
+      "source": "mixed_balanced",
+      "stratum": "clothing_accessories",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "necklace",
+      "num_images": 0,
+      "description": "necklace",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "hammer": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "hammer",
+      "num_images": 0,
+      "description": "hammer",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "screwdriver": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "screwdriver",
+      "num_images": 0,
+      "description": "screwdriver",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "wrench": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "wrench",
+      "num_images": 0,
+      "description": "wrench",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "pliers": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "pliers",
+      "num_images": 0,
+      "description": "pliers",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "drill": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "drill",
+      "num_images": 0,
+      "description": "drill",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "saw": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "saw",
+      "num_images": 0,
+      "description": "saw",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "ladder": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "ladder",
+      "num_images": 0,
+      "description": "ladder",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "shovel": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "shovel",
+      "num_images": 0,
+      "description": "shovel",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "axe": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "axe",
+      "num_images": 0,
+      "description": "axe",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "broom": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "broom",
+      "num_images": 0,
+      "description": "broom",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "mop": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "mop",
+      "num_images": 0,
+      "description": "mop",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "bucket": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "bucket",
+      "num_images": 0,
+      "description": "bucket",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "scissors": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "scissors",
+      "num_images": 0,
+      "description": "scissors",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "knife": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "knife",
+      "num_images": 0,
+      "description": "knife",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "spoon": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "spoon",
+      "num_images": 0,
+      "description": "spoon",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "fork": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "fork",
+      "num_images": 0,
+      "description": "fork",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "plate": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "plate",
+      "num_images": 0,
+      "description": "plate",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "bowl": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "bowl",
+      "num_images": 0,
+      "description": "bowl",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "cup": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "cup",
+      "num_images": 0,
+      "description": "cup",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "mug": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "mug",
+      "num_images": 0,
+      "description": "mug",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "teapot": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "teapot",
+      "num_images": 0,
+      "description": "teapot",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "kettle": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "kettle",
+      "num_images": 0,
+      "description": "kettle",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "pan": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "pan",
+      "num_images": 0,
+      "description": "pan",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "pot": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "pot",
+      "num_images": 0,
+      "description": "pot",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "lamp": {
+      "source": "mixed_balanced",
+      "stratum": "tools_household",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "lamp",
+      "num_images": 0,
+      "description": "lamp",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "chair": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "chair",
+      "num_images": 0,
+      "description": "chair",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "table": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "table",
+      "num_images": 0,
+      "description": "table",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "desk": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "desk",
+      "num_images": 0,
+      "description": "desk",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "bed": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "bed",
+      "num_images": 0,
+      "description": "bed",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "sofa": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "sofa",
+      "num_images": 0,
+      "description": "sofa",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "cabinet": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "cabinet",
+      "num_images": 0,
+      "description": "cabinet",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "bookshelf": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "bookshelf",
+      "num_images": 0,
+      "description": "bookshelf",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "dresser": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "dresser",
+      "num_images": 0,
+      "description": "dresser",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "stool": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "stool",
+      "num_images": 0,
+      "description": "stool",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "bench": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "bench",
+      "num_images": 0,
+      "description": "bench",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "mirror": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "mirror",
+      "num_images": 0,
+      "description": "mirror",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "clock": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "clock",
+      "num_images": 0,
+      "description": "clock",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "door": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "door",
+      "num_images": 0,
+      "description": "door",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "window": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "window",
+      "num_images": 0,
+      "description": "window",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "refrigerator": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "refrigerator",
+      "num_images": 0,
+      "description": "refrigerator",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "oven": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "oven",
+      "num_images": 0,
+      "description": "oven",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "stove": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "stove",
+      "num_images": 0,
+      "description": "stove",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "sink": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "sink",
+      "num_images": 0,
+      "description": "sink",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "bathtub": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "bathtub",
+      "num_images": 0,
+      "description": "bathtub",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "toilet": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "toilet",
+      "num_images": 0,
+      "description": "toilet",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "washing machine": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "washing_machine",
+      "num_images": 0,
+      "description": "washing machine",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "bottle": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "bottle",
+      "num_images": 0,
+      "description": "bottle",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "vase": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "vase",
+      "num_images": 0,
+      "description": "vase",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "basket": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "basket",
+      "num_images": 0,
+      "description": "basket",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "pillow": {
+      "source": "mixed_balanced",
+      "stratum": "furniture_appliances_containers",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "pillow",
+      "num_images": 0,
+      "description": "pillow",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "car": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "car",
+      "num_images": 0,
+      "description": "car",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "truck": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "truck",
+      "num_images": 0,
+      "description": "truck",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "bus": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "bus",
+      "num_images": 0,
+      "description": "bus",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "van": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "van",
+      "num_images": 0,
+      "description": "van",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "motorcycle": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "motorcycle",
+      "num_images": 0,
+      "description": "motorcycle",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "bicycle": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "bicycle",
+      "num_images": 0,
+      "description": "bicycle",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "scooter": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "scooter",
+      "num_images": 0,
+      "description": "scooter",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "train": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "train",
+      "num_images": 0,
+      "description": "train",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "tram": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "tram",
+      "num_images": 0,
+      "description": "tram",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "airplane": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "airplane",
+      "num_images": 0,
+      "description": "airplane",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "helicopter": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "helicopter",
+      "num_images": 0,
+      "description": "helicopter",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "boat": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "boat",
+      "num_images": 0,
+      "description": "boat",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "ship": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "ship",
+      "num_images": 0,
+      "description": "ship",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "submarine": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "submarine",
+      "num_images": 0,
+      "description": "submarine",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "tractor": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "tractor",
+      "num_images": 0,
+      "description": "tractor",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "bulldozer": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "bulldozer",
+      "num_images": 0,
+      "description": "bulldozer",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "excavator": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "excavator",
+      "num_images": 0,
+      "description": "excavator",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "forklift": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "forklift",
+      "num_images": 0,
+      "description": "forklift",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "construction crane": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "construction_crane",
+      "num_images": 0,
+      "description": "construction crane",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "ambulance": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "ambulance",
+      "num_images": 0,
+      "description": "ambulance",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "fire engine": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "fire_engine",
+      "num_images": 0,
+      "description": "fire engine",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "police car": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "police_car",
+      "num_images": 0,
+      "description": "police car",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "rocket": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "rocket",
+      "num_images": 0,
+      "description": "rocket",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "snowmobile": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "snowmobile",
+      "num_images": 0,
+      "description": "snowmobile",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "sailboat": {
+      "source": "mixed_balanced",
+      "stratum": "vehicles_machines",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "sailboat",
+      "num_images": 0,
+      "description": "sailboat",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "house": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "house",
+      "num_images": 0,
+      "description": "house",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "apartment building": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "apartment_building",
+      "num_images": 0,
+      "description": "apartment building",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "skyscraper": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "skyscraper",
+      "num_images": 0,
+      "description": "skyscraper",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "barn": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "barn",
+      "num_images": 0,
+      "description": "barn",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "cabin": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "cabin",
+      "num_images": 0,
+      "description": "cabin",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "church": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "church",
+      "num_images": 0,
+      "description": "church",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "mosque": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "mosque",
+      "num_images": 0,
+      "description": "mosque",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "temple": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "temple",
+      "num_images": 0,
+      "description": "temple",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "castle": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "castle",
+      "num_images": 0,
+      "description": "castle",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "tower": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "tower",
+      "num_images": 0,
+      "description": "tower",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "bridge": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "bridge",
+      "num_images": 0,
+      "description": "bridge",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "lighthouse": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "lighthouse",
+      "num_images": 0,
+      "description": "lighthouse",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "stadium": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "stadium",
+      "num_images": 0,
+      "description": "stadium",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "warehouse": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "warehouse",
+      "num_images": 0,
+      "description": "warehouse",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "factory": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "factory",
+      "num_images": 0,
+      "description": "factory",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "greenhouse": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "greenhouse",
+      "num_images": 0,
+      "description": "greenhouse",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "windmill": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "windmill",
+      "num_images": 0,
+      "description": "windmill",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "water tower": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "water_tower",
+      "num_images": 0,
+      "description": "water tower",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "dam": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "dam",
+      "num_images": 0,
+      "description": "dam",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "tunnel": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "tunnel",
+      "num_images": 0,
+      "description": "tunnel",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "pier": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "pier",
+      "num_images": 0,
+      "description": "pier",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "gazebo": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "gazebo",
+      "num_images": 0,
+      "description": "gazebo",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "fountain": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "fountain",
+      "num_images": 0,
+      "description": "fountain",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "monument": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "monument",
+      "num_images": 0,
+      "description": "monument",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "archway": {
+      "source": "mixed_balanced",
+      "stratum": "buildings_infrastructure",
+      "semantic_type": "structure",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "archway",
+      "num_images": 0,
+      "description": "archway",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "mountain": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "mountain",
+      "num_images": 0,
+      "description": "mountain",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "hill": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "hill",
+      "num_images": 0,
+      "description": "hill",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "valley": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "valley",
+      "num_images": 0,
+      "description": "valley",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "cliff": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "cliff",
+      "num_images": 0,
+      "description": "cliff",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "canyon": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "canyon",
+      "num_images": 0,
+      "description": "canyon",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "cave": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "cave",
+      "num_images": 0,
+      "description": "cave",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "volcano": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "volcano",
+      "num_images": 0,
+      "description": "volcano",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "glacier": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "glacier",
+      "num_images": 0,
+      "description": "glacier",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "desert": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "desert",
+      "num_images": 0,
+      "description": "desert",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "beach": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "beach",
+      "num_images": 0,
+      "description": "beach",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "island": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "island",
+      "num_images": 0,
+      "description": "island",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "waterfall": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "waterfall",
+      "num_images": 0,
+      "description": "waterfall",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "river": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "river",
+      "num_images": 0,
+      "description": "river",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "lake": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "lake",
+      "num_images": 0,
+      "description": "lake",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "pond": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "pond",
+      "num_images": 0,
+      "description": "pond",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "ocean": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "ocean",
+      "num_images": 0,
+      "description": "ocean",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "forest": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "forest",
+      "num_images": 0,
+      "description": "forest",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "meadow": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "meadow",
+      "num_images": 0,
+      "description": "meadow",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "swamp": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "swamp",
+      "num_images": 0,
+      "description": "swamp",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "marsh": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "marsh",
+      "num_images": 0,
+      "description": "marsh",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "dune": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "dune",
+      "num_images": 0,
+      "description": "dune",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "coastline": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "coastline",
+      "num_images": 0,
+      "description": "coastline",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "bay": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "bay",
+      "num_images": 0,
+      "description": "bay",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "coral reef": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "coral_reef",
+      "num_images": 0,
+      "description": "coral reef",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "snowfield": {
+      "source": "mixed_balanced",
+      "stratum": "natural_landforms_waterscapes",
+      "semantic_type": "scene",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "snowfield",
+      "num_images": 0,
+      "description": "snowfield",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "guitar": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "guitar",
+      "num_images": 0,
+      "description": "guitar",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "piano": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "piano",
+      "num_images": 0,
+      "description": "piano",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "violin": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "violin",
+      "num_images": 0,
+      "description": "violin",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "trumpet": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "trumpet",
+      "num_images": 0,
+      "description": "trumpet",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "saxophone": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "saxophone",
+      "num_images": 0,
+      "description": "saxophone",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "drum": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "drum",
+      "num_images": 0,
+      "description": "drum",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "flute": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "flute",
+      "num_images": 0,
+      "description": "flute",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "clarinet": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "clarinet",
+      "num_images": 0,
+      "description": "clarinet",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "cello": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "cello",
+      "num_images": 0,
+      "description": "cello",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "harp": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "harp",
+      "num_images": 0,
+      "description": "harp",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "banjo": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "banjo",
+      "num_images": 0,
+      "description": "banjo",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "ukulele": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "ukulele",
+      "num_images": 0,
+      "description": "ukulele",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "accordion": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "accordion",
+      "num_images": 0,
+      "description": "accordion",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "trombone": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "trombone",
+      "num_images": 0,
+      "description": "trombone",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "tuba": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "tuba",
+      "num_images": 0,
+      "description": "tuba",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "keyboard": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "keyboard",
+      "num_images": 0,
+      "description": "keyboard",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "tambourine": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "tambourine",
+      "num_images": 0,
+      "description": "tambourine",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "maracas": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "maracas",
+      "num_images": 0,
+      "description": "maracas",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "xylophone": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "xylophone",
+      "num_images": 0,
+      "description": "xylophone",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "oboe": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "oboe",
+      "num_images": 0,
+      "description": "oboe",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "bass guitar": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "bass_guitar",
+      "num_images": 0,
+      "description": "bass guitar",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "french horn": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "french_horn",
+      "num_images": 0,
+      "description": "french horn",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "mandolin": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "mandolin",
+      "num_images": 0,
+      "description": "mandolin",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "harmonica": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "high",
+      "storage_slug": "harmonica",
+      "num_images": 0,
+      "description": "harmonica",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    },
+    "bagpipe": {
+      "source": "mixed_balanced",
+      "stratum": "musical_instruments",
+      "semantic_type": "entity",
+      "selection_status": "planned_core",
+      "source_feasibility": "medium",
+      "storage_slug": "bagpipe",
+      "num_images": 0,
+      "description": "bagpipe",
+      "source_mix_target": {
+        "imagenet": 5,
+        "openimages": 5,
+        "unsplash": 5
+      },
+      "source_mix_actual": {
+        "imagenet": 0,
+        "openimages": 0,
+        "unsplash": 0
+      },
+      "clip_scores": {},
+      "image_sources": {}
+    }
+  }
+}

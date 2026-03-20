@@ -1,6 +1,8 @@
 # Results Layout
 
-This repository keeps only small canonical result artifacts in git.
+This repository keeps only small canonical result artifacts in git. The canonical public outputs for
+the Scale250 study live under `results/scale250_full/`; earlier small-benchmark outputs remain in
+git only as archived comparison material.
 
 ## Current Scale250 Artifacts In Git
 
@@ -18,7 +20,7 @@ This repository keeps only small canonical result artifacts in git.
 Those are indexed in `artifacts/release_manifest.json`. In a local working copy, the excluded files
 have been moved under `.local_artifacts/results/`.
 
-## Legacy Comparison Artifacts Kept In Git
+## Archived Comparison Artifacts Kept In Git
 
 - `results/baseline/`
 - `results/aligned5/`
