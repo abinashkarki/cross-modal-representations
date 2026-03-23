@@ -47,11 +47,12 @@ device = torch.device("mps") if torch.backends.mps.is_available() else torch.dev
 print(f"Using device: {device}")
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-EXPERIMENT_DIR = os.path.dirname(SCRIPT_DIR)
-REPO_ROOT = os.path.dirname(os.path.dirname(EXPERIMENT_DIR))
-MANIFEST_PATH = os.path.join(EXPERIMENT_DIR, "data", "data_manifest_250.json")
-DEFAULT_LOCAL_MODELS_DIR = os.path.join(EXPERIMENT_DIR, "models")
-LEGACY_LOCAL_MODELS_DIR = os.path.join(REPO_ROOT, "models")
+REPO_ROOT = os.path.dirname(SCRIPT_DIR)
+WORKSPACE_ROOT = os.path.dirname(REPO_ROOT)
+EXPERIMENT_DIR = REPO_ROOT
+MANIFEST_PATH = os.path.join(REPO_ROOT, "data", "data_manifest_250.json")
+DEFAULT_LOCAL_MODELS_DIR = os.path.join(REPO_ROOT, "models")
+LEGACY_LOCAL_MODELS_DIR = os.path.join(WORKSPACE_ROOT, "models")
 LOCAL_MODELS_DIR = os.environ.get("LOCAL_MODELS_DIR") or (
     DEFAULT_LOCAL_MODELS_DIR if os.path.isdir(DEFAULT_LOCAL_MODELS_DIR) else LEGACY_LOCAL_MODELS_DIR
 )
