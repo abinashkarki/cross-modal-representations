@@ -1,91 +1,66 @@
-% Options for packages loaded elsewhere
-\PassOptionsToPackage{unicode}{hyperref}
-\PassOptionsToPackage{hyphens}{url}
-\documentclass[
-]{article}
-\usepackage{xcolor}
+\documentclass[11pt,a4paper]{article}
+
+% ---------- geometry & layout ----------
+\usepackage[margin=1in]{geometry}
+\usepackage[parfill]{parskip}
+\setcounter{secnumdepth}{3}
+
+% ---------- fonts ----------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx}        % Times for text + math
+\usepackage[scaled=0.90]{helvet}
+\usepackage{courier}
+
+% ---------- standard packages ----------
 \usepackage{amsmath,amssymb}
-\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
-\usepackage{iftex}
-\ifPDFTeX
-  \usepackage[T1]{fontenc}
-  \usepackage[utf8]{inputenc}
-  \usepackage{textcomp} % provide euro and other symbols
-\else % if luatex or xetex
-  \usepackage{unicode-math} % this also loads fontspec
-  \defaultfontfeatures{Scale=MatchLowercase}
-  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
-\fi
-\usepackage{lmodern}
-\ifPDFTeX\else
-  % xetex/luatex font selection
-\fi
-% Use upquote if available, for straight quotes in verbatim environments
-\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
-\IfFileExists{microtype.sty}{% use microtype if available
-  \usepackage[]{microtype}
-  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
-}{}
-\makeatletter
-\@ifundefined{KOMAClassName}{% if non-KOMA class
-  \IfFileExists{parskip.sty}{%
-    \usepackage{parskip}
-  }{% else
-    \setlength{\parindent}{0pt}
-    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
-}{% if KOMA class
-  \KOMAoptions{parskip=half}}
-\makeatother
-\usepackage{longtable,booktabs,array}
-\newcounter{none} % for unnumbered tables
-\usepackage{calc} % for calculating minipage widths
-% Correct order of tables after \paragraph or \subparagraph
-\usepackage{etoolbox}
-\makeatletter
-\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
-\makeatother
-% Allow footnotes in longtable head/foot
-\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
-\makesavenoteenv{longtable}
+\usepackage{microtype}
 \usepackage{graphicx}
-\makeatletter
+\usepackage{longtable,booktabs,array}
+\usepackage{calc}
+\usepackage{etoolbox}
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\usepackage{footnote}
+\makesavenoteenv{longtable}
+\usepackage[unicode,hidelinks,pdfcreator={LaTeX via pandoc}]{hyperref}
+\usepackage{bookmark}
+\usepackage{xcolor}
+
+% ---------- pandoc helpers ----------
+\setlength{\emergencystretch}{3em}
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
 \newsavebox\pandoc@box
-\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+\newcommand*\pandocbounded[1]{%
   \sbox\pandoc@box{#1}%
   \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
   \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
-  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi
   \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
   \else\usebox{\pandoc@box}%
   \fi%
 }
-% Set default figure placement to htbp
 \def\fps@figure{htbp}
-\makeatother
-\setlength{\emergencystretch}{3em} % prevent overfull lines
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\usepackage{bookmark}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same}
-\hypersetup{
-  pdftitle={Cross-Modal Convergence Is Family-Local{,} Vision-Anchored{,} and Depth-Dependent: Evidence from a 250-Concept Benchmark},
-  pdfauthor={Abinash Karki (Independent Research)},
-  hidelinks,
-  pdfcreator={LaTeX via pandoc}}
 
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{}
+\urlstyle{same}
+
+% ---------- metadata ----------
 \title{Cross-Modal Convergence Is Family-Local, Vision-Anchored, and
 Depth-Dependent: Evidence from a 250-Concept Benchmark}
 \author{Abinash Karki (Independent Research)}
 \date{March 2026}
 
+\hypersetup{%
+  pdftitle={Cross-Modal Convergence Is Family-Local, Vision-Anchored,
+and Depth-Dependent: Evidence from a 250-Concept Benchmark},
+  pdfauthor={Abinash Karki (Independent Research)}}
+
 \begin{document}
 \maketitle
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\subsection{Abstract}\label{abstract}
-
+\begin{abstract}
 The Platonic Representation Hypothesis (PRH) predicts that models
 trained on different modalities converge toward a shared
 representational geometry. We test this claim on Scale250, a
@@ -119,12 +94,11 @@ overlap rather than broad language-image convergence.
 \textbf{Keywords}: Platonic Representation Hypothesis, representational
 similarity analysis, centered kernel alignment, cross-modal convergence,
 benchmark design, layer alignment, vision-language models
+\end{abstract}
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+\section{Introduction}\label{introduction}
 
-\subsection{1. Introduction}\label{introduction}
-
-\subsubsection{1.1 The Question Behind the
+\subsection{The Question Behind the
 Hypothesis}\label{the-question-behind-the-hypothesis}
 
 The Platonic Representation Hypothesis (PRH) asks whether models trained
@@ -144,7 +118,7 @@ test and finds that the answer is more structured than a simple yes or
 no: what emerges is a taxonomy of three distinct convergence modes
 rather than broad cross-modal alignment.
 
-\subsubsection{1.2 Why Measurement Design
+\subsection{Why Measurement Design
 Matters}\label{why-measurement-design-matters}
 
 The central risk in this literature is not only false positives. It is
@@ -165,7 +139,7 @@ are removed from the main confirmatory claim, source balance is enforced
 within concept, and depth, robustness, and metric-triangulation analyses
 are specified as part of the study rather than as an afterthought.
 
-\subsubsection{1.3 Scale250 Study Design}\label{scale250-study-design}
+\subsection{Scale250 Study Design}\label{scale250-study-design}
 
 The study evaluates a 25-model panel on Scale250, a structured
 250-concept benchmark with strict within-concept source balance. The
@@ -187,7 +161,7 @@ vision-anchored across architectures; (4) shared structure is
 depth-dependent; (5) language-model scale does not rescue cross-modal
 alignment.
 
-\subsubsection{1.4 Contributions}\label{contributions}
+\subsection{Contributions}\label{contributions}
 
 The study makes five contributions:
 
@@ -215,7 +189,7 @@ The study makes five contributions:
   cross-modal alignment in this panel.
 \end{enumerate}
 
-\subsubsection{1.5 Research Questions}\label{research-questions}
+\subsection{Research Questions}\label{research-questions}
 
 The paper is organized around six questions:
 
@@ -242,11 +216,9 @@ The paper is organized around six questions:
   representational similarity metric?
 \end{itemize}
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+\section{Related Work}\label{related-work}
 
-\subsection{2. Related Work}\label{related-work}
-
-\subsubsection{Cross-modal convergence and the Platonic Representation
+\subsection{Cross-modal convergence and the Platonic Representation
 Hypothesis}\label{cross-modal-convergence-and-the-platonic-representation-hypothesis}
 
 The closest conceptual antecedent is the Platonic Representation
@@ -270,7 +242,7 @@ through a different route. Rather than calibrating the metric, we
 broaden the benchmark and find that cross-modal convergence weakens by
 an order of magnitude while within-family structure is preserved.
 
-\subsubsection{Representational similarity
+\subsection{Representational similarity
 metrics}\label{representational-similarity-metrics}
 
 Our measurement frame sits inside the broader literature on
@@ -293,7 +265,7 @@ representational dissimilarity matrices; CKA compares centered alignment
 between feature spaces. Agreement between them strengthens trust in the
 direction of the result, not in any single numeric magnitude.
 
-\subsubsection{Bridge models and the modality
+\subsection{Bridge models and the modality
 gap}\label{bridge-models-and-the-modality-gap}
 
 The bridge-model question sits in a specific multimodal literature.
@@ -311,7 +283,7 @@ This distinction is central to the present paper because the four
 contrastive VLMs in the panel are all evaluated through their image-side
 representations.
 
-\subsubsection{Internal representations in vision-language
+\subsection{Internal representations in vision-language
 models}\label{internal-representations-in-vision-language-models}
 
 Recent interpretability work has begun probing the internal structure of
@@ -326,7 +298,7 @@ across depth. These findings provide context for the present paper's
 depth analysis, which asks whether cross-modal convergence is stronger
 at mid-to-late aligned layers than at the terminal selected layer.
 
-\subsubsection{Benchmark design and measurement
+\subsection{Benchmark design and measurement
 inflation}\label{benchmark-design-and-measurement-inflation}
 
 This paper also contributes to a tradition of benchmark design and
@@ -342,11 +314,9 @@ benchmark construction. The present paper contributes a parallel finding
 for representational geometry: cross-modal convergence estimates depend
 materially on concept-set breadth and source balance.
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+\section{Methods}\label{methods}
 
-\subsection{3. Methods}\label{methods}
-
-\subsubsection{3.1 Confirmatory Design
+\subsection{Confirmatory Design
 Overview}\label{confirmatory-design-overview}
 
 The full study is built around a simple contract: keep the model panel
@@ -398,7 +368,7 @@ Right: the model panel comprises 8 language, 10 vision SSL, and 4
 vision-language encoders.}
 \end{figure}
 
-\subsubsection{3.2 Model Panel and Architecture
+\subsection{Model Panel and Architecture
 Extension}\label{model-panel-and-architecture-extension}
 
 The core 22-model roster is fixed throughout the main study. This is
@@ -465,7 +435,7 @@ analysis. The architecture extension asks a specific question: when
 native autoregressive multimodal models are added, do they sit closer to
 language, closer to vision, or in between?
 
-\subsubsection{3.3 Benchmark Construction}\label{benchmark-construction}
+\subsection{Benchmark Construction}\label{benchmark-construction}
 
 The new benchmark is not a larger random sample. It is a structured
 benchmark. The manifest in \texttt{data/data\_manifest\_250.json}
@@ -518,7 +488,7 @@ improvement over the earlier project state because source diversity is
 now built into the benchmark rather than treated mainly as a post hoc
 nuisance variable.
 
-\subsubsection{3.4 Embedding Extraction}\label{embedding-extraction}
+\subsection{Embedding Extraction}\label{embedding-extraction}
 
 Language-side concept embeddings are extracted from short definitional
 prompts using the three \texttt{baseline3} templates:
@@ -566,7 +536,7 @@ comparable selected-layer representation per image but does not yet
 expose a stable cross-family internal layer stack. The autoregressive
 VLM extension is therefore selected-layer only.
 
-\subsubsection{3.5 RSA and Statistical
+\subsection{RSA and Statistical
 Inference}\label{rsa-and-statistical-inference}
 
 For each model:
@@ -597,7 +567,7 @@ The primary inferential package has two parts:
 We also compute prompt sensitivity from the three extracted templates
 and run the same robustness package on the aligned5 pass.
 
-\subsubsection{3.6 CKA Triangulation}\label{cka-triangulation}
+\subsection{CKA Triangulation}\label{cka-triangulation}
 
 RSA is the main analysis because the paper is about shared concept
 geometry, but we add a second metric to test whether the qualitative
@@ -613,7 +583,7 @@ RSA, bootstrap, and Mantel tests. The CKA question is qualitative: does
 the same family structure appear when we compare centered feature spaces
 rather than ranked similarity matrices?
 
-\subsubsection{3.7 Benchmark-Sensitivity
+\subsection{Benchmark-Sensitivity
 Analysis}\label{benchmark-sensitivity-analysis}
 
 Section 4.1 presents a benchmark-sensitivity analysis comparing Scale250
@@ -624,11 +594,9 @@ an internal validity demonstration: by holding the model panel constant
 and varying only the concept set, it isolates the effect of benchmark
 scope on the cross-modal convergence estimate.
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+\section{Results}\label{results}
 
-\subsection{4. Results}\label{results}
-
-\subsubsection{4.1 Benchmark Scale Changes the Cross-Modal
+\subsection{Benchmark Scale Changes the Cross-Modal
 Estimate}\label{benchmark-scale-changes-the-cross-modal-estimate}
 
 The first result is methodological. When the same 22-model core panel is
@@ -706,7 +674,7 @@ statistically stable one. The broader concept set shrinks uncertainty
 enough that the weak cross-modal signal can be interpreted with
 confidence rather than dismissed as noise.
 
-\subsubsection{4.2 Convergence Is
+\subsection{Convergence Is
 Family-Local}\label{convergence-is-family-local}
 
 With benchmark sensitivity established, the Scale250 baseline reveals
@@ -799,7 +767,7 @@ The most negative pairs are all cross-modal and modest in magnitude:
   \texttt{DINOv2-base} vs \texttt{LFM2-2.6B-Exp-8bit}: -0.0927
 \end{itemize}
 
-\subsubsection{4.3 Bridge Models Are Vision-Anchored Across
+\subsection{Bridge Models Are Vision-Anchored Across
 Architectures}\label{bridge-models-are-vision-anchored-across-architectures}
 
 Both contrastive and autoregressive VLMs are vision-anchored, with
@@ -885,7 +853,7 @@ benchmark and under a selected-layer extraction regime, both contrastive
 VLMs and autoregressive VLMs look far more vision-like than
 language-like.
 
-\subsubsection{4.4 Shared Structure Is
+\subsection{Shared Structure Is
 Depth-Dependent}\label{shared-structure-is-depth-dependent}
 
 If cross-modal convergence is weak at the final layer, is it weak
@@ -948,7 +916,7 @@ the convergence signal is most visible, not \emph{whether} the
 high-level conclusion changes. Convergence is depth-dependent, but even
 at its peak it remains family-local rather than broadly cross-modal.
 
-\subsubsection{4.5 Scale Does Not Rescue Cross-Modal
+\subsection{Scale Does Not Rescue Cross-Modal
 Convergence}\label{scale-does-not-rescue-cross-modal-convergence}
 
 A natural defense of PRH would be that cross-modal alignment increases
@@ -983,10 +951,9 @@ that within the 0.6B--4B regime, size is not the dominant variable for
 cross-modal geometric alignment. Architecture family, training data, and
 objective appear to matter more than raw parameter count.
 
-\subsubsection{4.6 Robustness and
-Validation}\label{robustness-and-validation}
+\subsection{Robustness and Validation}\label{robustness-and-validation}
 
-\paragraph{4.6.1 Metric triangulation with
+\subsubsection{Metric triangulation with
 CKA}\label{metric-triangulation-with-cka}
 
 The three-mode taxonomy is not an artifact of the RSA metric. Linear CKA
@@ -1040,7 +1007,7 @@ while RSA is a rank correlation that can go negative. The important
 result is not that the numbers match exactly, but that the qualitative
 family ordering survives a second metric family.
 
-\paragraph{4.6.2 Prompt sensitivity and bootstrap
+\subsubsection{Prompt sensitivity and bootstrap
 stability}\label{prompt-sensitivity-and-bootstrap-stability}
 
 Prompt sensitivity is present but does not threaten the main
@@ -1071,11 +1038,9 @@ the gap between within-family convergence (L-L mean 0.6143) and
 cross-modal agreement (L-I mean 0.0199). Prompt choice moves the
 cross-modal estimate modestly but does not change the structural story.
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+\section{Discussion}\label{discussion}
 
-\subsection{5. Discussion}\label{discussion}
-
-\subsubsection{5.1 Three Modes of
+\subsection{Three Modes of
 Convergence}\label{three-modes-of-convergence}
 
 The Scale250 study reveals three distinct convergence regimes rather
@@ -1096,7 +1061,7 @@ vision-anchored at the interface, and weak across the language-image
 boundary. Each mode is supported by its own evidence base and survives
 metric triangulation with CKA.
 
-\subsubsection{5.2 Vision-Anchored Bridge Models Across
+\subsection{Vision-Anchored Bridge Models Across
 Architectures}\label{vision-anchored-bridge-models-across-architectures}
 
 The bridge-model result is conceptually important because it
@@ -1124,7 +1089,7 @@ contrastive objective show a similar geometric separation between their
 image-conditioned representations and pure language-model
 representations.
 
-\subsubsection{5.3 Depth-Dependent
+\subsection{Depth-Dependent
 Convergence}\label{depth-dependent-convergence}
 
 The aligned-layer result is the study's most constructive positive
@@ -1148,7 +1113,7 @@ even at its peak, the signal remains modest and family-local.
 Depth-dependent convergence is a real phenomenon in this panel, not yet
 evidence of a universal shared geometry.
 
-\subsubsection{5.4 Benchmark Design as a First-Class
+\subsection{Benchmark Design as a First-Class
 Variable}\label{benchmark-design-as-a-first-class-variable}
 
 The benchmark-sensitivity analysis shows that cross-modal convergence
@@ -1170,7 +1135,7 @@ first-class variable in any claim about representational convergence.
 The Scale250 estimates should be treated as the canonical reference
 point for this panel.
 
-\subsubsection{5.5 Scope and Limitations}\label{scope-and-limitations}
+\subsection{Scope and Limitations}\label{scope-and-limitations}
 
 This study does \textbf{not} refute the broadest possible version of
 PRH. Stronger cross-modal effects could emerge under conditions not
@@ -1206,7 +1171,7 @@ tested here. The main limitations are:
   not claimed.
 \end{enumerate}
 
-\subsubsection{5.6 Implications and Future
+\subsection{Implications and Future
 Directions}\label{implications-and-future-directions}
 
 The three-modes taxonomy predicts where to look next. Each mode suggests
@@ -1237,9 +1202,7 @@ modalities ever agree. They do, weakly. The question is now: under what
 benchmark, architecture, and depth conditions does that agreement become
 strong enough to count as evidence for a shared geometry?
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\subsection{6. Conclusion}\label{conclusion}
+\section{Conclusion}\label{conclusion}
 
 The Scale250 study replaces the binary question -- does cross-modal
 convergence exist? -- with a taxonomy of three convergence modes, each
@@ -1283,10 +1246,7 @@ conditions where convergence strengthens, at the abstract concepts where
 it might differ, and at the frontier models where scale could still
 change the story.
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\subsection{Code and Data
-Availability}\label{code-and-data-availability}
+\section{Code and Data Availability}\label{code-and-data-availability}
 
 Code, manifests, small paper-facing result artifacts, figure-generation
 code, and manuscript sources are available in this repository and are
@@ -1317,9 +1277,7 @@ this paper are:
   \texttt{manuscript/figures/scale250/}
 \end{itemize}
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\subsection{References}\label{references}
+\section{References}\label{references}
 
 Andreas, J. (2019). Measuring Compositionality in Representation
 Learning. \emph{ICLR 2019}.
@@ -1384,9 +1342,7 @@ arXiv:2502.14786}.
 Zhai, X., Mustafa, B., Kolesnikov, A., and Beyer, L. (2023). Sigmoid
 Loss for Language Image Pre-Training. \emph{ICCV 2023}.
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\subsection{Appendix A: Reproducibility
+\section{Appendix A: Reproducibility
 Summary}\label{appendix-a-reproducibility-summary}
 
 \begin{itemize}
@@ -1420,7 +1376,7 @@ Summary}\label{appendix-a-reproducibility-summary}
   Secondary metric: linear CKA on selected-layer concept matrices
 \end{itemize}
 
-\subsection{Appendix B: Files Used For This
+\section{Appendix B: Files Used For This
 Paper}\label{appendix-b-files-used-for-this-paper}
 
 \begin{itemize}

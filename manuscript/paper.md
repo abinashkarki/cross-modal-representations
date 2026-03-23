@@ -2,43 +2,37 @@
 title: "Cross-Modal Convergence Is Family-Local, Vision-Anchored, and Depth-Dependent: Evidence from a 250-Concept Benchmark"
 author: "Abinash Karki (Independent Research)"
 date: "March 2026"
+abstract: |
+  The Platonic Representation Hypothesis (PRH) predicts that models trained on different modalities
+  converge toward a shared representational geometry. We test this claim on Scale250, a 250-concept,
+  source-balanced benchmark evaluated on a 25-model panel spanning language models, self-supervised
+  vision models, contrastive vision-language encoders, and autoregressive VLMs. The result is not
+  absence of convergence but three distinct modes. **Within-family convergence** is strong:
+  language-language RSA averages 0.6143 (28/28 pairs significant after FDR correction) and
+  VLM-VLM agreement reaches 0.8938. **Bridge convergence** is real but vision-anchored:
+  both contrastive VLMs (vision-minus-language gap 0.4695) and autoregressive VLMs (gap 0.4718) sit
+  far closer to vision than to language, and this pattern is architecture-independent.
+  **Cross-modal convergence** is weak: language-image RSA averages 0.0199, with only 15 of 80
+  language-vision pairs surviving FDR correction. This three-mode taxonomy is robust across analyses.
+  Aligned-layer evaluation reveals that shared structure peaks at mid-to-late network depth (d75)
+  rather than the terminal selected layer, suggesting convergence is depth-dependent rather than a
+  final-layer property. Language-model scale (0.6B--4B) shows no monotonic relationship with
+  cross-modal alignment (Spearman $\rho$ = -0.0952). CKA triangulation preserves the same family
+  ordering (Pearson 0.7229, Spearman 0.7050 agreement with RSA). A benchmark-sensitivity analysis
+  shows that expanding the concept set from 20 to 250 on the same model panel collapses
+  language-image RSA from 0.2418 to 0.0199 while preserving within-family structure, demonstrating
+  that narrow benchmarks can materially overstate cross-modal agreement. What survives the stronger
+  measurement regime is family-local convergence, vision-anchored bridge behavior, and
+  depth-dependent overlap rather than broad language-image convergence.
+
+  **Keywords**: Platonic Representation Hypothesis, representational similarity analysis, centered
+  kernel alignment, cross-modal convergence, benchmark design, layer alignment, vision-language
+  models
 ---
 
----
+## Introduction
 
-## Abstract
-
-The Platonic Representation Hypothesis (PRH) predicts that models trained on different modalities
-converge toward a shared representational geometry. We test this claim on Scale250, a 250-concept,
-source-balanced benchmark evaluated on a 25-model panel spanning language models, self-supervised
-vision models, contrastive vision-language encoders, and autoregressive VLMs. The result is not
-absence of convergence but three distinct modes. **Within-family convergence** is strong:
-language-language RSA averages 0.6143 (28/28 pairs significant after FDR correction) and
-VLM-VLM agreement reaches 0.8938. **Bridge convergence** is real but vision-anchored:
-both contrastive VLMs (vision-minus-language gap 0.4695) and autoregressive VLMs (gap 0.4718) sit
-far closer to vision than to language, and this pattern is architecture-independent.
-**Cross-modal convergence** is weak: language-image RSA averages 0.0199, with only 15 of 80
-language-vision pairs surviving FDR correction. This three-mode taxonomy is robust across analyses.
-Aligned-layer evaluation reveals that shared structure peaks at mid-to-late network depth (d75)
-rather than the terminal selected layer, suggesting convergence is depth-dependent rather than a
-final-layer property. Language-model scale (0.6B--4B) shows no monotonic relationship with
-cross-modal alignment (Spearman $\rho$ = -0.0952). CKA triangulation preserves the same family
-ordering (Pearson 0.7229, Spearman 0.7050 agreement with RSA). A benchmark-sensitivity analysis
-shows that expanding the concept set from 20 to 250 on the same model panel collapses
-language-image RSA from 0.2418 to 0.0199 while preserving within-family structure, demonstrating
-that narrow benchmarks can materially overstate cross-modal agreement. What survives the stronger
-measurement regime is family-local convergence, vision-anchored bridge behavior, and
-depth-dependent overlap rather than broad language-image convergence.
-
-**Keywords**: Platonic Representation Hypothesis, representational similarity analysis, centered
-kernel alignment, cross-modal convergence, benchmark design, layer alignment, vision-language
-models
-
----
-
-## 1. Introduction
-
-### 1.1 The Question Behind the Hypothesis
+### The Question Behind the Hypothesis
 
 The Platonic Representation Hypothesis (PRH) asks whether models trained on different modalities
 converge toward a shared internal geometry because they are all modeling the same world (Huh et al.,
@@ -53,7 +47,7 @@ harder and more balanced measurement regime. This paper provides that test and f
 is more structured than a simple yes or no: what emerges is a taxonomy of three distinct convergence
 modes rather than broad cross-modal alignment.
 
-### 1.2 Why Measurement Design Matters
+### Why Measurement Design Matters
 
 The central risk in this literature is not only false positives. It is effect-size inflation from
 narrow, source-skewed, or otherwise convenient benchmarks. A study can detect genuine cross-modal
@@ -70,7 +64,7 @@ removed from the main confirmatory claim, source balance is enforced within conc
 robustness, and metric-triangulation analyses are specified as part of the study rather than as an
 afterthought.
 
-### 1.3 Scale250 Study Design
+### Scale250 Study Design
 
 The study evaluates a 25-model panel on Scale250, a structured 250-concept benchmark with strict
 within-concept source balance. The core panel consists of 22 models: 8 language models, 10
@@ -87,7 +81,7 @@ expansion collapses the cross-modal estimate; (2) convergence is family-local; (
 are vision-anchored across architectures; (4) shared structure is depth-dependent; (5)
 language-model scale does not rescue cross-modal alignment.
 
-### 1.4 Contributions
+### Contributions
 
 The study makes five contributions:
 
@@ -103,7 +97,7 @@ The study makes five contributions:
 5. It shows that language-model size (0.6B--4B) does not predict cross-modal alignment in this
    panel.
 
-### 1.5 Research Questions
+### Research Questions
 
 The paper is organized around six questions:
 
@@ -118,9 +112,7 @@ The paper is organized around six questions:
 - **RQ5**: Does language-model size predict stronger vision alignment in this panel?
 - **RQ6**: Do the main conclusions survive an alternate representational similarity metric?
 
----
-
-## 2. Related Work
+## Related Work
 
 ### Cross-modal convergence and the Platonic Representation Hypothesis
 
@@ -195,11 +187,9 @@ vision-language evaluation depend materially on benchmark construction. The pres
 contributes a parallel finding for representational geometry: cross-modal convergence estimates
 depend materially on concept-set breadth and source balance.
 
----
+## Methods
 
-## 3. Methods
-
-### 3.1 Confirmatory Design Overview
+### Confirmatory Design Overview
 
 The full study is built around a simple contract: keep the model panel fixed, scale the concept
 benchmark aggressively, and separate the primary confirmatory benchmark from supporting analyses.
@@ -224,7 +214,7 @@ benchmark aggressively, and separate the primary confirmatory benchmark from sup
 
 ![Figure 1. Scale250 study design. Left: the primary benchmark consists of 250 stratified base concepts and excludes compounds from the main confirmatory claim. Center: every concept is balanced within concept across ImageNet, Open Images, and Unsplash at 5/5/5 images. Right: the model panel comprises 8 language, 10 vision SSL, and 4 vision-language encoders.](figures/scale250/design_overview.png)
 
-### 3.2 Model Panel and Architecture Extension
+### Model Panel and Architecture Extension
 
 The core 22-model roster is fixed throughout the main study. This is deliberate. Holding the panel
 constant lets benchmark design and analysis protocol do the experimental work.
@@ -262,7 +252,7 @@ MLX-VLM extraction path does not yet expose a stable cross-family internal layer
 depth analysis. The architecture extension asks a specific question: when native autoregressive
 multimodal models are added, do they sit closer to language, closer to vision, or in between?
 
-### 3.3 Benchmark Construction
+### Benchmark Construction
 
 The new benchmark is not a larger random sample. It is a structured benchmark. The manifest in
 `data/data_manifest_250.json` specifies:
@@ -291,7 +281,7 @@ Each concept has exactly 15 accepted images. The source policy is within-concept
 a major improvement over the earlier project state because source diversity is now built into the
 benchmark rather than treated mainly as a post hoc nuisance variable.
 
-### 3.4 Embedding Extraction
+### Embedding Extraction
 
 Language-side concept embeddings are extracted from short definitional prompts using the three
 `baseline3` templates:
@@ -320,7 +310,7 @@ single image, then averaged to the concept level in the same way as the other im
 path provides one comparable selected-layer representation per image but does not yet expose a stable
 cross-family internal layer stack. The autoregressive VLM extension is therefore selected-layer only.
 
-### 3.5 RSA and Statistical Inference
+### RSA and Statistical Inference
 
 For each model:
 
@@ -337,7 +327,7 @@ The primary inferential package has two parts:
 We also compute prompt sensitivity from the three extracted templates and run the same robustness
 package on the aligned5 pass.
 
-### 3.6 CKA Triangulation
+### CKA Triangulation
 
 RSA is the main analysis because the paper is about shared concept geometry, but we add a second
 metric to test whether the qualitative ordering survives outside the RSA family. For the selected
@@ -350,7 +340,7 @@ The inferential package remains tied to RSA, bootstrap, and Mantel tests. The CK
 qualitative: does the same family structure appear when we compare centered feature spaces rather
 than ranked similarity matrices?
 
-### 3.7 Benchmark-Sensitivity Analysis
+### Benchmark-Sensitivity Analysis
 
 Section 4.1 presents a benchmark-sensitivity analysis comparing Scale250 with an earlier
 unpublished 20-concept benchmark evaluated on the same 22-model panel. The earlier benchmark used
@@ -358,11 +348,9 @@ unpublished 20-concept benchmark evaluated on the same 22-model panel. The earli
 an internal validity demonstration: by holding the model panel constant and varying only the concept
 set, it isolates the effect of benchmark scope on the cross-modal convergence estimate.
 
----
+## Results
 
-## 4. Results
-
-### 4.1 Benchmark Scale Changes the Cross-Modal Estimate
+### Benchmark Scale Changes the Cross-Modal Estimate
 
 The first result is methodological. When the same 22-model core panel is evaluated on a broader,
 source-balanced benchmark, the cross-modal convergence estimate changes by an order of magnitude.
@@ -396,7 +384,7 @@ Scale250 is therefore not only a harder benchmark. It is a more statistically st
 broader concept set shrinks uncertainty enough that the weak cross-modal signal can be interpreted
 with confidence rather than dismissed as noise.
 
-### 4.2 Convergence Is Family-Local
+### Convergence Is Family-Local
 
 With benchmark sensitivity established, the Scale250 baseline reveals three distinct convergence
 modes in the 22-model core panel.
@@ -439,7 +427,7 @@ The most negative pairs are all cross-modal and modest in magnitude:
 - `Granite-3.3-2B-Instruct-8bit` vs `SigLIP2`: -0.0941
 - `DINOv2-base` vs `LFM2-2.6B-Exp-8bit`: -0.0927
 
-### 4.3 Bridge Models Are Vision-Anchored Across Architectures
+### Bridge Models Are Vision-Anchored Across Architectures
 
 Both contrastive and autoregressive VLMs are vision-anchored, with nearly identical
 vision-minus-language gaps. This result extends the bridge-model finding from the core 22-model
@@ -469,7 +457,7 @@ It does not answer every multimodal question. But it materially widens the scope
 bridge-model claim: on this benchmark and under a selected-layer extraction regime, both contrastive
 VLMs and autoregressive VLMs look far more vision-like than language-like.
 
-### 4.4 Shared Structure Is Depth-Dependent
+### Shared Structure Is Depth-Dependent
 
 If cross-modal convergence is weak at the final layer, is it weak everywhere? The aligned-layer
 analysis shows it is not. Shared structure peaks at mid-to-late network depth rather than the
@@ -503,7 +491,7 @@ unchanged exactly. Depth changes *where* the convergence signal is most visible,
 high-level conclusion changes. Convergence is depth-dependent, but even at its peak it remains
 family-local rather than broadly cross-modal.
 
-### 4.5 Scale Does Not Rescue Cross-Modal Convergence
+### Scale Does Not Rescue Cross-Modal Convergence
 
 A natural defense of PRH would be that cross-modal alignment increases with model size. In this
 panel, it does not. The Spearman correlation between language-model size and mean vision RSA is
@@ -521,9 +509,9 @@ This does not rule out scaling effects at frontier model sizes. It means that wi
 regime, size is not the dominant variable for cross-modal geometric alignment. Architecture family,
 training data, and objective appear to matter more than raw parameter count.
 
-### 4.6 Robustness and Validation
+### Robustness and Validation
 
-#### 4.6.1 Metric triangulation with CKA
+#### Metric triangulation with CKA
 
 The three-mode taxonomy is not an artifact of the RSA metric. Linear CKA over the same
 concept-by-feature matrices preserves the same family ordering.
@@ -552,7 +540,7 @@ feature matrices bounded positive in this implementation, while RSA is a rank co
 go negative. The important result is not that the numbers match exactly, but that the qualitative
 family ordering survives a second metric family.
 
-#### 4.6.2 Prompt sensitivity and bootstrap stability
+#### Prompt sensitivity and bootstrap stability
 
 Prompt sensitivity is present but does not threaten the main conclusions. Across the 8 language
 models:
@@ -568,11 +556,9 @@ Even the largest prompt-induced shift (0.1238) is far too small to close the gap
 within-family convergence (L-L mean 0.6143) and cross-modal agreement (L-I mean 0.0199). Prompt
 choice moves the cross-modal estimate modestly but does not change the structural story.
 
----
+## Discussion
 
-## 5. Discussion
-
-### 5.1 Three Modes of Convergence
+### Three Modes of Convergence
 
 The Scale250 study reveals three distinct convergence regimes rather than broad cross-modal
 alignment. Within-family convergence is strong and robust: language models agree with language
@@ -587,7 +573,7 @@ does convergence exist? -- with a structured answer: convergence is strong withi
 vision-anchored at the interface, and weak across the language-image boundary. Each mode is
 supported by its own evidence base and survives metric triangulation with CKA.
 
-### 5.2 Vision-Anchored Bridge Models Across Architectures
+### Vision-Anchored Bridge Models Across Architectures
 
 The bridge-model result is conceptually important because it distinguishes interface compatibility
 from representational convergence. In the core 22-model panel, the bridge models are contrastive
@@ -608,7 +594,7 @@ The present finding extends this: even autoregressive VLMs that do not use a con
 show a similar geometric separation between their image-conditioned representations and pure
 language-model representations.
 
-### 5.3 Depth-Dependent Convergence
+### Depth-Dependent Convergence
 
 The aligned-layer result is the study's most constructive positive finding. Shared geometry peaks
 at mid-to-late aligned layers (d75) rather than the terminal selected layer. This suggests that
@@ -627,7 +613,7 @@ randomly; it follows a depth trajectory. But even at its peak, the signal remain
 family-local. Depth-dependent convergence is a real phenomenon in this panel, not yet evidence of
 a universal shared geometry.
 
-### 5.4 Benchmark Design as a First-Class Variable
+### Benchmark Design as a First-Class Variable
 
 The benchmark-sensitivity analysis shows that cross-modal convergence estimates depend materially
 on benchmark scope. On the same 22-model panel, language-image RSA dropped from 0.2418 on a
@@ -644,7 +630,7 @@ Benchmark scope is therefore not a minor implementation detail. It is a first-cl
 claim about representational convergence. The Scale250 estimates should be treated as the canonical
 reference point for this panel.
 
-### 5.5 Scope and Limitations
+### Scope and Limitations
 
 This study does **not** refute the broadest possible version of PRH. Stronger cross-modal effects
 could emerge under conditions not tested here. The main limitations are:
@@ -664,7 +650,7 @@ could emerge under conditions not tested here. The main limitations are:
 6. **Source-holdout is incomplete.** The current robustness implementation collapses source holdout
    to a single `mixed_balanced` regime, so a strong source-ablation result is not claimed.
 
-### 5.6 Implications and Future Directions
+### Implications and Future Directions
 
 The three-modes taxonomy predicts where to look next. Each mode suggests a different experimental
 frontier:
@@ -683,9 +669,7 @@ The study narrows the open question. It no longer asks whether different modalit
 do, weakly. The question is now: under what benchmark, architecture, and depth conditions does that
 agreement become strong enough to count as evidence for a shared geometry?
 
----
-
-## 6. Conclusion
+## Conclusion
 
 The Scale250 study replaces the binary question -- does cross-modal convergence exist? -- with a
 taxonomy of three convergence modes, each empirically grounded on a 250-concept, source-balanced
@@ -712,8 +696,6 @@ taxonomy predicts where to look next: at the depth conditions where convergence 
 abstract concepts where it might differ, and at the frontier models where scale could still change
 the story.
 
----
-
 ## Code and Data Availability
 
 Code, manifests, small paper-facing result artifacts, figure-generation code, and manuscript
@@ -730,8 +712,6 @@ excluded from git and indexed in `artifacts/release_manifest.json` with checksum
 - `src/analyze_arvlm_extension.py`
 - `artifacts/release_manifest.json`
 - `manuscript/figures/scale250/`
-
----
 
 ## References
 
@@ -784,8 +764,6 @@ Semantic Understanding, Localization, and Dense Features. *arXiv preprint arXiv:
 
 Zhai, X., Mustafa, B., Kolesnikov, A., and Beyer, L. (2023). Sigmoid Loss for Language Image
 Pre-Training. *ICCV 2023*.
-
----
 
 ## Appendix A: Reproducibility Summary
 

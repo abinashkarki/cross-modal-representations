@@ -14,4 +14,7 @@ paper-figures:
 
 paper-render:
 	pandoc manuscript/paper.md --from markdown+tex_math_dollars --standalone --resource-path=manuscript -o manuscript/paper.html
-	pandoc manuscript/paper.md --from markdown+tex_math_dollars --standalone --resource-path=manuscript -o manuscript/paper.tex
+	pandoc manuscript/paper.md --from markdown+tex_math_dollars --standalone --resource-path=manuscript \
+		--template=manuscript/arxiv.template.tex \
+		--lua-filter=manuscript/promote-headings.lua \
+		-o manuscript/paper.tex
