@@ -1,4 +1,4 @@
-.PHONY: release-check dataset-fixture-check materialize-local-artifacts paper-figures paper-render
+.PHONY: release-check dataset-fixture-check materialize-local-artifacts paper-figures paper-render paper-tmlr
 
 release-check:
 	python src/release_checks.py
@@ -18,3 +18,12 @@ paper-render:
 		--template=manuscript/arxiv.template.tex \
 		--lua-filter=manuscript/promote-headings.lua \
 		-o manuscript/paper.tex
+
+paper-tmlr:
+	pandoc manuscript/tmlr/paper-tmlr.md \
+		--from markdown+tex_math_dollars+raw_tex \
+		--standalone \
+		--resource-path=manuscript/tmlr \
+		--template=manuscript/tmlr/tmlr.template.tex \
+		--lua-filter=manuscript/promote-headings.lua \
+		-o manuscript/tmlr/paper-tmlr.tex
