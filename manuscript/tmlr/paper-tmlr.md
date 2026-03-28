@@ -11,7 +11,7 @@ abstract: |
   language-language RSA averages 0.6143 (28/28 pairs significant after FDR correction) and
   VLM-VLM agreement reaches 0.8938. **Bridge convergence** is real but vision-anchored:
   both contrastive VLMs (vision-minus-language gap 0.4695) and autoregressive VLMs (gap 0.4718) sit
-  far closer to vision than to language, and this pattern is architecture-independent.
+  far closer to vision than to language, and this pattern is directionally consistent across both architecture families.
   **Cross-modal convergence** is weak: language-image RSA averages 0.0199, with only 15 of 80
   language-vision pairs surviving FDR correction. This three-mode taxonomy is robust across analyses.
   Aligned-layer evaluation reveals that shared structure peaks at mid-to-late network depth (d75)
@@ -238,7 +238,10 @@ internally heterogeneous.
 All language models are evaluated at 8-bit quantization. Quantization at this level preserves
 relative activation magnitudes and is unlikely to affect Spearman rank-order structure. The
 consistent within-family agreement (all 28 language-language pairs significant after FDR correction)
-serves as an internal check that quantization does not degrade the representational signal.
+serves as an internal check that quantization does not degrade the representational signal. A direct
+comparison of Qwen3-0.6B at full precision versus 8-bit on the same 28-concept subset yields
+per-concept cosine similarity of 0.9994 (min 0.9991) and RSA $\rho$ = 0.9990, confirming that 8-bit
+quantization preserves representational geometry for this model family.
 
 The vision-language models require a specific caveat: the core panel contains **contrastive
 dual-encoder models** (CLIP, MetaCLIP, SigLIP, SigLIP2), and the analysis uses their **image
@@ -630,6 +633,24 @@ Benchmark scope is therefore not a minor implementation detail. It is a first-cl
 claim about representational convergence. The Scale250 estimates should be treated as the canonical
 reference point for this panel.
 
+### Metric Inflation and the Within-Family Baseline
+
+The paper borrows motivation from Groger et al. (2026), who show that standard similarity metrics
+can be inflated by network scale. A fair reading of that work raises the question of whether the
+within-family baselines reported here---language-language RSA of 0.6143, VLM-VLM of 0.8938---carry
+some of the same inflation. We do not claim they are free of it. Absolute magnitudes of RSA should
+be interpreted cautiously across all family types, not only cross-modal ones. However, the paper's
+central argument rests on the *relative ordering* across family types---within-family >> bridge >>
+cross-modal---rather than on any single absolute value. That ordering is preserved even if all
+magnitudes are shifted downward by a common scale confound, because the confound would apply
+symmetrically to within-family and cross-modal pairs evaluated on the same benchmark. Additionally,
+the CKA triangulation provides a partial check: linear CKA is invariant to isotropic scaling of the
+feature matrices and has different sensitivity properties than Spearman RSA, yet it preserves the
+same family ordering (Pearson 0.7229, Spearman 0.7050 agreement). A full calibration analysis in
+the style of Groger et al. is beyond the scope of this study, but the convergence of two metrically
+distinct measures on the same qualitative structure provides evidence that the three-mode taxonomy is
+not an artifact of uncalibrated RSA alone.
+
 ### Scope and Limitations
 
 This study does **not** refute the broadest possible version of PRH. Stronger cross-modal effects
@@ -639,12 +660,17 @@ could emerge under conditions not tested here. The main limitations are:
    scale. The present study shows only that scale does not rescue convergence in the 0.6B--4B
    regime.
 2. **The concept set is concrete-heavy.** All 250 concepts are drawn from 10 concrete-object strata.
-   Abstract concepts (e.g., justice, democracy, fear) could yield different cross-modal patterns.
+   Concrete, imageable nouns are generally considered the most favorable case for cross-modal overlap
+   because they have unambiguous visual referents. The weak cross-modal signal reported here (L-I RSA
+   0.0199) therefore reflects performance on an easy case; abstract concepts (e.g., justice,
+   democracy, fear) could yield weaker or qualitatively different cross-modal patterns.
 3. **The AR-VLM extension is narrow.** Three autoregressive VLMs (two from the Qwen family) provide
    directional evidence but not a comprehensive architecture survey.
-4. **8-bit quantization.** All language models are evaluated at 8-bit quantization. While the
-   consistent within-family agreement serves as an internal check, a non-quantized comparison would
-   strengthen confidence.
+4. **8-bit quantization.** All language models are evaluated at 8-bit quantization. A full-precision
+   vs. 8-bit comparison for Qwen3-0.6B shows negligible geometric distortion (RSA $\rho$ = 0.9990),
+   and 4-bit vs. 8-bit probes for Qwen3-1.7B and Qwen3-4B confirm stability (RSA $\rho$ = 0.8122
+   and 0.9792 respectively). These checks cover one model family; non-quantized comparisons for the
+   remaining language models would further strengthen confidence.
 5. **No compositionality claim.** Compounds are excluded from the primary set, so the study does not
    address compositional convergence.
 6. **Source-holdout is incomplete.** The current robustness implementation collapses source holdout
